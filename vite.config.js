@@ -4,6 +4,8 @@ import svgr from 'vite-plugin-svgr'
 
 const MODE = process.env.NODE_ENV
 
+console.log("MODE", MODE)
+
 
 export default defineConfig({
     plugins: [react(), svgr()],
