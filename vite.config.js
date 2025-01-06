@@ -10,7 +10,7 @@ export default defineConfig({
     server: {
         proxy: {
             "/api": {
-                target: MODE === "development" ? "http://localhost:3000" : "https://notebooks-ai-backend-portiesp-portis-projects.vercel.app",
+                target: MODE === "development" ? "http://localhost:3000" : "https://notebooks-ai-backend.vercel.app",
             },
         },
     },
