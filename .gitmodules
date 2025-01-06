@@ -1,0 +1,3 @@
+[submodule "src/components/notebook_editor"]
+	path = src/components/notebook_editor
+	url = https://github.com/PortiESP/notebook_editor.git
