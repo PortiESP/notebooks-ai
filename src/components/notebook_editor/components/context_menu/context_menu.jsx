@@ -6,6 +6,7 @@ import UserInput from "../../utils/user-input"
 import { generatePDF } from "../../utils/pdf"
 import { SHORTCUTS_KEY_DOWN } from "../../utils/constants_shortcuts"
 import Blank from "../section/section_types/blank/blank_class"
+import Gap from "../section/section_types/gap/gap_class"
 
 
 const CONTEXT_MENU_WIDTH = 200
@@ -17,6 +18,7 @@ const CONTEXT_OPTIONS = {
     section: [
         { label: "Delete section", callback: contextMenuDeleteSection },
         { label: "Add section below", callback: contextMenuAddSectionBelow },
+        { label: "Add gap below", callback: contextMenuAddGapBelow },
     ],
 }
 
@@ -162,4 +164,11 @@ function contextMenuAddSectionBelow(state) {
     const newSection = new Blank({ height: 40})
 
     window.notebooks_ai.dispatch({ type: "ADD_SECTION", payload: { section: newSection, after: afterSectionId, addGapAfter: true } })
+}
+
+function contextMenuAddGapBelow(state) {
+    const {sectionId: afterSectionId} = state.contextMenu
+    const newSection = new Gap({})
+
+    window.notebooks_ai.dispatch({ type: "ADD_SECTION", payload: { section: newSection, after: afterSectionId } })
 }

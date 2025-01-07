@@ -38,10 +38,9 @@ export default {
                 "rectangle-1": new Rectangle({ id: "rectangle-1", x: 70, y: 50, width: 50, height: 50, fill: "#0f0" })
             }
         }),
-        "gap-last": new Gap({ id: "gap-last" }),
     },
 
-    DEFAULT_SECTIONS_ORDER: ["default-1", "gap-1", "debug-1", "gap-2", "blank-1", "gap-last"],
+    DEFAULT_SECTIONS_ORDER: ["default-1", "gap-1", "debug-1", "gap-2", "blank-1"],
     DEFAULT_GAP_HEIGHT,
 
     TEMPLATES_EXERCISE_SECTIONS: []
