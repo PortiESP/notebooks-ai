@@ -17,6 +17,11 @@
  * @property {Object} _onDrag - The callbacks to be called while dragging.
  * @property {Object} _onDragEnd - The callbacks to be called when dragging ends.
  * @property {Object} _onDoubleClick - The callbacks to be called when an element is double-clicked.
+ * @property {string} _lastKey - The last key that was pressed.
+ * @property {Object} _pressedKeys - The keys that are currently pressed.
+ * @property {Array} _pressedKeysStack - The stack of keys that are currently pressed.
+ * @property {Object} _onKeyDown - The callbacks to be called when a key is pressed.
+ * @property {Object} _onKeyUp - The callbacks to be called when a key is released.
  * 
  * @method start - Starts listening to mouse events.
  * @method stop - Stops listening to mouse events.
@@ -29,6 +34,8 @@
  * @method removeOnDragEnd - Removes a callback from the onDragEnd callbacks.
  * @method addOnDoubleClick - Adds a callback to be called when an element is double-clicked.
  * @method removeOnDoubleClick - Removes a callback from the onDoubleClick callbacks.
+ * @method addOnKeyDown - Adds a callback to be executed when a key is pressed.
+ * @method removeOnKeyDown - Removes a callback from the onKeyDown callbacks.
  * 
  * @example
  * UserInput.start()
@@ -239,6 +246,30 @@ export default class UserInput {
     static removeOnKeyDown(key, cb) {
         if (!UserInput._onKeyDown[key]) return
         UserInput._onKeyDown[key] = UserInput._onKeyDown[key].filter(fn => fn !== cb)
+    }
+
+    /**
+     * Adds a callback to be executed when a key is released.
+     * 
+     * @param {string} key - The key to listen to.
+     * @param {Function} cb - The callback function.
+     * @returns {void}
+     */
+    static addOnKeyUp(key, cb) {
+        if (!UserInput._onKeyUp[key]) UserInput._onKeyUp[key] = []
+        UserInput._onKeyUp[key].push(cb)
+    }
+
+    /**
+     * Removes a callback from the onKeyUp callbacks.
+     * 
+     * @param {string} key - The key to remove the callback from.
+     * @param {Function} cb - The callback function.
+     * @returns {void}
+     */
+    static removeOnKeyUp(key, cb) {
+        if (!UserInput._onKeyUp[key]) return
+        UserInput._onKeyUp[key] = UserInput._onKeyUp[key].filter(fn => fn !== cb)
     }
 
     // ================================[ Private methods ]================================

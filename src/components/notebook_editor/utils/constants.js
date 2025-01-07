@@ -7,7 +7,9 @@ import Gap, {DEFAULT_GAP_HEIGHT} from "../components/section/section_types/gap/g
 import Default from "../components/section/section_types/default/default_class"
 import FreeFormSVG from "../components/section/section_element/free_form_svg_element/svg_class"
 
-export default {
+const CONSTANTS = {
+    PIX_TO_MM: 0.264583,
+    MM_TO_PIX: 3.77953,
     DEFAULT_SECTIONS: {
         "default-1": new Default({ id: "default-1", height: 50 }),
         "gap-1": new Gap({ id: "gap-1" }),
@@ -39,5 +41,12 @@ export default {
     DEFAULT_SECTIONS_ORDER: ["default-1", "gap-1", "debug-1", "gap-2", "blank-1"],
     DEFAULT_GAP_HEIGHT,
 
+    
+    
     TEMPLATES_EXERCISE_SECTIONS: []
 }
+
+CONSTANTS.GRID_SIZE = 10 * CONSTANTS.MM_TO_PIX
+
+
+export default CONSTANTS
