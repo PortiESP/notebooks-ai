@@ -1,7 +1,7 @@
 // Style
 import s from "./notebook_editor.module.scss"
 // Utils
-import constants from "./utils/constants"
+import CONSTANTS from "./utils/constants"
 import { NotebookProvider } from "./utils/notebook_context"
 import Sheet from "./sheet"
 import { useEffect } from "react"
@@ -20,9 +20,9 @@ import ContextMenu from "./components/context_menu/context_menu"
 
 // Initial State
 const initialState = {
-    sections: constants.DEFAULT_SECTIONS,  // Sections of the notebook by id
-    sectionsOrder: constants.DEFAULT_SECTIONS_ORDER,  // Order of the sections
-    sectionsByPage: arrangeSections(constants.DEFAULT_SECTIONS, constants.DEFAULT_SECTIONS_ORDER),  // Sections arranged by page
+    sections: CONSTANTS.DEFAULT_SECTIONS,  // Sections of the notebook by id
+    sectionsOrder: CONSTANTS.DEFAULT_SECTIONS_ORDER,  // Order of the sections
+    sectionsByPage: arrangeSections(CONSTANTS.DEFAULT_SECTIONS, CONSTANTS.DEFAULT_SECTIONS_ORDER),  // Sections arranged by page
     footerTitle: "Notebook Title 1",
     contextMenu: null,  // The show/hide state is inferred from the value (null = hide, object = show)
 }

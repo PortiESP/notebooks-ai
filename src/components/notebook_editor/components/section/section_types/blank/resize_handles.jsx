@@ -1,6 +1,20 @@
 import { useState } from "react"
 import s from "./resize_handles.module.scss"
+import { useEffect } from "react"
+import { useContext } from "react"
+import { NotebookContext } from "../../../../utils/notebook_context"
+import UserInput from "../../../../utils/user-input"
+import { checkKey } from "../../../../utils/shortcuts"
+import { Rnd } from "react-rnd"
+import CONSTANTS from "../../../../utils/constants"
 
+const MM_TO_PIX = 3.77953
+const START_DRAG_CONDITION = { offsetX: 0, offsetY: 0, sX: 0, sY: 0 }
+
+
+function snapToGrid(value) {
+    return Math.round(value / CONSTANTS.GRID_SIZE) * CONSTANTS.GRID_SIZE
+}
 /**
  * Resize handles component
  * 
@@ -8,21 +22,81 @@ import s from "./resize_handles.module.scss"
  * @param {JSX.Element} props.children - Children components
  * @returns JSX.Element
  */
-export default function ResizeHandles(props) {
+export default function ResizeHandles({eData, sectionId, ...props}) {
 
+    const { dispatch } = useContext(NotebookContext)
+    const [pos, setPos] = useState({ x: eData.x * MM_TO_PIX, y: eData.y * MM_TO_PIX })
+    const [isShifting, setIsShifting] = useState(false)
     const [showTooltip, setShowTooltip] = useState(true)
-    const width = Math.round(props.eData.width * 100) / 100
-    const height = Math.round(props.eData.height * 100) / 100
-    const x = Math.round(props.eData.x * 10) / 10
-    const y = Math.round(props.eData.y * 10) / 10
+    const width = Math.round(eData.width * 100) / 100
+    const height = Math.round(eData.height * 100) / 100
+    const x = Math.round(eData.x * 10) / 10
+    const y = Math.round(eData.y * 10) / 10
 
-    return (
-        <div className={s.wrap} data-handler data-element-id={props.eData.id}>
+    useEffect(() => {
+        if (isShifting) return
+        setPos({ x: eData.x * MM_TO_PIX, y: eData.y * MM_TO_PIX })
+    }, [eData.x, eData.y])
+
+    useEffect(() => {
+        const handleKeyDown = () => setIsShifting(true)
+        const handleKeyUp = () => setIsShifting(false)
+
+        UserInput.addOnKeyDown("ShiftLeft", handleKeyDown)
+        UserInput.addOnKeyUp("ShiftLeft", handleKeyUp)
+
+        return () => {
+            UserInput.removeOnKeyDown("ShiftLeft")
+            UserInput.removeOnKeyUp("ShiftLeft")
+        }
+    }, [])
+
+    return (<Rnd
+        key={eData.id}
+        size={{ width: eData.width * MM_TO_PIX, height: eData.height * MM_TO_PIX }}
+        position={pos}
+        onDragStart={(e, d) => {
+            const { clientX, clientY } = e
+            const { x: eX, y: eY } = e.target.closest(`[data-handler-for="${eData.id}"]`).getBoundingClientRect()
+            const x = clientX - eX
+            const y = clientY - eY
+            START_DRAG_CONDITION.offsetX = x
+            START_DRAG_CONDITION.offsetY = y
+
+            const $section = d.node.closest("[data-element='section']")
+            const { x: sectionX, y: sectionY } = $section.getBoundingClientRect()
+            START_DRAG_CONDITION.sX = sectionX
+            START_DRAG_CONDITION.sY = sectionY
+        }}
+        onDrag={(e, d) => {
+            setPos({ x: d.x, y: d.y })
+            const { sX: sectionX, sY: sectionY } = START_DRAG_CONDITION  // Section position
+            const { clientX, clientY } = e  // Mouse position
+            let x = clientX - sectionX - START_DRAG_CONDITION.offsetX  // Element's new x position (relative to section)
+            let y = clientY - sectionY - START_DRAG_CONDITION.offsetY  // Element's new y position (relative to section)
+
+            if (checkKey("shift")) {
+                x = snapToGrid(x)
+                y = snapToGrid(y)
+            }
+
+            dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { x: x / MM_TO_PIX, y: y / MM_TO_PIX } } })
+        }}
+        onResize={(e, direction, ref, delta, position) => {
+            const { width, height } = ref.style
+            const { x, y } = position
+            dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { width: parseInt(width) / MM_TO_PIX, height: parseInt(height) / MM_TO_PIX, x: x / MM_TO_PIX, y: y / MM_TO_PIX } } })
+        }}
+        data-handler-for={eData.id}
+        dragGrid={isShifting ? [CONSTANTS.GRID_SIZE, CONSTANTS.GRID_SIZE] : [1, 1]}
+        resizeGrid={isShifting ? [CONSTANTS.GRID_SIZE, CONSTANTS.GRID_SIZE] : [1, 1]}
+    >
+        <div className={s.wrap} data-handler data-element-id={eData.id}>
             {props.children}
             {
-                showTooltip && 
+                showTooltip &&
                 <div className={s.tooltip_wrap} data-element-overlay="tooltip">
-                    <span>{props.eData.type}</span>
+                    <span>{eData.type}</span>
                     <span>[{x},{y}]</span>
                     <span>{width}x{height}</span>
                 </div>
@@ -37,5 +111,6 @@ export default function ResizeHandles(props) {
             <div className={s.handle} data-handler-pos="BC"></div>
             <div className={s.handle} data-handler-pos="BR"></div>
         </div>
+    </Rnd>
     )
 }

@@ -29,7 +29,7 @@ const GLOBAL_OPTIONS = [
     { label: "Copy", callback: contextMenuCopy },
     { label: "Paste", callback: contextMenuPaste },
     { divider: true },
-    { label: "Download Notebook", callback: ()=>generatePDF() },
+    { label: "Download Notebook", callback: () => generatePDF() },
 ]
 
 
@@ -58,7 +58,7 @@ export default function ContextMenu(props) {
         let { x, y } = UserInput
         if (x + CONTEXT_MENU_WIDTH > window.innerWidth) x = window.innerWidth - CONTEXT_MENU_WIDTH
 
-        setStyle({ top: y, left: x, width: CONTEXT_MENU_WIDTH+"px" })
+        setStyle({ top: y, left: x, width: CONTEXT_MENU_WIDTH + "px" })
 
         setShow(true)
     }, [state.contextMenu])
@@ -132,42 +132,43 @@ function ContextOption(props) {
         if (props.callback) props.callback(state)
     }, [state.contextMenu])
 
-    if (props.divider) return <div className={s.divider}></div>
-    return <div className={s.option_wrap} onClick={handleClick}><div className={s.option_inner}>{props.label}</div></div>
+    return props.divider
+        ? <div className={s.divider}></div>
+        : <div className={s.option_wrap} onClick={handleClick}><div className={s.option_inner}>{props.label}</div></div>
 }
 
 
 // ----------------------------------------------------------------------------------------------------->> Functions
 
 function contextMenuCopy(state) {
-    const {sectionId, elementId} = state.contextMenu
+    const { sectionId, elementId } = state.contextMenu
     SHORTCUTS_KEY_DOWN["control+c"]({ sectionId, elementId })
 }
 
 function contextMenuPaste(state) {
-    const {sectionId, elementId} = state.contextMenu
+    const { sectionId, elementId } = state.contextMenu
     SHORTCUTS_KEY_DOWN["control+v"]({ sectionId, elementId })
 }
 
 function contextMenuDeleteElement(state) {
-    const {sectionId, elementId} = state.contextMenu
+    const { sectionId, elementId } = state.contextMenu
     window.notebooks_ai.dispatch({ type: "DELETE_ELEMENT", payload: { sectionId, elementId } })
 }
 
 function contextMenuDeleteSection(state) {
-    const {sectionId} = state.contextMenu
+    const { sectionId } = state.contextMenu
     window.notebooks_ai.dispatch({ type: "REMOVE_SECTION", payload: { id: sectionId } })
 }
 
 function contextMenuAddSectionBelow(state) {
-    const {sectionId: afterSectionId} = state.contextMenu
-    const newSection = new Blank({ height: 40})
+    const { sectionId: afterSectionId } = state.contextMenu
+    const newSection = new Blank({ height: 40 })
 
     window.notebooks_ai.dispatch({ type: "ADD_SECTION", payload: { section: newSection, after: afterSectionId, addGapAfter: true } })
 }
 
 function contextMenuAddGapBelow(state) {
-    const {sectionId: afterSectionId} = state.contextMenu
+    const { sectionId: afterSectionId } = state.contextMenu
     const newSection = new Gap({})
 
     window.notebooks_ai.dispatch({ type: "ADD_SECTION", payload: { section: newSection, after: afterSectionId } })

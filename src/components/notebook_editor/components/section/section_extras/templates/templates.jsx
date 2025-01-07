@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import constants from '../../../../utils/constants'
+import CONSTANTS from '../../../../utils/constants'
 import s from './templates.module.scss'
 import { NotebookContext } from '../../../../utils/notebook_context'
 import { deepClone } from '../../../../utils/clone'
@@ -9,7 +9,7 @@ export default function Templates(props) {
     const { dispatch } = useContext(NotebookContext)
 
     const handleUseTemplate = (index) => {
-        const section = deepClone(constants.TEMPLATES_EXERCISE_SECTIONS[index])
+        const section = deepClone(CONSTANTS.TEMPLATES_EXERCISE_SECTIONS[index])
         section.id = props.sData.id
         dispatch({ type: "REPLACE_SECTION", payload: section })
         props.close()
@@ -22,7 +22,7 @@ export default function Templates(props) {
             </div>
             <div className={s.menu_body}>
                 {
-                    constants.TEMPLATES_EXERCISE_SECTIONS.map((section, index) => {
+                    CONSTANTS.TEMPLATES_EXERCISE_SECTIONS.map((section, index) => {
                         return <div key={index} className={s.template_card} onClick={() => handleUseTemplate(index)}>
                             <h4>{section.title}</h4>
                         </div>
