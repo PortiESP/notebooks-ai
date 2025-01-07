@@ -11,6 +11,9 @@
 - optimize when dragging it is slow
 - when resizing section it blinks the hover styles
 - Convert data to -> eData, sData, etc
+- ELEMENTO SVG para q la ia pueda hacer cosas libremente
+- Section overflow hidden
+- Box selection 
 
 
 DOCUMENTATION
