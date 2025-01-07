@@ -47,9 +47,7 @@ export default function useParseElementDataToJSX(eData, dispatch, sectionId) {
     }
 
     useEffect(() => {
-        if (UserInput.isDragging) {
-            if (Math.abs(pos.x - eData.x * MM_TO_PIX) < constants.GRID_SIZE && Math.abs(pos.y - eData.y * MM_TO_PIX) < constants.GRID_SIZE) return
-        }
+        if (isShifting) return
         setPos({ x: eData.x * MM_TO_PIX, y: eData.y * MM_TO_PIX })
     }, [eData.x, eData.y])
 
