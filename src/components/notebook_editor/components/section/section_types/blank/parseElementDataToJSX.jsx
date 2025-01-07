@@ -4,9 +4,7 @@ import ResizeHandles from "./resize_handles"
 import ElementImage from "../../section_element/image/image_element"
 import ElementCalligraphy from "../../section_element/calligraphy/calligraphy"
 import ElementBasicOperationV from "../../section_element/basic_operation_v/basic_operation_v"
-import ElementCircle from "../../section_element/shape/circle"
-import ElementTriangle from "../../section_element/shape/triangle"
-import ElementRectangle from "../../section_element/shape/rectangle"
+import ElementFreeFormSVG from "../../section_element/free_form_svg_element/free_form_svg_element"
 
 const MM_TO_PIX = 3.77953
 const START_DRAG_CONDITION = { offsetX: 0, offsetY: 0, sX: 0, sY: 0 }
@@ -28,9 +26,7 @@ export default function parseElementDataToJSX(eData, dispatch, sectionId) {
         type === "image" ? ElementImage :
         type === "calligraphy" ? ElementCalligraphy :
         type === "basic_operation_v" ? ElementBasicOperationV :
-        type === "circle" ? ElementCircle :
-        type === "triangle" ? ElementTriangle :
-        type === "rectangle" ? ElementRectangle :
+        type === "free_form_svg" ? ElementFreeFormSVG :
         null
 
     // Check if element type not found

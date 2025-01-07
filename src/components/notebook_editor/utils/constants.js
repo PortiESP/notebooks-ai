@@ -2,12 +2,10 @@ import Text from "../components/section/section_element/text/text_class"
 import Image from "../components/section/section_element/image/image_class"
 import Calligraphy from "../components/section/section_element/calligraphy/calligraphy_class"
 import BasicOperationV from "../components/section/section_element/basic_operation_v/basic_operation_v_class"
-import Circle from "../components/section/section_element/shape/circle_class"
-import Triangle from "../components/section/section_element/shape/triangle_class"
-import Rectangle from "../components/section/section_element/shape/rectangle_class"
 import Blank from "../components/section/section_types/blank/blank_class"
 import Gap, {DEFAULT_GAP_HEIGHT} from "../components/section/section_types/gap/gap_class"
 import Default from "../components/section/section_types/default/default_class"
+import FreeFormSVG from "../components/section/section_element/free_form_svg_element/svg_class"
 
 export default {
     DEFAULT_SECTIONS: {
@@ -33,9 +31,7 @@ export default {
                 "image-1": new Image({ id: "image-1", x: 20, y: 30, width: 50, height: 10, src: "https://placehold.co/600x400" }),
                 "calligraphy-1": new Calligraphy({ id: "calligraphy-1", text: "Hello, world!", x: 30, y: 40, width: 50, height: 10 }),
                 "basic-operation-v-1": new BasicOperationV({ id: "basic-operation-v-1", operator: "/", operands: ["1000", "", 4], result: "", x: 40, y: 20, width: 50, height: 30 }),
-                "circle-1": new Circle({ id: "circle-1", x: 50, y: 30, width: 50, height: 50, fill: "#f00" }),
-                "triangle-1": new Triangle({ id: "triangle-1", x: 60, y: 40, width: 50, height: 50, fill: "#00f" }),
-                "rectangle-1": new Rectangle({ id: "rectangle-1", x: 70, y: 50, width: 50, height: 50, fill: "#0f0" })
+                "svg-1": new FreeFormSVG({ id: "svg-1", x: 10, y: 10, width: 20, height: 20, content: '<rect x="0" y="0" width="100" height="100" fill="red" />', viewBox: "0 0 100 100" })
             }
         }),
     },

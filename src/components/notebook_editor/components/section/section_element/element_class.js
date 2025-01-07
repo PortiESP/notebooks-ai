@@ -1,6 +1,6 @@
 import { generateUUID } from "../../../utils/general"
 
-export default class name {
+export default class Element {
     constructor(params) {
         if (!params) return
         // Abstract class: If instance is not a subclass of Element, throw an error

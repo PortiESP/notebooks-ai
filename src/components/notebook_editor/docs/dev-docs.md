@@ -174,8 +174,9 @@ To create a new element, you must follow these steps:
       1. The element width and height must be `100%`
 2. Add to this document a description of the new element including its properties.
 3. Add the new element to the parser in `/components/section/section_types/blank/parseElementDataToJSX.jsx`. Add a new line like `type === "element_name" && ElementComponent`.
-4. Add the new element to the parser in `/utils/parse_eData_to_class.js` add the class to the switch statement.
+4. Add the new element to the parser in `/utils/parse_eData_to_class.js` add the class to the switch statement on the `parseElementDataToClass` function.
 5. Now the new element can be used in the `SectionTypeBlank` component. You can add the new element to the `elements` array in the section object.
+6. Explain the element to the AI in the **backend** `openai_api` file.
 
 
 #### Edit an element

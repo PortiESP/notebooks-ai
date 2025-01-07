@@ -14,6 +14,7 @@
 - ELEMENTO SVG para q la ia pueda hacer cosas libremente
 - Section overflow hidden
 - Box selection 
+- Hacer ejercicios template
 
 
 DOCUMENTATION
