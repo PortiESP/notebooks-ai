@@ -36,45 +36,73 @@ export default function EditText({ $target, ...props }) {
     }, [discardEdit, saveEdit])
 
     const applyStyle = useCallback((command, value = null) => {
+
         if (!command) {
             console.error('No command provided');
             return;
         }
 
         const selection = document.getSelection();
-        if (!selection.rangeCount) return;
+        // Selected text
+        const substr = selection.toString();
+        // If no text was selected, return
+        if (!substr.length) return;
 
-        const range = selection.getRangeAt(0);
-        const selectedText = range.toString();
-        const index = $target.innerText.indexOf(selectedText);
-        const children = $input.current.childNodes;  // The first child is the RichText component, then goes the character spans
+        const needsWrap = selection.anchorNode.data.length > 1
 
-        let i = 0;
-        for (let char of selectedText) {
-
-            const span = children[index + i++]
-
-            switch (command) {
-                case 'bold':
-                    span.style.fontWeight = 'bold';
-                    break;
-                case 'italic':
-                    span.style.fontStyle = 'italic';
-                    break;
-                case 'underline':
-                    span.style.textDecoration = 'underline';
-                    break;
-                case 'foreColor':
-                    span.style.color = value;
-                    break;
-                case 'fontName':
-                    span.style.fontFamily = value;
-                    break;
-                default:
-                    break;
-            }
+        let start;
+        let end;
+        let span;
+        // If the selection was done when the text was NOT wrapped in a span
+        if (needsWrap) {
+            const startIndex = Math.min(selection.anchorOffset, selection.focusOffset);
+            const endIndex = Math.max(selection.focusOffset, selection.anchorOffset);
+            parseTextHTML($input.current.innerHTML)
+            const children = $input.current.childNodes;
+            start = children[startIndex];
+            end = children[endIndex];
+            span = start;
+            
+        } 
+        // If the selection was done when the text was wrapped in a span
+        else {
+            const range = selection.getRangeAt(0);
+            start = range.startContainer.parentElement;
+            end = range.endContainer.parentElement;
+            span = start;
         }
+
+        do {
+            // Toggle the style to the span
+            if (span.style[command] === value) span.style[command] = ""
+            else span.style[command] = value;
+
+            // Move to the next sibling pointer
+            span = span.nextSibling;
+        } while (span && span.previousSibling !== end)
     }, [$input, $target]);
+
+    const parseTextHTML = (content) => {
+        const currentHTML = content || $target.innerHTML
+
+        // Im looking for a character that is not wrapped in a span so I can wrap it
+        const parsedHTML = currentHTML.replaceAll(/(?:<span[^>]*>.*?<\/span>)|[\s\S]/ig, cap => cap.length === 1 ? `<span>${cap}</span>` : cap)
+
+        $input.current.innerHTML = parsedHTML
+
+        // let parsedHTML = currentHTML.replace(/^<span[^>]*>([\s\S]+)<\/span>$/ig, "$1")
+        // const hasNestedSpans = parsedHTML.match(/<span[^>]*>[\s\S]+<\/span>/ig)
+
+        // // Wrap each character in a span, only for data-editable="text" (not for calligraphy: "text-raw")
+        // if (!hasNestedSpans && props.type === "text") {
+        //     const chars = parsedHTML.split('')
+        //     const spannedChars = chars.map(char => `<span>${char}</span>`)
+        //     parsedHTML = spannedChars.join('')
+        // }
+
+        // // Set the parsed HTML
+        // $input.current.innerHTML = parsedHTML
+    }
 
     // INITIAL SETUP
     useEffect(() => {
@@ -86,25 +114,15 @@ export default function EditText({ $target, ...props }) {
         setStyle({
             top: y - INPUT_OFFSET,
             left: x - INPUT_OFFSET,
-            width: width + INPUT_OFFSET * 4, // Add extra padding for because of the padding
+            width: width + INPUT_OFFSET * 4 + 5, // Add extra padding for because of the padding
             height: height + INPUT_OFFSET * 2,
             fontSize: compStyle.fontSize,
         })
 
-        // Set the initial value of the input field
-        const currentHTML = $target.innerHTML
-        let parsedHTML = currentHTML.replace(/^<span[^>]*>([\s\S]+)<\/span>$/ig, "$1")
-        const hasNestedSpans = parsedHTML.match(/<span[^>]*>[\s\S]+<\/span>/ig)
-
-        // Wrap each character in a span, only for data-editable="text" (not for calligraphy: "text-raw")
-        if (!hasNestedSpans && props.type === "text") {
-            const chars = parsedHTML.split('')
-            const spannedChars = chars.map(char => `<span>${char}</span>`)
-            parsedHTML = spannedChars.join('')
-        }
-
-        // Set the parsed HTML
-        $input.current.innerHTML = parsedHTML
+        // Remove the initial wrap
+        const content = $target.innerHTML.replace(/^<span[^>]*>([\s\S]+)<\/span>$/ig, "$1")
+        // Parse the HTML to ensure that every character is wrapped in a span
+        parseTextHTML(content)
 
         // Focus the input field
         $input.current.focus()
@@ -122,15 +140,15 @@ export default function EditText({ $target, ...props }) {
             else if (e.key === "Escape") discardEdit()
             else if (e.ctrlKey && e.key === 'b') {
                 e.preventDefault();
-                applyStyle('bold');
+                applyStyle('fontWeight', 'bold');
             }
             else if (e.ctrlKey && e.key === 'i') {
                 e.preventDefault();
-                applyStyle('italic');
+                applyStyle('fontStyle', 'italic');
             }
             else if (e.ctrlKey && e.key === 'u') {
                 e.preventDefault();
-                applyStyle('underline');
+                applyStyle('textDecoration', 'underline');
             }
         }
 
@@ -146,11 +164,11 @@ export default function EditText({ $target, ...props }) {
             {
                 props.type === "text" &&  // Only show the style menu for data-editable="text" (not for calligraphy: "text-raw")
                 <StyleEditMenu applyStyle={applyStyle}>
-                    <StyleMenuButton icon="B" command="bold" onClick={applyStyle} />
-                    <StyleMenuButton icon="I" command="italic" onClick={applyStyle} />
-                    <StyleMenuButton icon="U" command="underline" onClick={applyStyle} />
-                    <StyleMenuColorPicker icon="Color" command="foreColor" onClick={applyStyle} $target={$target} />
-                    <StyleMenuButton icon="Font" command="fontName" value="Arial" onClick={applyStyle} />
+                    <StyleMenuButton icon="B" command="fontWeight" value="bold" onClick={applyStyle} />
+                    <StyleMenuButton icon="I" command="fontStyle" value="italic" onClick={applyStyle} />
+                    <StyleMenuButton icon="U" command="textDecoration" value="underline" onClick={applyStyle} />
+                    <StyleMenuColorPicker icon="Color" command="color" onClick={applyStyle} $target={$target} />
+                    <StyleMenuButton icon="Font" command="fontFamily" value="Arial" onClick={applyStyle} />
                 </StyleEditMenu>
             }
             <div
@@ -158,6 +176,7 @@ export default function EditText({ $target, ...props }) {
                 ref={$input}
                 className={s.edit_field}
                 onBlur={handleBlur}
+                onChange={e => parseTextHTML(e.target.innerHTML)}
             />
         </div>
     )

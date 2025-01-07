@@ -21,7 +21,7 @@ export function setComputeObjPath(obj, path, value) {
     // !!! Event though `obj` and `value` are not used, they are necessary to pass them as arguments to the function in order to access them in the eval statement.
 
     // Use eval to dynamically set the property at the given path
-    eval(`obj.${path} = "${value}"`);
+    eval(`obj.${path} = \`${value}\``);
 }
 
 /**

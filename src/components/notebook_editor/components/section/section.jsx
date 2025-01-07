@@ -103,14 +103,14 @@ export default function Section(props) {
         <div className={s.wrap} ref={$wrap} data-section-id={sData.id}>
             <div className={s.section_inner} style={{ height: height + "mm" }} data-element="section">
                 {/* Section context */}
+                {
+                    sData.type.includes("blank") &&
+                    <div className={s.section_title}>
+                        <h2 data-editable="text" data-editable-path={`sections["${sData.id}"].title`}><RichText>{sData.title || FALLBACK_TITLE}</RichText></h2>
+                        <span className={s.title_decoration}>{state.sectionsOrder.filter(e => state.sections[e].type === "blank").indexOf(sData.id) + 1}</span>
+                    </div>
+                }
                 <div className={s.section_content}>
-                    {
-                        sData.type.includes("blank") &&
-                        <div className={s.section_title}>
-                            <h2 data-editable="text" data-editable-path={`sections["${sData.id}"].title`}><RichText>{sData.title || FALLBACK_TITLE}</RichText></h2>
-                            <span className={s.title_decoration}>{state.sectionsOrder.filter(e => state.sections[e].type === "blank").indexOf(sData.id) + 1}</span>
-                        </div>
-                    }
                     {dataJSX}
                 </div>
             </div>

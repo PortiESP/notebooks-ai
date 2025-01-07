@@ -15,8 +15,7 @@
 - Section overflow hidden
 - Box selection 
 - Hacer ejercicios template
-- Hacer elementos de la librería basados en el elmento SVG (circulos, rectangulos, textos, etc)
-- Move the Rnd from parseElementDataToJSX to the ResizeHandles component
+
 
 DOCUMENTATION
 - data-editable="text-raw"
