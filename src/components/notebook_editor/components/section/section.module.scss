@@ -1,0 +1,140 @@
+.wrap {
+    // Make the width of the section include the margins of the sheet so the hover events can be triggered even when the cursor is on the margin (but at the same level as the section)
+    position: relative;
+    left: -20mm;
+    padding: 0 20mm;
+    width: 210mm;
+    height: fit-content;
+
+    &:hover {
+        .section_inner {
+            outline: 1px solid #ffd900;
+        }
+
+        [data-element-type="section-aside"] {
+            opacity: 1;
+            pointer-events: all;
+        }
+    }
+}
+
+.section_inner {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+
+    .section_content {
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        .section_title {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            padding: 10px;
+            font-size: 14px;
+
+            h2 {
+                margin: 0;
+                padding: 0;
+                font-weight: 500;
+                color: #333;
+                font-size: 18px;
+            }
+
+            .title_decoration {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 30px;
+                height: 30px;
+                padding-bottom: 2px;
+                color: #21611183;
+                background: #12c01280;
+                transform: translateY(-50%) translateX(calc(-100% - 10px));
+                border-radius: 50%;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 16px;
+                font-family: monospace;
+                outline: 1px solid #12c01280;
+                outline-offset: 1px;
+            }
+        }
+
+        div[data-handler-for]:hover{
+            [data-element-overlay="tooltip"]{
+                display: flex;
+            }
+
+            [data-handler] {
+                $color: rgba(0, 183, 255, 0.533);
+                outline: 1px solid $color;
+    
+                [data-handler-pos] {
+                    display: block;
+                    border: 1px solid $color;
+                }
+            }
+        } 
+    }
+}
+
+.section_resizer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: translateY(50%);
+    width: calc(100% - 40mm);
+    height: 20px;
+    margin: 0 20mm;
+    // background: #0001;
+    user-select: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: ns-resize;
+    z-index: 10;
+
+    span {
+        opacity: 0;
+        font-size: 10px;
+        width: 100%;
+        border: 1px solid rgba(0, 204, 255, 0.2);
+    }
+
+    &:hover span {
+        opacity: 1;
+    }
+
+    &:active span {
+        border: 1px solid rgba(0, 204, 255, 0.5);
+    }
+
+    &.expanded{
+        height: 50px;
+
+        span{
+            box-shadow: 0 0 5px 0 #00000033;
+        }
+    }
+}
+
+
+.section_id {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #0002;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: bold;
+    font-family: monospace;
+    font-style: italic;
+}

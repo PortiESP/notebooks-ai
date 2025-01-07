@@ -1,0 +1,52 @@
+.wrap{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.add_section_wrap{
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+    // Show add section wrap on hover
+    &:hover .add_section{
+        opacity: 1;
+    }
+    
+    $color: #ccc8;
+    
+    .add_section{
+        width: 100%;
+        height: 1px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        background: $color;
+
+        // Hide
+        opacity: 0;
+        
+        .add_section_label{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid $color;
+            background: #eee;
+            padding: 4px;
+            color: #aaa;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+    }
+}

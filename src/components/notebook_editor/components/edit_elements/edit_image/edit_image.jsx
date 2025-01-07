@@ -1,0 +1,99 @@
+import { useState } from 'react'
+import s from './edit_image.module.scss'
+import { useEffect } from 'react'
+
+const DEFAULT_IMAGES = [
+    "https://plus.unsplash.com/premium_photo-1686617826184-f4188a62c3be?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://images.unsplash.com/photo-1479030160180-b1860951d696?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://plus.unsplash.com/premium_photo-1676009547155-32d75ba9d089?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://images.unsplash.com/photo-1475598322381-f1b499717dda?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fEZvbmRvJTIwZGUlMjBwYW50YWxsYSUyMGRlJTIwZXNjcml0b3Jpb3xlbnwwfHwwfHx8MA%3D%3D",
+    
+    "https://images.unsplash.com/photo-1735236270655-907c43955b93?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8",
+    "https://plus.unsplash.com/premium_photo-1728654439502-af094286476b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8",
+    "https://images.unsplash.com/photo-1735181056575-1f05648efbad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0fHx8ZW58MHx8fHx8",
+    "https://images.unsplash.com/photo-1735276680696-f1c5bca7cdef?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8",
+    "https://plus.unsplash.com/premium_photo-1731948132439-29777fe3be46?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8",
+    "https://images.unsplash.com/photo-1735236270655-907c43955b93?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8",
+    
+    "https://plus.unsplash.com/premium_photo-1686617826184-f4188a62c3be?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://images.unsplash.com/photo-1479030160180-b1860951d696?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://plus.unsplash.com/premium_photo-1676009547155-32d75ba9d089?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://images.unsplash.com/photo-1475598322381-f1b499717dda?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww",
+    "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fEZvbmRvJTIwZGUlMjBwYW50YWxsYSUyMGRlJTIwZXNjcml0b3Jpb3xlbnwwfHwwfHx8MA%3D%3D",
+    
+    "https://images.unsplash.com/photo-1735236270655-907c43955b93?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8",
+    "https://plus.unsplash.com/premium_photo-1728654439502-af094286476b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8",
+    "https://images.unsplash.com/photo-1735181056575-1f05648efbad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0fHx8ZW58MHx8fHx8",
+    "https://images.unsplash.com/photo-1735276680696-f1c5bca7cdef?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8",
+    "https://plus.unsplash.com/premium_photo-1731948132439-29777fe3be46?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8",
+    "https://images.unsplash.com/photo-1735236270655-907c43955b93?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8",
+]  // DEBUG
+
+export default function EditImage(props) {
+
+    const [results, setResults] = useState(DEFAULT_IMAGES)
+    const [search, setSearch] = useState("")
+
+    useEffect(() => {
+        if (!search) {
+            setResults(DEFAULT_IMAGES)
+            return
+        }
+
+        // Debounce the search
+        const timeout = setTimeout(async () => {
+            const response = await fetch(`/api/images?q=${search}`)
+            if (!response.ok) {
+                console.error("Error fetching images:", response)
+                return
+            }
+            const data = await response.json() || undefined
+            setResults(data)
+        }, 300)
+        return () => clearTimeout(timeout)
+    }, [search])
+
+    const handleSetValue = (value) => {
+        props.setValue(value)
+        props.close()
+    }
+
+    return (
+        <div className={s.wrap}>
+            <div className={s.image_library_inner}>
+                <div className={s.library_header}>
+                    <div className={s.library_header_title}>Image Library</div>
+                    <div className={s.library_header_search}>
+                        <input type="text" placeholder="Search images..." value={search} onChange={e => setSearch(e.target.value)} />
+                    </div>
+                    <span className={s.close} onClick={props.close}>Close</span>
+                </div>
+                <div className={s.library_body}>
+                    {
+                        results?.map((result, index) => <ImageCard key={index} data={result} setValue={handleSetValue}/>) || <span className={s.no_results}>No results found</span>
+                    }
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+
+function ImageCard({data, setValue}) {
+
+    const [imageData, setImageData] = useState({})
+
+    useEffect(() => {
+        setImageData({src: data.src || data})
+    }, [data])
+
+    return (
+        <div className={s.image_card} onClick={() => setValue(imageData.src)}>
+            <img src={imageData.src} alt="Image" />
+        </div>
+    )
+}

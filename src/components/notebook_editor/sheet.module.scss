@@ -1,0 +1,39 @@
+.wrap{
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+}
+
+.sheet{
+    // A4 Standard
+    width: 210mm;
+    height: 297mm;
+    padding: 20mm;
+
+    background: white;
+    outline: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    position: relative;
+    // overflow: hidden;
+
+    .sheet_inner_margins{ 
+        width: 100%;
+        height: 100%;
+
+        &:hover{
+            outline: 1px dashed #ccc;
+        }
+    }
+
+    .page_number_wrap{
+        position: absolute;
+        bottom: 10mm;
+        right: 10mm;
+    }
+
+    .page_footer_title_wrap{
+        position: absolute;
+        bottom: 10mm;
+        left: 10mm;
+    }
+}

@@ -1,0 +1,37 @@
+.wrap{
+    position: fixed;
+    z-index: 1000;
+    
+    .context_inner{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+    }
+}
+
+.option_wrap{
+    display: flex;
+    padding: 5px 10px;
+    cursor: pointer;
+
+    &:hover{
+        background-color: #f5f5f5;
+    }
+
+    .option_inner{
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        color: #333;
+    }
+}
+
+.divider{
+    height: 1px;
+    background-color: #0001;
+}

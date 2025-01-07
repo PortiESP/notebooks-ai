@@ -1,0 +1,123 @@
+.wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    background: #0004;
+
+    .section_ai_inner {
+        width: 210mm; // A4 paper width
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 0 10px #0002;
+        border: 1px solid #0001;
+        gap: 10px;
+    }
+
+}
+
+.ai_input_wrap {
+    display: flex;
+    border: 1px solid #0001;
+    border-radius: 5px;
+    width: 100%;
+
+    input {
+        width: 100%;
+        border: none;
+        outline: none;
+        padding: 5px;
+    }
+
+    button {
+        border: none;
+        background: #0001;
+        padding: 5px;
+        cursor: pointer;
+        position: relative;
+
+        &:hover {
+            background: #0002;
+        }
+
+        .loading_overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateX(-400%);
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            $color: #0002;
+
+            .loader {
+                width: 8px;
+                height: 8px;
+                position: relative;
+                animation: flash 0.5s ease-out infinite alternate;
+            }
+
+            @keyframes flash {
+                0% {
+                    background-color: #0002;
+                    box-shadow: 16px 0 #0002, -16px 0 #000;
+                }
+
+                50% {
+                    background-color: #000;
+                    box-shadow: 16px 0 #0002, -16px 0 #0002;
+                }
+
+                100% {
+                    background-color: #0002;
+                    box-shadow: 16px 0 #000, -16px 0 #0002;
+                }
+            }
+
+        }
+    }
+
+    &:hover {
+        border: 1px solid #0002;
+    }
+}
+
+.ai_section_draft_wrap {
+    padding: 0 calc(20mm - 20px);
+    position: relative;
+}
+
+.ai_buttons {
+    display: flex;
+    justify-content: center;
+
+    .ai_buttons_inner {
+        display: flex;
+        gap: 2px;
+        border: 1px solid #0002;
+        background: #0002;
+        border-radius: 10px;
+        overflow: hidden;
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #eee;
+            cursor: pointer;
+
+            &:hover {
+                background: #e0e0e0;
+            }
+        }
+    }
+}

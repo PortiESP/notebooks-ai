@@ -1,0 +1,235 @@
+import Gap from "../components/section/section_types/gap/gap_class"
+import { deepClone } from "./clone"
+import { setComputeObjPath } from "./computeObjPath"
+import { generateUUID } from "./general"
+import Element from "../components/section/section_element/element_class"
+import Section from "../components/section/section_types/section_class"
+
+// Adds a new section to the sections object
+const addSection = (state, section, afterId, addGapAfter) => {
+    // Check if section id is defined
+    if (section.id === undefined) { console.error("Section id is undefined"); return state }
+    // Check if section already exists
+    if (existsSection(state, section.id)) { console.error("Section already exists"); return state }
+
+    // If the section has no elements, add an empty elements object
+    if (section.elements === undefined) section.elements = {}
+
+    state = deepClone(state)
+
+    // Add the new section to the sections object
+    state.sections[section.id] = section
+
+    // Get the position where the new section should be inserted
+    const positionAfter = state.sectionsOrder.indexOf(afterId) + 1 || Infinity
+
+    // Insert the new section in the order
+    state.sectionsOrder.splice(positionAfter, 0, section.id)
+
+    // If addGapAfter is true, add a gap section after the new section
+    if (addGapAfter) {
+        const gapId = generateUUID()  // Generate a new UUID for the gap section
+        const gap = new Gap({ id: gapId })  // Create the gap section
+        state.sections[gapId] = gap  // Add the gap section to the sections object
+        state.sectionsOrder.splice(positionAfter + 1, 0, gapId)  // Insert the gap section in the order
+    }
+
+    return state
+}
+
+// Removes a section from the sections object
+const removeSection = (state, id) => {
+    // Check if section exists
+    if (!existsSection(state, id)) { console.error("Section does not exist"); return state }
+
+    state = deepClone(state)
+    delete state.sections[id]
+    state.sectionsOrder = state.sectionsOrder.filter(i => i !== id)
+    return state
+}
+
+// Checks if a section exists in the sections object
+const existsSection = (state, id) => {
+    return state.sections[id] !== undefined
+}
+
+// Sets the height of a section
+const setSectionHeight = (state, id, height) => {
+    // Check if section exists
+    if (!existsSection(state, id)) { console.error("Section does not exist"); return state }
+
+    state = deepClone(state)
+    state.sections[id].height = height
+    return state
+}
+
+// Replaces the entire section in the sections object with a new one
+const replaceSection = (state, id, newSection) => {
+    // Check if section exists
+    if (!existsSection(state, id)) { console.error("Section does not exist"); return state }
+    // Check if section is a class (polymorphism check)
+    if (!(newSection instanceof Section)) { console.error("Section is not a class"); return state }
+
+    state = deepClone(state)
+    state.sections[id] = newSection
+    state.sectionsOrder = state.sectionsOrder.map(i => i === id ? newSection.id : i)
+    return state
+}
+
+// Edits a section's data in the sections object
+const editSection = (state, id, sectionData) => {
+    // Check if section exists
+    if (!existsSection(state, id)) { console.error("Section does not exist"); return state }
+    // Check if section id is defined
+    if (sectionData.id) { console.error("Cannot edit section id"); return state }
+
+    state = deepClone(state)
+    const section = state.sections[id]
+    const newSection = {
+        ...section,
+        ...sectionData
+    }
+    state.sections[id] = newSection
+    return state
+}
+
+// Edits the footer title shown in on each page
+const editFooterTitle = (state, title) => {
+    state = deepClone(state)
+    state.footerTitle = title
+    return state
+}
+
+
+// Adds a new element to a section
+const addElement = (state, sectionId, newElement) => {
+    // Check if section exists
+    if (!existsSection(state, sectionId)) { console.error("Section does not exist"); return state }
+    // Check if element id is defined
+    if (newElement.id === undefined) { console.error("Element id is undefined"); return state }
+    // Check if element is a class (polymorphism check)
+    if (!(newElement instanceof Element)) { console.error("Element is not a class"); return state }
+
+    state = deepClone(state)
+    const section = state.sections[sectionId]
+
+    // If the section has no elements, add an empty elements object
+    if (section.elements === undefined) section.elements = {}
+
+    section.elements[newElement.id] = newElement
+    return state
+}
+
+
+// Edits an element's data in a section
+const editElement = (state, sectionId, elementId, elementData) => {
+    // Check if section exists
+    if (!existsSection(state, sectionId)) { console.error("Section does not exist"); return state }
+
+    state = deepClone(state)
+    const section = state.sections[sectionId]
+
+    // If the section has no elements, add an empty elements object
+    if (!section.elements) { section.elements = {}; console.error("Elements object not found"); return state }
+
+    const element = section.elements[elementId]
+
+    // Check if element exists
+    if (!element) { console.error("Element not found"); return state }
+
+    // Update element data
+    Object.assign(element, elementData)
+
+    return state
+}
+
+// Sets a value in the state object by path
+const setByPath = (state, path, value) => {
+    // Prevent setting the id
+    if (path.slice(-3) === ".id") { console.error("Cannot set id"); return state }
+
+    state = deepClone(state)
+    setComputeObjPath(state, path, value)
+    return state
+}
+
+
+// Sets the order of the sections
+const setSectionsOrder = (state, order) => {
+    state = deepClone(state)
+    state.sectionsOrder = order
+    return state
+}
+
+// Moves a section to a new position in the sections order
+const moveSection = (state, id, newIndex) => {
+    state = deepClone(state)
+    const currentIndex = state.sectionsOrder.indexOf(id)
+    state.sectionsOrder.splice(currentIndex, 1)  // Remove from current position
+    state.sectionsOrder.splice(newIndex, 0, id)  // Insert in new position
+    return state
+}
+
+// Delete element from section
+const deleteElement = (state, sectionId, elementId) => {
+    state = deepClone(state)
+    const section = state.sections[sectionId]
+    delete section.elements[elementId]
+    return state
+}
+
+// Reducer function
+export default function reducer(state, action) {
+
+    if (window.debug) console.log("Action:", action)
+    const { payload } = action
+
+    switch (action.type) {
+        case "ADD_SECTION":
+            // Add section
+            return addSection(state, payload.section, payload.after, payload.addGapAfter)
+        case "REMOVE_SECTION":
+            // Remove section
+            return removeSection(state, payload.id)
+        case "SET_SECTIONS_BY_PAGE":
+            // Reassign sectionsByPage
+            return { ...state, sectionsByPage: payload }
+        case "RESIZE_SECTION":
+            // Resize section
+            return setSectionHeight(state, payload.id, payload.height)
+        case "REPLACE_SECTION":
+            // Replace section
+            return replaceSection(state, payload.id, payload)
+        case "EDIT_SECTION":
+            // Edit section
+            return editSection(state, payload.id, payload)
+        case "ADD_ELEMENT":
+            // Add element
+            return addElement(state, payload.section, payload.newElement)
+        case "EDIT_ELEMENT":
+            // Edit element
+            return editElement(state, payload.sectionId, payload.elementId, payload.elementData)
+        case "EDIT_FOOTER_TITLE":
+            // Edit footer title
+            return editFooterTitle(state, payload)
+        case "SET_BY_PATH":
+            // Set value by path
+            return setByPath(state, payload.path, payload.value)
+        case "SET_SECTIONS_ORDER":
+            // Set sections order
+            return setSectionsOrder(state, payload.order)
+        case "MOVE_SECTION":
+            // Move section
+            return moveSection(state, payload.id, payload.newIndex)
+        case "DELETE_ELEMENT":
+            // Delete element
+            return deleteElement(state, payload.sectionId, payload.elementId)
+        case "SET_CONTEXT_MENU":
+            // Set context menu
+            return { ...state, contextMenu: payload }
+        default:
+            // Invalid action type
+            console.error("Invalid action type")
+            return state
+    }
+}

@@ -1,0 +1,48 @@
+/* Load font scholar from /public */
+@font-face {
+    font-family: 'scholar';
+    src: url('/fonts/escolar_g.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'scholar';
+    src: url('/fonts/escolar_n.ttf') format('truetype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'scholar-dots';
+    src: url('/fonts/escolar_p.ttf') format('truetype');
+    font-weight: 300;
+}
+
+
+.wrapper {
+    padding: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+    font-family: inherit;
+}
+
+button.generatePDF{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    width: 210mm;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #45a049;
+    }
+}
