@@ -4,6 +4,7 @@ import s from './text_element.module.scss'
 import { useRef } from 'react'
 import { useContext } from 'react'
 import { NotebookContext } from '../../../../utils/notebook_context'
+import { useState } from 'react'
 
 
 const FALLBACK_TEXT = "Click to edit text"
@@ -19,22 +20,22 @@ const FALLBACK_TEXT = "Click to edit text"
  */
 export default function ElementText(props) {
 
-    const { dispatch } = useContext(NotebookContext)
+    const { state } = useContext(NotebookContext)
+    const [style, setStyle] = useState({})
+
+    useEffect(() => {
+        const stl = state.sections[props.sectionId].elements[props._id].style
+        console.log("Setting style", stl)
+        setStyle(stl)
+    }, [state.sections[props.sectionId].elements[props._id].style])
+
+
     const editablePath = `sections["${props.sectionId}"].elements["${props._id}"].text`
     const $p = useRef(null)
 
-    useEffect(() => {
-        if (props.sectionId === "preview") return
-
-        let { width, height } = $p.current.children[0].getBoundingClientRect()
-        height *= 1.2
-
-        dispatch({ type: "EDIT_ELEMENT", payload: { sectionId: props.sectionId, elementId: props._id, elementData: { width, height } } })
-    }, [])
-
     return (
-        <div className={s.wrap}>
-            <p data-editable="text" data-editable-path={editablePath} ref={$p}><RichText>{props._text || FALLBACK_TEXT}</RichText></p>
+        <div className={s.wrap} style={style}>
+            <p data-editable="text" data-editable-path={editablePath} data-eid={props._id} data-sid={props.sectionId} ref={$p}><RichText>{props._text || FALLBACK_TEXT}</RichText></p>
         </div>
     )
 }

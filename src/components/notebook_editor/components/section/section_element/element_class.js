@@ -14,6 +14,7 @@ export default class Element {
         this._height = params.height
         this._type = params.type
         this._sectionId = params.sectionId
+        this._style = params.style
 
         // Check for undefined values
         if (window.debug) {
@@ -77,6 +78,13 @@ export default class Element {
     }
     set sectionId(value) {
         this._sectionId = value
+    }
+
+    get style() {
+        return this._style
+    }
+    set style(value) {
+        this._style = value
     }
 
 }

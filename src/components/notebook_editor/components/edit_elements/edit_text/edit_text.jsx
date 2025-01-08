@@ -1,6 +1,8 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import s from './edit_text.module.scss'
 import UserInput from '../../../utils/user-input'
+import { useContext } from 'react'
+import { NotebookContext } from '../../../utils/notebook_context'
 
 const INPUT_OFFSET = 5
 
@@ -18,13 +20,18 @@ export default function EditText({ $target, ...props }) {
     const [style, setStyle] = useState({})
     const $input = useRef(null)
     const $wrap = useRef(null)
+    const { dispatch } = useContext(NotebookContext)
+    const [ targetGeneralStyle, setTargetGeneralStyle ] = useState({})
 
     const saveEdit = useCallback(() => {
         const parsedHTML = $input.current.innerHTML.replace(/<br>/ig, "")
         console.log("Parsed HTML:", parsedHTML)
         props.setValue(parsedHTML)
+        const eId = $target.getAttribute("data-eid")
+        const sId = $target.getAttribute("data-sid")
+        dispatch({ type: "EDIT_ELEMENT", payload: { sectionId: sId, elementId: eId, elementData: { style: targetGeneralStyle } } })
         props.close()
-    }, [props])
+    }, [props, targetGeneralStyle, $target])
 
     const discardEdit = useCallback(() => {
         props.close()
@@ -48,7 +55,7 @@ export default function EditText({ $target, ...props }) {
         // If no text was selected, return
         if (!substr.length) return;
 
-        const needsWrap = selection.anchorNode.data.length > 1
+        const needsWrap = selection.anchorNode.data ? selection.anchorNode.data.length > 1 : true;
 
         let start;
         let end;
@@ -82,12 +89,50 @@ export default function EditText({ $target, ...props }) {
         } while (span && span.previousSibling !== end)
     }, [$input, $target]);
 
+    const applyGeneralStyle = useCallback((command, value) => {
+        // Toggle the style to the parent element
+        if ($input.current.style[command] === value) {
+            setTargetGeneralStyle(old => ({ ...old, [command]: "" }))
+            $input.current.style[command] = ""
+        }
+        else {
+            setTargetGeneralStyle(old => ({ ...old, [command]: value }))
+            $input.current.style[command] = value
+        }
+    }, [$input, $target]);
+
     const parseTextHTML = (content) => {
         const currentHTML = content || $target.innerHTML
         // Im looking for a character that is not wrapped in a span so I can wrap it
         const parsedHTML = currentHTML.replaceAll(/(?:<span[^>]*>.*?<\/span>)|[\s\S]/ig, cap => cap.length === 1 ? `<span>${cap}</span>` : cap)
         $input.current.innerHTML = parsedHTML
     }
+
+    useEffect(() => {
+        // Handle keydown events
+        const handleKeyDown = (e) => {
+            if (e.key === "Enter") saveEdit()
+            else if (e.key === "Escape") discardEdit()
+            else if (e.ctrlKey && e.key === 'b') {
+                e.preventDefault();
+                applyStyle('fontWeight', 'bold');
+            }
+            else if (e.ctrlKey && e.key === 'i') {
+                e.preventDefault();
+                applyStyle('fontStyle', 'italic');
+            }
+            else if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                applyStyle('textDecoration', 'underline');
+            }
+        }
+
+        $input.current.addEventListener("keydown", handleKeyDown)
+
+        return () => {
+            $input.current?.removeEventListener("keydown", handleKeyDown)
+        }
+    }, [saveEdit, discardEdit, applyStyle])
 
     // INITIAL SETUP
     useEffect(() => {
@@ -118,30 +163,6 @@ export default function EditText({ $target, ...props }) {
         const selection = window.getSelection()
         selection.removeAllRanges()
         selection.addRange(range)
-
-        // Handle keydown events
-        const handleKeyDown = (e) => {
-            if (e.key === "Enter") saveEdit()
-            else if (e.key === "Escape") discardEdit()
-            else if (e.ctrlKey && e.key === 'b') {
-                e.preventDefault();
-                applyStyle('fontWeight', 'bold');
-            }
-            else if (e.ctrlKey && e.key === 'i') {
-                e.preventDefault();
-                applyStyle('fontStyle', 'italic');
-            }
-            else if (e.ctrlKey && e.key === 'u') {
-                e.preventDefault();
-                applyStyle('textDecoration', 'underline');
-            }
-        }
-
-        $input.current.addEventListener("keydown", handleKeyDown)
-
-        return () => {
-            $input.current?.removeEventListener("keydown", handleKeyDown)
-        }
     }, [])
 
     return (
@@ -154,6 +175,7 @@ export default function EditText({ $target, ...props }) {
                     <StyleMenuButton icon="U" command="textDecoration" value="underline" onClick={applyStyle} />
                     <StyleMenuColorPicker icon="Color" command="color" onClick={applyStyle} $target={$target} />
                     <StyleMenuButton icon="Font" command="fontFamily" value="Arial" onClick={applyStyle} />
+                    <StyleMenuColorPicker icon="Bg" command="background" value="red" onClick={applyGeneralStyle} />
                 </StyleEditMenu>
             }
             <div
@@ -189,22 +211,19 @@ function StyleMenuButton({ icon, command, value, onClick }) {
 }
 
 
-function StyleMenuColorPicker({ command, onClick, $target }) {
+function StyleMenuColorPicker({ command, onClick, $target, icon }) {
 
     const [value, setValue] = useState("#000000")
 
     const handleChange = useCallback((e) => {
-        const substr = getSelection().toString()
-        const i0 = $target.innerText.indexOf(substr)
-        const i1 = i0 + substr.length
-
         const value = e.target.value
         setValue(value)
-        onClick(command, value, [i0, i1])
+        onClick(command, value)
     }, [onClick, command])
 
     return (
         <div>
+            {icon}
             <input type="color" value={value} onChange={handleChange} />
         </div>
     )

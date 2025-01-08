@@ -38,7 +38,7 @@ let DEDUPLICATE_KEY_UP_TS = null
 export default function NotebookEditor(props) {
 
     // State
-    const [state, dispatch, realTimeState, setRTS] = useGlobalState(initialState)  // Global state
+    const [state, dispatch, realTimeState] = useGlobalState(initialState)  // Global state
 
     const [sectionsByPage, setSectionsByPage] = useState({})     // Array of Arrays, each array represents a page with its sections
 
