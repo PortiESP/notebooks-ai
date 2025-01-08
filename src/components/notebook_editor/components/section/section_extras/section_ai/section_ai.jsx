@@ -6,23 +6,30 @@ import { NotebookContext } from '../../../../utils/notebook_context'
 import Section from '../../section'
 import Blank from '../../section_types/blank/blank_class'
 import parseSDataToClass from '../../../../utils/parse_sData_to_class'
+import { useEffect } from 'react'
+import { deepClone } from '../../../../utils/clone'
 
 const DEFAULT_SECTION_DRAFT = {
     id: "preview",
     type: "blank-preview",
     height: 300,
-    doNotAccept: true,
-    elements: {}
 }
 
 export default function SectionAI(props) {
 
     const [prompt, setPrompt] = useState("")
     const { dispatch } = useContext(NotebookContext)
-    const [draftSectionData, setDraftSectionData] = useState(props.sData)
+    const [draftSectionData, setDraftSectionData] = useState(DEFAULT_SECTION_DRAFT)
     const [loading, setLoading] = useState(false)
     const [history, setHistory] = useState([])
     const [textHistory, setTextHistory] = useState([])
+
+    useEffect(() => {
+        const auxSection = deepClone(props.sData)
+        auxSection.id = "preview"
+        auxSection.type = "blank-preview"
+        setDraftSectionData(auxSection)
+    }, [])
 
     const handleSend = useCallback(() => {
         setLoading(true)
@@ -34,7 +41,7 @@ export default function SectionAI(props) {
             .then(res => res.json())
             .then(res => {
                 console.log("AI response:", res)
-                const answerJSON = res.exerciseJson.choices[0].message.content
+                const answerJSON = res.exerciseJson
                 const answerText = res.exerciseText
                 try {
                     const parsedJSON = JSON.parse(answerJSON)
