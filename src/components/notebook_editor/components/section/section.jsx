@@ -64,19 +64,17 @@ export default function Section(props) {
 
             // Calculate the drag distance in mm
             const newY = UserInput.y - drag.startConditions.sTop
-            const newYInMM = newY / 3.7795275591
             setHeight(old => {
-                // Compare the new height with the page bottom to avoid overflow + 10mm margin
+                // Compare the new height with the page bottom to avoid overflow + 30px margin
                 const $page = $resizer.current.closest("[data-element='sheet-inner-margins']")
                 const pageBottom = $page.getBoundingClientRect().bottom
-                const sectionBottom = $resizer.current.getBoundingClientRect().bottom
 
                 // If the section overflows the page, return the old height
-                if (newYInMM + 10 > pageBottom) return old
-                // If the section is less than 20mm, return the old height (gaps are allowed to be less than 20mm)
-                if (sData.type !== "gap" && newYInMM < 20) return old
+                if (newY + 30 > pageBottom) return old
+                // If the section is less than 60px, return the old height (gaps are allowed to be less than 60px)
+                if (sData.type !== "gap" && newY < 60) return old
 
-                return newYInMM
+                return newY
             })
         })
         UserInput.addOnDragEnd("section-" + sData.id, () => {
@@ -101,7 +99,7 @@ export default function Section(props) {
 
     return (
         <div className={s.wrap} ref={$wrap} data-section-id={sData.id}>
-            <div className={s.section_inner} style={{ height: height + "mm" }} data-element="section">
+            <div className={s.section_inner} style={{ height: height + "px" }} data-element="section">
                 {/* Section context */}
                 {
                     sData.type.includes("blank") &&

@@ -84,24 +84,9 @@ export default function EditText({ $target, ...props }) {
 
     const parseTextHTML = (content) => {
         const currentHTML = content || $target.innerHTML
-
         // Im looking for a character that is not wrapped in a span so I can wrap it
         const parsedHTML = currentHTML.replaceAll(/(?:<span[^>]*>.*?<\/span>)|[\s\S]/ig, cap => cap.length === 1 ? `<span>${cap}</span>` : cap)
-
         $input.current.innerHTML = parsedHTML
-
-        // let parsedHTML = currentHTML.replace(/^<span[^>]*>([\s\S]+)<\/span>$/ig, "$1")
-        // const hasNestedSpans = parsedHTML.match(/<span[^>]*>[\s\S]+<\/span>/ig)
-
-        // // Wrap each character in a span, only for data-editable="text" (not for calligraphy: "text-raw")
-        // if (!hasNestedSpans && props.type === "text") {
-        //     const chars = parsedHTML.split('')
-        //     const spannedChars = chars.map(char => `<span>${char}</span>`)
-        //     parsedHTML = spannedChars.join('')
-        // }
-
-        // // Set the parsed HTML
-        // $input.current.innerHTML = parsedHTML
     }
 
     // INITIAL SETUP
@@ -122,7 +107,7 @@ export default function EditText({ $target, ...props }) {
         // Remove the initial wrap
         const content = $target.innerHTML.replace(/^<span[^>]*>([\s\S]+)<\/span>$/ig, "$1")
         // Parse the HTML to ensure that every character is wrapped in a span
-        parseTextHTML(content)
+        if (props.type !== "text-raw") parseTextHTML(content)
 
         // Focus the input field
         $input.current.focus()

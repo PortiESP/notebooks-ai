@@ -1,6 +1,6 @@
 import Section from "../section_class"
 
-export const DEFAULT_GAP_HEIGHT = 15
+export const DEFAULT_GAP_HEIGHT = 50
 
 export default class Gap extends Section {
     constructor(params) {

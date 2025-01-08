@@ -7,7 +7,6 @@ import { NotebookContext } from '../../../../utils/notebook_context'
 
 
 const FALLBACK_TEXT = "Click to edit text"
-const PIX_TO_MM = 0.264583
 
 /**
  * ElementText component
@@ -28,8 +27,7 @@ export default function ElementText(props) {
         if (props.sectionId === "preview") return
 
         let { width, height } = $p.current.children[0].getBoundingClientRect()
-        width *= PIX_TO_MM
-        height *= PIX_TO_MM * 1.2
+        height *= 1.2
 
         dispatch({ type: "EDIT_ELEMENT", payload: { sectionId: props.sectionId, elementId: props._id, elementData: { width, height } } })
     }, [])

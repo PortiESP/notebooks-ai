@@ -4,11 +4,9 @@ import { useEffect } from "react"
 import { useContext } from "react"
 import { NotebookContext } from "../../../../utils/notebook_context"
 import UserInput from "../../../../utils/user-input"
-import { checkKey } from "../../../../utils/shortcuts"
 import { Rnd } from "react-rnd"
 import CONSTANTS from "../../../../utils/constants"
 
-const MM_TO_PIX = 3.77953
 const START_DRAG_CONDITION = { offsetX: 0, offsetY: 0, sX: 0, sY: 0 }
 
 
@@ -25,7 +23,7 @@ function snapToGrid(value) {
 export default function ResizeHandles({eData, sectionId, ...props}) {
 
     const { dispatch } = useContext(NotebookContext)
-    const [pos, setPos] = useState({ x: eData.x * MM_TO_PIX, y: eData.y * MM_TO_PIX })
+    const [pos, setPos] = useState({ x: eData.x, y: eData.y })
     const [isShifting, setIsShifting] = useState(false)
     const [showTooltip, setShowTooltip] = useState(true)
     const width = Math.round(eData.width * 100) / 100
@@ -35,7 +33,7 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
 
     useEffect(() => {
         if (isShifting) return
-        setPos({ x: eData.x * MM_TO_PIX, y: eData.y * MM_TO_PIX })
+        setPos({ x: eData.x, y: eData.y })
     }, [eData.x, eData.y])
 
     useEffect(() => {
@@ -51,9 +49,15 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
         }
     }, [])
 
+    useEffect(() => {
+        if (isShifting){
+            setPos({ x: snapToGrid(pos.x), y: snapToGrid(pos.y) })
+        }
+    }, [isShifting])
+
     return (<Rnd
         key={eData.id}
-        size={{ width: eData.width * MM_TO_PIX, height: eData.height * MM_TO_PIX }}
+        size={{ width: eData.width, height: eData.height }}
         position={pos}
         onDragStart={(e, d) => {
             const { clientX, clientY } = e
@@ -75,17 +79,17 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
             let x = clientX - sectionX - START_DRAG_CONDITION.offsetX  // Element's new x position (relative to section)
             let y = clientY - sectionY - START_DRAG_CONDITION.offsetY  // Element's new y position (relative to section)
 
-            if (checkKey("shift")) {
+            if (isShifting) {
                 x = snapToGrid(x)
                 y = snapToGrid(y)
             }
 
-            dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { x: x / MM_TO_PIX, y: y / MM_TO_PIX } } })
+            dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { x, y } } })
         }}
         onResize={(e, direction, ref, delta, position) => {
             const { width, height } = ref.style
             const { x, y } = position
-            dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { width: parseInt(width) / MM_TO_PIX, height: parseInt(height) / MM_TO_PIX, x: x / MM_TO_PIX, y: y / MM_TO_PIX } } })
+            dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { width: parseInt(width), height: parseInt(height), x, y } } })
         }}
         data-handler-for={eData.id}
         dragGrid={isShifting ? [CONSTANTS.GRID_SIZE, CONSTANTS.GRID_SIZE] : [1, 1]}

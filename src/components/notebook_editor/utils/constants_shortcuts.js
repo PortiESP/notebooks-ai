@@ -2,8 +2,6 @@ import { generateUUID } from "./general"
 import { parseElementDataToClassObject } from "./parse_eData_to_class"
 import UserInput from "./user-input"
 
-const PIX_TO_MM = 0.2645833333
-
 // ============================================================================================================== KEY DOWN SHORTCUTS =======================================================>>>
 export const SHORTCUTS_KEY_DOWN = {
     "delete": deleteElement,
@@ -74,8 +72,8 @@ function pasteElement(forceData={}) {
         newElement.id = generateUUID()
         const { top: sY, left: sX } = document.querySelector(`[data-section-id="${sectionId}"] > div`).getBoundingClientRect()
         const { x: mX, y: mY } = UserInput
-        newElement.x = ((mX - sX) * PIX_TO_MM) - (newElement.width / 2)
-        newElement.y = ((mY - sY) * PIX_TO_MM) - (newElement.width / 2)
+        newElement.x = (mX - sX) - (newElement.width / 2)
+        newElement.y = (mY - sY) - (newElement.width / 2)
 
         // Add the element
         dispatch({ type: "ADD_ELEMENT", payload: { section: sectionId, newElement } })

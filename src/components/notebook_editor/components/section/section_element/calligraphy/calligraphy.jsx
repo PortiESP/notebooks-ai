@@ -7,7 +7,6 @@ import { useEffect } from 'react'
 const DEFAULT_FONT = "scholar-dots"
 const DEFAULT_FONT_SIZE = 32
 const FALLBACK_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-const PIX_TO_MM = 0.264583
 
 export default function ElementCalligraphy(props) {
 
@@ -23,8 +22,6 @@ export default function ElementCalligraphy(props) {
 
     useEffect(() => {
         let { width, height } = $p.current.getBoundingClientRect()
-        width *= PIX_TO_MM
-        height *= PIX_TO_MM
 
         dispatch({ type: "EDIT_ELEMENT", payload: { sectionId: props.sectionId, elementId: props._id, elementData: { width, height } } })
     }, [])

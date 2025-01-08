@@ -15,7 +15,7 @@ export default function arrangeSections(sections, order) {
     sections = order.map(id => sections[id])
 
     // A4 dimensions
-    const PAGE_HEIGHT = 297 - 20 * 2  // 20mm margin top and bottom
+    const PAGE_HEIGHT = 970
 
     // Arrange sections by page
     const sectionsByPage = { 1: [] }

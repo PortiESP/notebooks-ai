@@ -131,7 +131,7 @@ A section object has the following structure:
     // Common properties for all section types (default, debug, blank, gap)
     id: "example-section-1",
     type: "default",
-    height: 100,  // Height in millimeters
+    height: 100,  // Height in pixels
 
     // Type-specific properties
     // Blank section
@@ -149,10 +149,10 @@ An element object has the following structure:
     // Common properties for all element types (text, image, ...)
     id: "example-element-1",
     type: "text",
-    width: 100,  // Width in millimeters
-    height: 10,  // Height in millimeters
-    x: 10,  // X position in millimeters
-    y: 10,  // Y position in millimeters
+    width: 100,  // Width in pixels
+    height: 10,  // Height in pixels
+    x: 10,  // X position in pixels
+    y: 10,  // Y position in pixels
 
     // Type-specific properties
     // Text element
