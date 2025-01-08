@@ -24,10 +24,11 @@ export default function ElementText(props) {
     const [style, setStyle] = useState({})
 
     useEffect(() => {
+        if (props.sectionId.includes("preview")) return
         const stl = state.sections[props.sectionId].elements[props._id].style
         console.log("Setting style", stl)
         setStyle(stl)
-    }, [state.sections[props.sectionId].elements[props._id].style])
+    }, [state.sections[props.sectionId]?.elements[props._id]?.style])
 
 
     const editablePath = `sections["${props.sectionId}"].elements["${props._id}"].text`
