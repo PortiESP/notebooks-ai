@@ -7,6 +7,8 @@ import Gap, {DEFAULT_GAP_HEIGHT} from "../components/section/section_types/gap/g
 import Default from "../components/section/section_types/default/default_class"
 import FreeFormSVG from "../components/section/section_element/free_form_svg_element/svg_class"
 import templates from "./templates"
+import parseSDataToClass from "./parse_sData_to_class"
+import { DEFAULT_SECTION_HEIGHT } from "../components/section/section_types/section_class"
 
 const CONSTANTS = {
     DEFAULT_SECTIONS: {
@@ -23,29 +25,18 @@ const CONSTANTS = {
             }
         }),
         "gap-2": new Gap({ id: "gap-2" }),
-        "blank-1": new Blank({
-            id: "blank-1",
-            height: 200,
-            title: "Section 1",
-            elements: {
-                // "text-1": new Text({ id: "text-1", text: "Hello, world!", x: 10, y: 20, width: 50, height: 10 }),
-                // "image-1": new Image({ id: "image-1", x: 20, y: 30, width: 50, height: 10, src: "https://placehold.co/600x400" }),
-                // "calligraphy-1": new Calligraphy({ id: "calligraphy-1", text: "Hello, world!", x: 30, y: 40, width: 50, height: 10 }),
-                // "basic-operation-v-1": new BasicOperationV({ id: "basic-operation-v-1", operator: "/", operands: ["1000", "", 4], result: "", x: 40, y: 20, width: 50, height: 30 }),
-                // "svg-1": new FreeFormSVG({ id: "svg-1", x: 10, y: 10, width: 20, height: 20, content: '<rect x="0" y="0" width="100" height="100" fill="red" />', viewBox: "0 0 100 100" })
-            }
-        }),
+        "template-1": parseSDataToClass(templates[0]),
     },
 
-    DEFAULT_SECTIONS_ORDER: ["default-1", "gap-1", "debug-1", "gap-2", "blank-1"],
+    DEFAULT_SECTIONS_ORDER: ["default-1", "gap-1", "debug-1", "gap-2", "template-1"],
     DEFAULT_GAP_HEIGHT,
-
+    DEFAULT_SECTION_HEIGHT,
+    GRID_SIZE: 10,
     
     
-    TEMPLATES_EXERCISE_SECTIONS: templates,
+    TEMPLATES_EXERCISE_SECTIONS: templates.map(parseSDataToClass),
 }
 
-CONSTANTS.GRID_SIZE = 10
 
 
 export default CONSTANTS

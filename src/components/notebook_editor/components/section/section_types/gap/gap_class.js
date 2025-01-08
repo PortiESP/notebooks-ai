@@ -6,7 +6,7 @@ export default class Gap extends Section {
     constructor(params) {
         super(params)
         this._type ??= "gap"
-        this._height ??= DEFAULT_GAP_HEIGHT
+        this._height = params.height ?? DEFAULT_GAP_HEIGHT
     }
 
     // Methods

@@ -12,7 +12,10 @@
  * }
  */
 export default function arrangeSections(sections, order) {
-    sections = order.map(id => sections[id])
+    sections = order.map(id => {
+        if (!sections[id]) throw new Error(`Section with id ${id} not found in the order array`)
+        return sections[id]
+    })
 
     // A4 dimensions
     const PAGE_HEIGHT = 970
@@ -25,7 +28,7 @@ export default function arrangeSections(sections, order) {
     // Loop through each section
     for (const section of sections) {
         // Get the height of the section
-        const sectionHeight = section.height  // In mm
+        const sectionHeight = section.height  // In px
 
         // If the section does not fit in the current page, update the current page pointer
         if (currentHeight + sectionHeight > PAGE_HEIGHT) {

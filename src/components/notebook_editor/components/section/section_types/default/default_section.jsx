@@ -17,7 +17,7 @@ export default function SectionTypeDefault(props) {
 
     // Replace section by a blank section
     const handleDoubleClick = () => {
-        dispatch({ type: "REPLACE_SECTION", payload: new Blank({ id: props.sData.id, type: "blank", title: "Empty section", height: 30 }) })
+        dispatch({ type: "REPLACE_SECTION", payload: new Blank({ id: props.sData.id, type: "blank", title: "Empty section" }) })
     }
 
     return (

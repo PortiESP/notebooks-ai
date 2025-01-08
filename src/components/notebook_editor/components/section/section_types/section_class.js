@@ -1,4 +1,8 @@
+import CONSTANTS from "../../../utils/constants"
 import { generateUUID } from "../../../utils/general"
+
+export const DEFAULT_SECTION_HEIGHT = 150
+
 
 export default class Section {
     constructor(params) {
@@ -8,7 +12,7 @@ export default class Section {
         // Properties
         this._id = params.id || generateUUID()
         this._type = params.type
-        this._height = params.height        
+        this._height = params.height || DEFAULT_SECTION_HEIGHT
     }
 
     // Methods

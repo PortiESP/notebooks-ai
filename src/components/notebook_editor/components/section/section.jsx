@@ -28,7 +28,7 @@ export default function Section(props) {
     const [showTemplates, setShowTemplates] = useState(false)  // Show templates
     const [showElementLibrary, setShowElementLibrary] = useState(false)  // Show element library
     const [dataJSX, setDataJSX] = useState(parseDataToJSX(props.sData))  // JSX elements of the section
-    const [height, setHeight] = useState(sData.height)  // Section height in mm
+    const [height, setHeight] = useState(sData.height) // Section height in px
     const $wrap = useRef(null)  // Section wrap element
     const $resizer = useRef(null)  // Resizer element
     const { state, dispatch } = useContext(NotebookContext)  // Global state and dispatch function
@@ -62,7 +62,7 @@ export default function Section(props) {
             // Check if the resizer is being dragged, if not, return (the resizer can be null if the section was unmounted from one page and mounted on another)
             if (!$resizer.current || !$resizer.current.contains(drag.$target)) return
 
-            // Calculate the drag distance in mm
+            // Calculate the drag distance in px
             const newY = UserInput.y - drag.startConditions.sTop
             setHeight(old => {
                 // Compare the new height with the page bottom to avoid overflow + 30px margin
