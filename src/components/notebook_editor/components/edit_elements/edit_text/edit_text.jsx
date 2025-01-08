@@ -165,6 +165,14 @@ export default function EditText({ $target, ...props }) {
         selection.addRange(range)
     }, [])
 
+    useEffect(() => {
+        document.addEventListener("click", handleBlur)
+
+        return () => {
+            document.removeEventListener("click", handleBlur)
+        }
+    }, [handleBlur])
+
     return (
         <div className={s.wrap} style={style} ref={$wrap}>
             {
@@ -182,7 +190,6 @@ export default function EditText({ $target, ...props }) {
                 contentEditable
                 ref={$input}
                 className={s.edit_field}
-                onBlur={handleBlur}
                 onChange={e => parseTextHTML(e.target.innerHTML)}
             />
         </div>

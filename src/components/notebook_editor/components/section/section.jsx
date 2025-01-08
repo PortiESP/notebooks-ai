@@ -37,7 +37,6 @@ export default function Section(props) {
     // Parse data to JSX when data changes (global state -> local state)
     useEffect(() => {
         setDataJSX(parseDataToJSX(props.sData))
-        setHeight(sData.height)
     }, [sData])
 
 
