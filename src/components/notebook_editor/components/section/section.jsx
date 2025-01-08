@@ -70,7 +70,7 @@ export default function Section(props) {
                 const pageBottom = $page.getBoundingClientRect().bottom
 
                 // If the section overflows the page, return the old height
-                if (newY + 30 > pageBottom) return old
+                if (UserInput.y + 30 > pageBottom) return old
                 // If the section is less than 60px, return the old height (gaps are allowed to be less than 60px)
                 if (sData.type !== "gap" && newY < 60) return old
 

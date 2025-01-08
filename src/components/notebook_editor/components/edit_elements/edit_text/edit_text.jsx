@@ -191,7 +191,7 @@ export default function EditText({ $target, ...props }) {
                     <StyleMenuButton icon="I" command="fontStyle" value="italic" onClick={applyStyle} />
                     <StyleMenuButton icon="U" command="textDecoration" value="underline" onClick={applyStyle} />
                     <StyleMenuColorPicker icon="Color" command="color" onClick={applyStyle} $target={$target} />
-                    <StyleMenuButton icon="Font" command="fontFamily" value="Arial" onClick={applyStyle} />
+                    <StyleMenuButton icon="Font" command="fontFamily" value="scholar" onClick={applyStyle} />
                     <StyleMenuColorPicker icon="Bg" command="background" value="red" onClick={applyGeneralStyle} />
                 </StyleEditMenu>
             }
