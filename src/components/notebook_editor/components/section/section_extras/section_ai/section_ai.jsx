@@ -71,7 +71,7 @@ export default function SectionAI(props) {
             return
         }
 
-        const newSection = new Blank({ id: props.sData.id, title: draftSectionData.title, elements: draftSectionData.elements })
+        const newSection = new Blank({ id: props.sData.id, title: draftSectionData.title, elements: draftSectionData.elements, height: draftSectionData.height })
         dispatch({ type: "REPLACE_SECTION", payload: newSection })
         props.close()
     }, [draftSectionData])
