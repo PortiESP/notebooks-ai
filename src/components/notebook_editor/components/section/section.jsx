@@ -37,6 +37,7 @@ export default function Section(props) {
     // Parse data to JSX when data changes (global state -> local state)
     useEffect(() => {
         setDataJSX(parseDataToJSX(props.sData))
+        setHeight(sData.height)
     }, [sData])
 
 
@@ -98,7 +99,7 @@ export default function Section(props) {
     }, [height])
 
     useEffect(() => {
-        if (!sData.id.includes("preview")) return
+        if (!(sData.id ?? sData._id).includes("preview")) return
         // Update the section height when the global state changes
         setHeight(sData.height)
     }, [sData.height])

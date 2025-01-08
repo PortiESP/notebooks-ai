@@ -25,7 +25,9 @@ export default function ElementText(props) {
 
     useEffect(() => {
         if (props.sectionId.includes("preview")) return
-        const stl = state.sections[props.sectionId].elements[props._id].style
+        const $e = state.sections[props.sectionId].elements[props._id]
+        if (!$e) return
+        const stl =  $e.style
         console.log("Setting style", stl)
         setStyle(stl)
     }, [state.sections[props.sectionId]?.elements[props._id]?.style])

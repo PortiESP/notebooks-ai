@@ -3,6 +3,7 @@ import s from './sheet.module.scss'
 import { NotebookContext } from './utils/notebook_context'
 import Blank from './components/section/section_types/blank/blank_class'
 import { generateUUID } from './utils/general'
+import RichText from './components/rich_text/rich_text'
 
 /**
  * Sheet component
@@ -32,7 +33,7 @@ export default function Sheet(props) {
                 </div>
             </div>
             <div className={s.page_number_wrap}><span>{props.pageNumber}</span></div>
-            {props.footerTitle && <div className={s.page_footer_title_wrap}><span data-editable="text" data-editable-path="footerTitle">{props.footerTitle}</span></div>}
+            {props.footerTitle && <div className={s.page_footer_title_wrap}><span data-editable="text" data-editable-path="footerTitle"><RichText>{props.footerTitle}</RichText></span></div>}
         </div>
     </div>
 }
