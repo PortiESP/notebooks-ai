@@ -207,6 +207,7 @@ export default function reducer(state, action) {
             // Add element
             return addElement(state, payload.section, payload.newElement)
         case "EDIT_ELEMENT":
+            if (payload.sectionId === "preview") return state
             // Edit element
             return editElement(state, payload.sectionId, payload.elementId, payload.elementData)
         case "EDIT_FOOTER_TITLE":

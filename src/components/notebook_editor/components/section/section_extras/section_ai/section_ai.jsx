@@ -19,28 +19,40 @@ export default function SectionAI(props) {
 
     const [prompt, setPrompt] = useState("")
     const { dispatch } = useContext(NotebookContext)
-    const [draftSectionData, setDraftSectionData] = useState(DEFAULT_SECTION_DRAFT)
+    const [draftSectionData, setDraftSectionData] = useState(props.sData)
     const [loading, setLoading] = useState(false)
+    const [history, setHistory] = useState([])
+    const [textHistory, setTextHistory] = useState([])
 
     const handleSend = useCallback(() => {
         setLoading(true)
-        fetch(`/api/ai/section?p=${prompt}`)
+        fetch("/api/ai/section", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ q: prompt, history, textHistory, currentSection: props.sData})
+        })
             .then(res => res.json())
             .then(res => {
                 console.log("AI response:", res)
-                const response = res.choices[0].message.content
+                const answerJSON = res.exerciseJson.choices[0].message.content
+                const answerText = res.exerciseText
                 try {
-                    const parsedJSON = JSON.parse(response)
+                    const parsedJSON = JSON.parse(answerJSON)
                     const newSection = parseSDataToClass(parsedJSON)
                     newSection.id = "preview"
                     newSection.type = "blank-preview"
                     newSection.height = 300
                     setDraftSectionData(newSection)
+                    setHistory(old => [...old, {prompt, response: answerJSON}])
+                    setTextHistory(old => [...old, {prompt, response: answerText}])
                 } 
-                catch (e) {console.error("AI response is not a valid section:", response)} 
+                catch (e) {
+                    console.error("AI response is not a valid section:", response)
+                    alert("Inténtalo de nuevo")
+                } 
                 finally {setLoading(false)}
             })
-    }, [prompt, props.sData])
+    }, [prompt, props.sData, history, textHistory])
 
     const handleClose = useCallback(e => {
         if (e.target.classList.contains(s.wrap)) props.close()
@@ -59,7 +71,7 @@ export default function SectionAI(props) {
 
     const handleKeyDown = useCallback(e => {
         if (e.key === "Enter") handleSend()
-    }, [])
+    }, [handleSend])
 
     return (
         <div className={s.wrap} onMouseDown={handleClose}>

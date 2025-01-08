@@ -95,6 +95,20 @@
 .ai_section_draft_wrap {
     padding: 0 calc(20mm - 20px);
     position: relative;
+    pointer-events: none;
+
+    // Let know the user that the section is in draft mode
+    &:before {
+        content: 'Draft (accept to edit)';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        background: #0002;
+        color: #0000003a;
+        padding: 5px 10px;
+        border-radius: 5px 5px 0 0;
+        transform: translateX(-50%);
+    }
 }
 
 .ai_buttons {

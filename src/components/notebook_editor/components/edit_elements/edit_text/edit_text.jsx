@@ -25,6 +25,14 @@ export default function EditText({ $target, ...props }) {
 
     const saveEdit = useCallback(() => {
         const parsedHTML = $input.current.innerHTML.replace(/<br>/ig, "")
+
+        if (props.type === "text-raw") {
+            props.setValue($input.current.innerText)
+            props.close()
+            return
+        }
+
+
         console.log("Parsed HTML:", parsedHTML)
         props.setValue(parsedHTML)
         const eId = $target.getAttribute("data-eid")
@@ -43,6 +51,7 @@ export default function EditText({ $target, ...props }) {
     }, [discardEdit, saveEdit])
 
     const applyStyle = useCallback((command, value = null) => {
+        if (props.type === "text-raw") return
 
         if (!command) {
             console.error('No command provided');
