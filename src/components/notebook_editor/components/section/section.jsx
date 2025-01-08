@@ -98,7 +98,7 @@ export default function Section(props) {
     }, [height])
 
     useEffect(() => {
-        if (!sData._id.includes("preview")) return
+        if (!sData.id.includes("preview")) return
         // Update the section height when the global state changes
         setHeight(sData.height)
     }, [sData.height])
