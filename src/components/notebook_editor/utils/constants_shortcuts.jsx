@@ -19,7 +19,7 @@ export const SHORTCUTS_KEY_UP = {}
 
 
 // ============================================================================================================== SHORTCUT DEFINITIONS =======================================================>>>
-function deleteElement() {
+function deleteElement(state) {
     const { dispatch, realTimeState: { hoverSection, hoverElement } } = window.notebooks_ai
 
     // Get the section and element ids
@@ -33,7 +33,7 @@ function deleteElement() {
     dispatch({ type: "DELETE_ELEMENT", payload: { sectionId, elementId } })
 }
 
-function copyElement(forceData={}) {
+function copyElement(forceData) {
     const { realTimeState: { hoverSection, hoverElement } } = window.notebooks_ai
 
     // Get the section and element ids
@@ -55,7 +55,7 @@ function copyElement(forceData={}) {
     }
 }
 
-function pasteElement(forceData={}) {
+function pasteElement(forceData) {
     // Get the section and element ids from the clipboard
     navigator.clipboard.readText().then(text => {
         const data = JSON.parse(text)

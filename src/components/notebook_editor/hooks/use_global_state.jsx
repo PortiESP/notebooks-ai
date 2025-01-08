@@ -20,7 +20,7 @@ export default function useGlobalState(initialState) {
             // States that are updated so frequently that using the reducer would slow down the app
             realTimeState,
         }
-    }, [])
+    }, [state, realTimeState])
 
     return [state, dispatch, realTimeState]
 }

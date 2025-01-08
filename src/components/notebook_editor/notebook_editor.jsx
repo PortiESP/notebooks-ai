@@ -12,7 +12,7 @@ import arrangeSections from "./utils/sections_arrangement"
 import EditManager from "./components/edit_elements/edit_manager"
 import { generatePDF } from "./utils/pdf"
 import { useCallback } from "react"
-import { handleShortcut } from "./utils/shortcuts"
+import { useHandleShortcut as handleShortcut } from "./utils/shortcuts"
 import { SHORTCUTS_KEY_DOWN, SHORTCUTS_KEY_UP } from "./utils/constants_shortcuts"
 import useGlobalState from "./hooks/use_global_state"
 import ContextMenu from "./components/context_menu/context_menu"
@@ -38,59 +38,13 @@ let DEDUPLICATE_KEY_UP_TS = null
 export default function NotebookEditor(props) {
 
     // State
-    const [state, dispatch, realTimeState] = useGlobalState(initialState)  // Global state
+    const [state, dispatch, realTimeState, setRTS] = useGlobalState(initialState)  // Global state
 
     const [sectionsByPage, setSectionsByPage] = useState({})     // Array of Arrays, each array represents a page with its sections
 
-    const handleGeneratePDF = useCallback(() => {
-        const pages = [...document.querySelectorAll(`[data-element="sheet"]`)]
-        generatePDF(pages)
-    }, [])
-
-    // INITIAL SETUP
-    useEffect(() => {
-        UserInput.start()  // Start listening to user input events (mouse and keyboard)
-
-        const handleMouseMove = e => {
-            const $section = e.target.closest("[data-section-id]")
-            const $element = e.target.closest("[data-element-id]")
-
-            // Update the global state with the current hovered section and element, or null if none
-            realTimeState.hoverSection = $section || null
-            realTimeState.hoverElement = $element || null
-        }
-
-        const handleKeyDown = (e) => {
-            // Prevent duplicate keydown events
-            if (DEDUPLICATE_KEY_DOWN_TS === e.timeStamp) return
-            DEDUPLICATE_KEY_DOWN_TS = e.timeStamp
-            
-            handleShortcut(SHORTCUTS_KEY_DOWN)
-        }
-
-        const handleKeyUp = (e) => {
-            // Prevent duplicate keyup events
-            if (DEDUPLICATE_KEY_UP_TS === e.timeStamp) return
-            DEDUPLICATE_KEY_UP_TS = e.timeStamp
-
-            handleShortcut(SHORTCUTS_KEY_UP)
-        }
-
-        
-        // Add event listeners
-        window.addEventListener("mousemove", handleMouseMove)
-        window.addEventListener("keydown", handleKeyDown)
-        window.addEventListener("keyup", handleKeyUp)
-
-        return () => {
-            window.removeEventListener("mousemove", handleMouseMove)
-            window.removeEventListener("keydown", handleShortcut)
-            window.removeEventListener("keyup", handleShortcut)
-        }   
-    }, [])
-
     // DEBUG, Make state and dispatch available globally
     useEffect(() => {
+        console.log("Setting global state and dispatch")
         window.debug = true  // DEBUG
         window.state = state  // DEBUG
         window.sections = state.sections  // DEBUG
@@ -99,6 +53,58 @@ export default function NotebookEditor(props) {
         window.dispatch = dispatch  // DEBUG
         window.UserInput = UserInput  // DEBUG
     }, [state])
+
+    const handleGeneratePDF = useCallback(() => {
+        const pages = [...document.querySelectorAll(`[data-element="sheet"]`)]
+        generatePDF(pages)
+    }, [state])
+
+    const handleMouseMove = useCallback(e => {
+        const $section = e.target.closest("[data-section-id]")
+        const $element = e.target.closest("[data-element-id]")
+
+        // Update the global state with the current hovered section and element, or null if none
+        realTimeState.hoverSection = $section || null
+        realTimeState.hoverElement = $element || null
+    }, [realTimeState])
+
+    const handleKeyDown = useCallback((e) => {
+        console.log(state.sections)
+        // Prevent duplicate keydown events
+        if (DEDUPLICATE_KEY_DOWN_TS === e.timeStamp) return
+        DEDUPLICATE_KEY_DOWN_TS = e.timeStamp
+
+        handleShortcut(SHORTCUTS_KEY_DOWN)
+    }, [])
+
+    const handleKeyUp = useCallback((e) => {
+        // Prevent duplicate keyup events
+        if (DEDUPLICATE_KEY_UP_TS === e.timeStamp) return
+        DEDUPLICATE_KEY_UP_TS = e.timeStamp
+
+        handleShortcut(SHORTCUTS_KEY_UP)
+    }, [])
+
+    // INITIAL SETUP
+    useEffect(() => {
+        UserInput.start()  // Start listening to user input events (mouse and keyboard)
+    }, [])
+
+    useEffect(() => {
+        // Add event listeners
+        window.addEventListener("mousemove", handleMouseMove)
+        window.addEventListener("keydown", handleKeyDown)
+        window.addEventListener("keyup", handleKeyUp)
+
+        // Remove event listeners
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove)
+            window.removeEventListener("keydown", handleKeyDown)
+            window.removeEventListener("keyup", handleKeyUp)
+        }
+    }, [handleMouseMove, handleKeyDown, handleKeyUp])
+
+
 
     // Recalculate sections by page when sections change (add, remove, resize, etc)
     useEffect(() => {

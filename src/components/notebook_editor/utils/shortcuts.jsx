@@ -132,7 +132,7 @@ export function getKeyFromCode(code){
  * @param {Object} SHORTCUTS The dictionary of shortcuts
  * @returns {Boolean} True if a shortcut was handled, false otherwise
  */
-export function handleShortcut(SHORTCUTS){
+export function useHandleShortcut(SHORTCUTS){
     const shortcut = getPressedShortcut()
     const shortcutCallback = SHORTCUTS[shortcut]
 
