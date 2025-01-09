@@ -26,7 +26,7 @@
 
 .ai_input_wrap {
     display: flex;
-    border: 1px solid #0001;
+    border: 2px solid #0002;
     border-radius: 5px;
     width: 100%;
     overflow: hidden;
@@ -103,27 +103,33 @@
     }
 
     &:hover {
-        border: 1px solid #0002;
+        border: 2px solid #0004;
     }
 }
 
 .ai_section_draft_wrap {
     padding: 0 calc(20mm - 20px);
     position: relative;
-    pointer-events: none;
-
+    
     // Let know the user that the section is in draft mode
     &:before {
         content: 'Draft (accept to edit)';
         position: absolute;
         bottom: 10px;
         left: 50%;
-        background: #0002;
-        color: #000000;
+        background: #000;
+        border: 1px solid #ffd000;
+        color: #ffd415;
         padding: 5px 10px;
         border-radius: 5px;
         transform: translateX(-50%);
-        opacity: .3;
+        opacity: .6;
+        z-index: 1;
+        font-size: 12px;
+    }
+
+    .preview_section{
+        pointer-events: none;
     }
 }
 

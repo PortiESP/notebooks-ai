@@ -11,6 +11,7 @@ export default {
             "_width": 140,
             "_height": 120,
             "_type": "image",
+            "_style": {},
             "_src": "https://img.b2bpic.net/premium-vector/hand-drawn-eyeglasses-icon-sticker-style-vector-illustration_755164-11547.jpg"
         },
         "7c55e4c0-83e7-4e16-abcf-9fe2d49ff44b": {
@@ -20,6 +21,7 @@ export default {
             "_width": 140,
             "_height": 120,
             "_type": "image",
+            "_style": {},
             "_src": "https://img.b2bpic.net/premium-vector/blue-umbrella-falling-autumn-maple-leaves_255569-600.jpg"
         },
         "05630181-d37a-499d-bf3d-39988c7ffd21": {
@@ -29,6 +31,7 @@ export default {
             "_width": 90,
             "_height": 100,
             "_type": "image",
+            "_style": {},
             "_src": "https://img.b2bpic.net/premium-vector/racing-helmet-icon-cartoon-style-isolated-white-background-equipment-symbol_96318-58734.jpg"
         },
         "9fb2cf9c-833c-42f7-902a-23ac63bfdcb0": {
@@ -38,6 +41,7 @@ export default {
             "_width": 90,
             "_height": 100,
             "_type": "image",
+            "_style": {},
             "_src": "https://img.b2bpic.net/premium-vector/cute-mineral-water-bottle-mascot-character-icon-illustration-drink-isolated-vector-flat-cartoon-st_752483-46.jpg"
         },
         "9a418b21-52f9-45c9-b135-d63973e33f82": {
@@ -47,6 +51,7 @@ export default {
             "_width": 136,
             "_height": 90,
             "_type": "image",
+            "_style": {},
             "_src": "https://img.b2bpic.net/premium-photo/shoe-white-background-cartoon-illustration_1120554-832.jpg"
         },
         "73730581-4f60-4d18-8ca6-301876ac5421": {
@@ -57,9 +62,11 @@ export default {
             "_height": 30,
             "_type": "text",
             "_style": {
-                "background": "#dedede"
+                "background": "#dedede",
+                "textAlign": "center",
+                "justifyContent": "center"
             },
-            "_text": "<span>28</span><span>&nbsp;</span><span>€</span>"
+            "_text": "<span>28</span><span> </span><span>€</span>"
         },
         "a9574237-93e0-42e2-ac06-ca5b2921a7f6": {
             "_id": "a9574237-93e0-42e2-ac06-ca5b2921a7f6",
@@ -69,7 +76,9 @@ export default {
             "_height": 30,
             "_type": "text",
             "_style": {
-                "background": "#dedede"
+                "background": "#dedede",
+                "textAlign": "center",
+                "justifyContent": "center"
             },
             "_text": "<span>2</span><span>0</span><span> </span><span>€</span>"
         },
@@ -81,9 +90,11 @@ export default {
             "_height": 30,
             "_type": "text",
             "_style": {
-                "background": "#dedede"
+                "background": "#dedede",
+                "textAlign": "center",
+                "justifyContent": "center"
             },
-            "_text": "<span>1&nbsp;</span><span>€</span>"
+            "_text": "<span>1 </span><span>€</span>"
         },
         "369f068a-296f-4459-9953-cc97c3d917ec": {
             "_id": "369f068a-296f-4459-9953-cc97c3d917ec",
@@ -93,9 +104,11 @@ export default {
             "_height": 30,
             "_type": "text",
             "_style": {
-                "background": "#dedede"
+                "background": "#dedede",
+                "textAlign": "center",
+                "justifyContent": "center"
             },
-            "_text": "<span>45&nbsp;</span><span>€</span>"
+            "_text": "<span>45 </span><span>€</span>"
         },
         "7362814f-37e9-4027-bb19-1f524ff7e54b": {
             "_id": "7362814f-37e9-4027-bb19-1f524ff7e54b",
@@ -105,9 +118,11 @@ export default {
             "_height": 30,
             "_type": "text",
             "_style": {
-                "background": "#dedede"
+                "background": "#dedede",
+                "textAlign": "center",
+                "justifyContent": "center"
             },
-            "_text": "<span>18&nbsp;</span><span>€</span>"
+            "_text": "<span>18 </span><span>€</span>"
         }
     }
 }

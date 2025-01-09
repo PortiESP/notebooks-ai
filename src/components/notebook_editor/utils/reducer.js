@@ -5,6 +5,34 @@ import { generateUUID } from "./general"
 import Element from "../components/section/section_element/element_class"
 import Section from "../components/section/section_types/section_class"
 
+
+// ======================================== UTILS FUNCTIONS ========================================
+
+function cloneState(state) {
+    const newState = { ...state }
+    // We deep clone just the sections object due to performance reasons (the memento history causes recursive deep cloning and it's expensive)
+    newState.sections = deepClone(state.sections)
+    return newState
+}
+
+export function takeSnapshot(state) {
+    // If the history is empty, add the current state to the history
+    if (state.history.length === 0) {
+        state.history.push(cloneState(state))
+        return
+    }
+
+    // If the current state is the same as the last snapshot, don't add it to the history
+    const currentSnapshot = state.history[state.history.length - 1]
+    if (JSON.stringify(currentSnapshot.sections) === JSON.stringify(state.sections)) return
+
+    // Add the current state to the history
+    state.history.push(cloneState(state))
+}
+
+
+// ======================================== REDUCER FUNCTIONS ========================================
+
 // Adds a new section to the sections object
 const addSection = (state, section, afterId, addGap) => {
     // Check if section id is defined
@@ -15,7 +43,7 @@ const addSection = (state, section, afterId, addGap) => {
     // If the section has no elements, add an empty elements object
     if (section.elements === undefined) section.elements = {}
 
-    state = deepClone(state)
+    state = cloneState(state)
 
     // Add the new section to the sections object
     state.sections[section.id] = section
@@ -46,7 +74,7 @@ const removeSection = (state, id) => {
     // Check if section exists
     if (!existsSection(state, id)) { console.error("Section does not exist"); return state }
 
-    state = deepClone(state)
+    state = cloneState(state)
     delete state.sections[id]
     state.sectionsOrder = state.sectionsOrder.filter(i => i !== id)
     return state
@@ -62,7 +90,7 @@ const setSectionHeight = (state, id, height) => {
     // Check if section exists
     if (!existsSection(state, id)) { console.error("Section does not exist"); return state }
 
-    state = deepClone(state)
+    state = cloneState(state)
     state.sections[id].height = height
     return state
 }
@@ -74,7 +102,7 @@ const replaceSection = (state, id, newSection) => {
     // Check if section is a class (polymorphism check)
     if (!(newSection instanceof Section)) { console.error("Section is not a class"); return state }
 
-    state = deepClone(state)
+    state = cloneState(state)
     state.sections[id] = newSection
     state.sectionsOrder = state.sectionsOrder.map(i => i === id ? newSection.id : i)
     return state
@@ -87,7 +115,7 @@ const editSection = (state, id, sectionData) => {
     // Check if section id is defined
     if (sectionData.id) { console.error("Cannot edit section id"); return state }
 
-    state = deepClone(state)
+    state = cloneState(state)
     const section = state.sections[id]
     const newSection = {
         ...section,
@@ -99,7 +127,7 @@ const editSection = (state, id, sectionData) => {
 
 // Edits the footer title shown in on each page
 const editFooterTitle = (state, title) => {
-    state = deepClone(state)
+    state = cloneState(state)
     state.footerTitle = title
     return state
 }
@@ -114,7 +142,7 @@ const addElement = (state, sectionId, newElement) => {
     // Check if element is a class (polymorphism check)
     if (!(newElement instanceof Element)) { console.error("Element is not a class"); return state }
 
-    state = deepClone(state)
+    state = cloneState(state)
     const section = state.sections[sectionId]
 
     // If the section has no elements, add an empty elements object
@@ -130,7 +158,7 @@ const editElement = (state, sectionId, elementId, elementData) => {
     // Check if section exists
     if (!existsSection(state, sectionId)) { console.error(`Section does not exist [${sectionId}]`); return state }
 
-    state = deepClone(state)
+    state = cloneState(state)
     const section = state.sections[sectionId]
 
     // If the section has no elements, add an empty elements object
@@ -153,7 +181,7 @@ const addElementStyle = (state, sectionId, elementId, appendStyle) => {
     // Check if section exists
     if (!existsSection(state, sectionId)) { console.error(`Section does not exist [${sectionId}]`); return state }
 
-    state = deepClone(state)
+    state = cloneState(state)
     const section = state.sections[sectionId]
 
     // If the section has no elements, add an empty elements object
@@ -175,7 +203,7 @@ const setByPath = (state, path, value) => {
     // Prevent setting the id
     if (path.slice(-3) === ".id") { console.error("Cannot set id"); return state }
 
-    state = deepClone(state)
+    state = cloneState(state)
     setComputeObjPath(state, path, value)
     return state
 }
@@ -183,14 +211,14 @@ const setByPath = (state, path, value) => {
 
 // Sets the order of the sections
 const setSectionsOrder = (state, order) => {
-    state = deepClone(state)
+    state = cloneState(state)
     state.sectionsOrder = order
     return state
 }
 
 // Moves a section to a new position in the sections order
 const moveSection = (state, id, newIndex) => {
-    state = deepClone(state)
+    state = cloneState(state)
     const currentIndex = state.sectionsOrder.indexOf(id)
     state.sectionsOrder.splice(currentIndex, 1)  // Remove from current position
     state.sectionsOrder.splice(newIndex, 0, id)  // Insert in new position
@@ -199,7 +227,7 @@ const moveSection = (state, id, newIndex) => {
 
 // Delete element from section
 const deleteElement = (state, sectionId, elementId) => {
-    state = deepClone(state)
+    state = cloneState(state)
     const section = state.sections[sectionId]
     delete section.elements[elementId]
     return state
@@ -213,7 +241,7 @@ export function undo(state) {
     }
 
     const snapshot = state.history.pop()
-    state.redoHistory.push(deepClone(state))
+    state.redoHistory.push(cloneState(state))
     return snapshot
 }
 
@@ -225,7 +253,7 @@ export function redo(state) {
     }
 
     const snapshot = state.redoHistory.pop()
-    state.history.push(deepClone(state))
+    state.history.push(cloneState(state))
     return snapshot
 }
 
@@ -303,6 +331,3 @@ export default function reducer(state, action) {
     }
 }
 
-export function takeSnapshot(state) {
-    state.history.push(deepClone(state))
-}

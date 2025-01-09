@@ -62,8 +62,20 @@ export default function ElementLibrary(props) {
         const handleKeyDown = (e) => {
             if (e.key === "Escape") props.setShowElementLibrary(false)
         }
+
         window.addEventListener("keydown", handleKeyDown)
-        return () => window.removeEventListener("keydown", handleKeyDown)
+        // Disable scrolling
+        document.body.style.overflow = "hidden"
+        document.body.style.touchAction = "none"
+        document.body.style.paddingRight = "17px"
+
+        return () => {
+            document.body.style.overflow = "auto"
+            document.body.style.touchAction = "auto"
+            document.body.style.paddingRight = "0px"
+            window.removeEventListener("keydown", handleKeyDown)
+        }
+
     }, [])
 
     return (

@@ -182,7 +182,7 @@ export default function EditText({ $target, ...props }) {
             const { left, top, width: targetWidth, height: targetHeight } = $target.getBoundingClientRect()
             x = left
             y = top
-            width = targetWidth
+            width = targetWidth + 2
             height = targetHeight
         }
 

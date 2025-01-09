@@ -28,6 +28,7 @@ export default function ElementText(props) {
         const eData = state.sections[props.sectionId].elements[props._id]
         if (!eData) return
         const stl =  eData.style
+        if (stl.textAlign) stl.justifyContent = stl.textAlign
         setStyle(stl)
     }, [state.sections[props.sectionId]?.elements[props._id]?.style])
 

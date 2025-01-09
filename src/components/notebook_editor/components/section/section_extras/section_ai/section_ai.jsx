@@ -30,6 +30,17 @@ export default function SectionAI(props) {
         auxSection.id = "preview"
         auxSection.type = "blank-preview"
         setDraftSectionData(auxSection)
+
+        // Disable scrolling
+        document.body.style.overflow = "hidden"
+        document.body.style.touchAction = "none"
+        document.body.style.paddingRight = "17px"
+
+        return () => {
+            document.body.style.overflow = "auto"
+            document.body.style.touchAction = "auto"
+            document.body.style.paddingRight = "0px"
+        }
     }, [])
 
     const handleSend = useCallback(() => {

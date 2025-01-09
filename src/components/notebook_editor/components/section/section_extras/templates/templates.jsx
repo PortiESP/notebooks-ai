@@ -10,7 +10,8 @@ import ImgTemplateThumb2 from '../../../../assets/images/templates/thumbnail_2.p
 import ImgTemplateThumb3 from '../../../../assets/images/templates/thumbnail_3.png'
 import ImgTemplateThumb4 from '../../../../assets/images/templates/thumbnail_4.png'
 import ImgTemplateThumb5 from '../../../../assets/images/templates/thumbnail_5.png'
-const THUMBNAILS = [ImgTemplateThumb1, ImgTemplateThumb2, ImgTemplateThumb3, ImgTemplateThumb4, ImgTemplateThumb5]
+import ImgTemplateThumb6 from '../../../../assets/images/templates/thumbnail_6.png'
+const THUMBNAILS = [ImgTemplateThumb1, ImgTemplateThumb2, ImgTemplateThumb3, ImgTemplateThumb4, ImgTemplateThumb5, ImgTemplateThumb6]
 
 export default function Templates(props) {
 
@@ -28,7 +29,18 @@ export default function Templates(props) {
             if (e.key === "Escape") props.close()
         }
         window.addEventListener("keydown", handleKeyDown)
-        return () => window.removeEventListener("keydown", handleKeyDown)
+        // Disable scrolling
+        document.body.style.overflow = "hidden"
+        document.body.style.touchAction = "none"
+        document.body.style.paddingRight = "17px"
+
+        return () => {
+            document.body.style.overflow = "auto"
+            document.body.style.touchAction = "auto"
+            document.body.style.paddingRight = "0px"
+            window.removeEventListener("keydown", handleKeyDown)
+        }
+        
     }, [])
 
     return <div className={s.section_templates_wrap} onClick={(e) => e.target.className === s.section_templates_wrap && props.close()} onContextMenu={(e) => e.stopPropagation()}>
