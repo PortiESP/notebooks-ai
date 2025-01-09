@@ -126,7 +126,7 @@ export default function NotebookEditor(props) {
             <div className={s.wrapper}>
                 {
                     Object.keys(sectionsByPage).map((pageId, i) => {
-                        return <Sheet key={i} pageNumber={pageId} footerTitle={state.footerTitle || "Notebook Title"}>
+                        return <Sheet key={i} pageNumber={pageId} footerTitle={state.footerTitle || "Notebook Title"} sectionsThisPage={sectionsByPage[i + 1]}>
                             {sectionsByPage[i + 1]?.map(sectionId => {
                                 const sData = state.sections[sectionId]
                                 if (!sData) return null  // Skip if section data is not found (this can happen for a short time when a section is removed, until the state updates triggers all the useEffects)

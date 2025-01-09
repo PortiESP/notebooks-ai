@@ -97,11 +97,11 @@ export default function Section(props) {
         dispatch({ type: "RESIZE_SECTION", payload: { id: sData.id, height } })
     }, [height])
 
-    useEffect(() => {
-        if (!(sData.id ?? sData._id).includes("preview")) return
-        // Update the section height when the global state changes
-        setHeight(sData.height)
-    }, [sData.height])
+    // useEffect(() => {
+    //     if (!(sData.id ?? sData._id).includes("preview")) return
+    //     // Update the section height when the global state changes
+    //     setHeight(sData.height)
+    // }, [sData.height])
 
     return (
         <div className={s.wrap} ref={$wrap} data-section-id={sData.id}>

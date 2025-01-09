@@ -6,7 +6,7 @@ import Element from "../components/section/section_element/element_class"
 import Section from "../components/section/section_types/section_class"
 
 // Adds a new section to the sections object
-const addSection = (state, section, afterId, addGapAfter) => {
+const addSection = (state, section, afterId, addGap) => {
     // Check if section id is defined
     if (section.id === undefined) { console.error("Section id is undefined"); return state }
     // Check if section already exists
@@ -20,18 +20,22 @@ const addSection = (state, section, afterId, addGapAfter) => {
     // Add the new section to the sections object
     state.sections[section.id] = section
 
-    // Get the position where the new section should be inserted
-    const positionAfter = state.sectionsOrder.indexOf(afterId) + 1 || Infinity
-
-    // Insert the new section in the order
-    state.sectionsOrder.splice(positionAfter, 0, section.id)
-
-    // If addGapAfter is true, add a gap section after the new section
-    if (addGapAfter) {
-        const gapId = generateUUID()  // Generate a new UUID for the gap section
+    // If addGap is true, add a gap section after the new section
+    let gapId
+    if (addGap) {
+        gapId = generateUUID()  // Generate a new UUID for the gap section
         const gap = new Gap({ id: gapId })  // Create the gap section
         state.sections[gapId] = gap  // Add the gap section to the sections object
-        state.sectionsOrder.splice(positionAfter + 1, 0, gapId)  // Insert the gap section in the order
+    }
+    
+    // Get the position where the new section should be inserted
+    let position = state.sectionsOrder.indexOf(afterId) + 1 || Infinity
+    if (addGap){
+        if (addGap === "before") state.sectionsOrder.splice(position, 0, gapId, section.id)  // Insert the gap section in the order
+        else state.sectionsOrder.splice(position, 0, section.id, gapId)  // Insert the gap section in the order
+    } else {
+        // Insert the new section in the order
+        state.sectionsOrder.splice(position, 0, section.id)
     }
 
     return state
@@ -212,7 +216,7 @@ export default function reducer(state, action) {
         case "ADD_SECTION":
             takeSnapshot(state)
             // Add section
-            return addSection(state, payload.section, payload.after, payload.addGapAfter)
+            return addSection(state, payload.section, payload.after, payload.addGap)
         case "REMOVE_SECTION":
             takeSnapshot(state)
             // Remove section

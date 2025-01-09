@@ -18,7 +18,7 @@ export default function Gap(props) {
 
   const handleAddSection = () => {
     const newSection = new Blank({ id: generateUUID(), type: "blank", title: "Empty section" })
-    dispatch({ type: 'ADD_SECTION', payload: {section: newSection, after: props.sData.id, addGapAfter: true } })
+    dispatch({ type: 'ADD_SECTION', payload: {section: newSection, after: props.sData.id, addGap: "after" } })
   }
 
   return (

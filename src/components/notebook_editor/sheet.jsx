@@ -4,6 +4,7 @@ import { NotebookContext } from './utils/notebook_context'
 import Blank from './components/section/section_types/blank/blank_class'
 import { generateUUID } from './utils/general'
 import RichText from './components/rich_text/rich_text'
+import { useCallback } from 'react'
 
 /**
  * Sheet component
@@ -17,10 +18,11 @@ export default function Sheet(props) {
 
     const { dispatch } = useContext(NotebookContext)
 
-    const handleAddSection = () => {
+    const handleAddSection = useCallback(() => {
         const newSection = new Blank({ id: generateUUID(), type: "blank", title: "Empty section" })
-        dispatch({ type: 'ADD_SECTION', payload: { section: newSection } })
-    }
+        const lastSectionID = [...props.sectionsThisPage].pop()
+        dispatch({ type: 'ADD_SECTION', payload: { section: newSection, after: lastSectionID, addGap: "before" } })
+    }, [dispatch, props.sectionsThisPage])
 
     return <div className={s.wrap}>
         <div className={s.sheet} data-element="sheet">

@@ -164,7 +164,7 @@ function contextMenuAddSectionBelow(state) {
     const { sectionId: afterSectionId } = state.contextMenu
     const newSection = new Blank({})
 
-    window.notebooks_ai.dispatch({ type: "ADD_SECTION", payload: { section: newSection, after: afterSectionId, addGapAfter: true } })
+    window.notebooks_ai.dispatch({ type: "ADD_SECTION", payload: { section: newSection, after: afterSectionId, addGap: "after" } })
 }
 
 function contextMenuAddGapBelow(state) {
