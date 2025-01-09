@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import s from './edit_text.module.scss'
-import UserInput from '../../../utils/user-input'
 import { useContext } from 'react'
 import { NotebookContext } from '../../../utils/notebook_context'
 import IconBold from '../../../assets/icons/bold.svg?react'
@@ -168,7 +167,7 @@ export default function EditText({ $target, ...props }) {
         const $section = $target.closest("[data-element='section']")
 
         let x=0, y=0, width=0, height=0
-        if ($section){
+        if ($section && eId){
             const { top, left } = $section.getBoundingClientRect()
             if (eId && sId) {
                 const eData = state.sections[sId].elements[eId]
