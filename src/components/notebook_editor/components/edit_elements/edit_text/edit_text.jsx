@@ -151,15 +151,14 @@ export default function EditText({ $target, ...props }) {
 
         // Set the style of the input field
         setStyle({
-            top: y - INPUT_OFFSET,
-            left: x - INPUT_OFFSET,
-            width: width + INPUT_OFFSET * 4 + 5, // Add extra padding for because of the padding
-            height: height + INPUT_OFFSET * 2,
+            top: y,
+            left: x,
+            width: width, // Add extra padding for because of the padding
             fontSize: compStyle.fontSize,
         })
 
         // Remove the initial wrap
-        const content = $target.innerHTML.replace(/^<span[^>]*>([\s\S]+)<\/span>$/ig, "$1")
+        const content = $target.innerHTML.replace(/^<span[^>]*>([\s\S]+)<\/span>$/ig, "$1").replaceAll(/&nbsp;/g, " ")
         // Parse the HTML to ensure that every character is wrapped in a span
         if (props.type !== "text-raw") parseTextHTML(content)
 
@@ -172,6 +171,17 @@ export default function EditText({ $target, ...props }) {
         const selection = window.getSelection()
         selection.removeAllRanges()
         selection.addRange(range)
+
+        // Disable scrolling
+        document.body.style.overflow = "hidden"
+        document.body.style.touchAction = "none"
+        document.body.style.paddingRight = "17px"
+
+        return () => {
+            document.body.style.overflow = "auto"
+            document.body.style.touchAction = "auto"
+            document.body.style.paddingRight = "0px"
+        }
     }, [])
 
     useEffect(() => {

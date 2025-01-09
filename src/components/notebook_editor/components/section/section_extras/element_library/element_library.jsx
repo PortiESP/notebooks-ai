@@ -7,9 +7,14 @@ import IconText from '../../../../assets/icons/type.svg?react'
 import IconImage from '../../../../assets/icons/image.svg?react'
 import IconBasicOp from '../../../../assets/icons/calculator.svg?react'
 import IconTable from '../../../../assets/icons/table.svg?react'
+import IconCircle from '../../../../assets/icons/circle.svg?react'
+import IconTriangle from '../../../../assets/icons/triangle.svg?react'
+import IconSquare from '../../../../assets/icons/square.svg?react'
 import Text from '../../section_element/text/text_class'
 import Image from '../../section_element/image/image_class'
 import BasicOperationV from '../../section_element/basic_operation_v/basic_operation_v_class'
+import FreeFormSVG from '../../section_element/free_form_svg_element/svg_class'
+import { useEffect } from 'react'
 
 const SPAWN_POS_X = (210 - 20*2) * 0.25
 
@@ -38,15 +43,31 @@ export default function ElementLibrary(props) {
             newElement.operands = ["", ""]
             newElement.result = ""
         }
-
+        else if (["circle", "triangle", "square"].includes(type)) {
+            newElement = new FreeFormSVG(newElementData)
+            newElement.type = "free_form_svg"
+            newElement.content = 
+                type === "circle" ? <circle cx="20" cy="20" r="20" fill="red" /> :
+                type === "triangle" ? <polygon points="20,0 40,40 0,40" fill="blue" /> :
+                type === "square" ? <rect x="0" y="0" width="40" height="40" fill="green" /> : null
+            newElement.viewBox = "0 0 40 40"
+        }
 
         dispatch({ type: "ADD_ELEMENT", payload: { section: props.sData.id, newElement } })
 
         props.setShowElementLibrary(false)
     }, [props.sData.id, props.dispatch])
 
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === "Escape") props.setShowElementLibrary(false)
+        }
+        window.addEventListener("keydown", handleKeyDown)
+        return () => window.removeEventListener("keydown", handleKeyDown)
+    }, [])
+
     return (
-        <div className={s.section_element_library_wrap}>
+        <div className={s.section_element_library_wrap} onClick={(e) => e.target.className === s.section_element_library_wrap && props.setShowElementLibrary(false)}>
             <div className={s.section_element_library}>
                 <div className={s.element_library_title}>
                     <h3>Element Library</h3>
@@ -67,6 +88,12 @@ export default function ElementLibrary(props) {
                     <h3>Math</h3>
                     <div className={s.element_section}>
                         <ElementCard type="basic_operation_v" handleClick={handleAddElement} icon={IconBasicOp}>Basic Operation</ElementCard>
+                    </div>
+                    <h3>Shapes</h3>
+                    <div className={s.element_section}>
+                        <ElementCard type="circle" handleClick={handleAddElement} icon={IconCircle}>Circle</ElementCard>
+                        <ElementCard type="triangle" handleClick={handleAddElement} icon={IconTriangle}>Triangle</ElementCard>
+                        <ElementCard type="square" handleClick={handleAddElement} icon={IconSquare}>Square</ElementCard>
                     </div>
                 </div>
                 <div className={s.element_library_close}>

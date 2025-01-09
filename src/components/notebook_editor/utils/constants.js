@@ -30,9 +30,17 @@ const CONSTANTS = {
         "template-2": parseSDataToClass(templates[1]),
         "gap-4": new Gap({ id: "gap-4" }),
         "template-3": parseSDataToClass(templates[2]),
+        "gap-5": new Gap({ id: "gap-5" }),
+        "template-4": parseSDataToClass(templates[3]),
+        "gap-6": new Gap({ id: "gap-6" }),
+        "template-5": parseSDataToClass(templates[4]),
+        "gap-7": new Gap({ id: "gap-7" }),
+        "template-6": parseSDataToClass(templates[5]),
+
+
     },
 
-    DEFAULT_SECTIONS_ORDER: ["default-1", "gap-1", "debug-1", "gap-2", "template-1", "gap-3", "template-2", "gap-4", "template-3"],
+    DEFAULT_SECTIONS_ORDER: ["default-1", "gap-1", "debug-1", "gap-2", "template-1", "gap-3", "template-2", "gap-4", "template-3", "gap-5", "template-4", "gap-6", "template-5", "gap-7", "template-6"],
     DEFAULT_GAP_HEIGHT,
     DEFAULT_SECTION_HEIGHT,
     GRID_SIZE: 10,

@@ -25,6 +25,8 @@ const initialState = {
     sectionsByPage: arrangeSections(CONSTANTS.DEFAULT_SECTIONS, CONSTANTS.DEFAULT_SECTIONS_ORDER),  // Sections arranged by page
     footerTitle: "Notebook Title 1",
     contextMenu: null,  // The show/hide state is inferred from the value (null = hide, object = show)
+    history: [], // History of actions (used for undo/redo)
+    redoHistory: [], // History of actions that were undone (used for redo)
 }
 
 let DEDUPLICATE_KEY_DOWN_TS = null

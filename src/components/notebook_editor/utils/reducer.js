@@ -124,7 +124,7 @@ const addElement = (state, sectionId, newElement) => {
 // Edits an element's data in a section
 const editElement = (state, sectionId, elementId, elementData) => {
     // Check if section exists
-    if (!existsSection(state, sectionId)) { console.error("Section does not exist"); return state }
+    if (!existsSection(state, sectionId)) { console.error(`Section does not exist [${sectionId}]`); return state }
 
     state = deepClone(state)
     const section = state.sections[sectionId]
@@ -178,6 +178,30 @@ const deleteElement = (state, sectionId, elementId) => {
     return state
 }
 
+// Undo
+export function undo(state) {
+    if (history.length === 0) {
+        if (window.debug) console.error("No snapshots to undo")
+        return state
+    }
+
+    const snapshot = state.history.pop()
+    state.redoHistory.push(deepClone(state))
+    return snapshot
+}
+
+// Redo
+export function redo(state) {
+    if (state.redoHistory.length === 0) {
+        if (window.debug) console.error("No snapshots to redo")
+        return state
+    }
+
+    const snapshot = state.redoHistory.pop()
+    state.history.push(deepClone(state))
+    return snapshot
+}
+
 // Reducer function
 export default function reducer(state, action) {
 
@@ -186,9 +210,11 @@ export default function reducer(state, action) {
 
     switch (action.type) {
         case "ADD_SECTION":
+            takeSnapshot(state)
             // Add section
             return addSection(state, payload.section, payload.after, payload.addGapAfter)
         case "REMOVE_SECTION":
+            takeSnapshot(state)
             // Remove section
             return removeSection(state, payload.id)
         case "SET_SECTIONS_BY_PAGE":
@@ -198,12 +224,14 @@ export default function reducer(state, action) {
             // Resize section
             return setSectionHeight(state, payload.id, payload.height)
         case "REPLACE_SECTION":
+            takeSnapshot(state)
             // Replace section
             return replaceSection(state, payload.id, payload)
         case "EDIT_SECTION":
             // Edit section
             return editSection(state, payload.id, payload)
         case "ADD_ELEMENT":
+            takeSnapshot(state)
             // Add element
             return addElement(state, payload.section, payload.newElement)
         case "EDIT_ELEMENT":
@@ -211,9 +239,11 @@ export default function reducer(state, action) {
             // Edit element
             return editElement(state, payload.sectionId, payload.elementId, payload.elementData)
         case "EDIT_FOOTER_TITLE":
+            takeSnapshot(state)
             // Edit footer title
             return editFooterTitle(state, payload)
         case "SET_BY_PATH":
+            takeSnapshot(state)
             // Set value by path
             return setByPath(state, payload.path, payload.value)
         case "SET_SECTIONS_ORDER":
@@ -223,14 +253,25 @@ export default function reducer(state, action) {
             // Move section
             return moveSection(state, payload.id, payload.newIndex)
         case "DELETE_ELEMENT":
+            takeSnapshot(state)
             // Delete element
             return deleteElement(state, payload.sectionId, payload.elementId)
         case "SET_CONTEXT_MENU":
             // Set context menu
             return { ...state, contextMenu: payload }
+        case "UNDO":
+            // Undo
+            return undo(state)
+        case "REDO":
+            // Redo
+            return redo(state)
         default:
             // Invalid action type
             console.error("Invalid action type")
             return state
     }
+}
+
+export function takeSnapshot(state) {
+    state.history.push(deepClone(state))
 }

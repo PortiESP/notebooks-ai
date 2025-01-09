@@ -68,12 +68,12 @@
         position: relative;
         overflow: hidden;
 
-
-
         div[data-handler-for]:hover {
             [data-element-overlay="tooltip"] {
                 display: flex;
             }
+
+            z-index: 100;
 
             [data-handler] {
                 $color: rgba(0, 183, 255, 0.533);

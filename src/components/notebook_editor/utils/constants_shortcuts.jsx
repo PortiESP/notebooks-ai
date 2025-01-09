@@ -7,6 +7,8 @@ export const SHORTCUTS_KEY_DOWN = {
     "delete": deleteElement,
     "control+c": copyElement,
     "control+v": pasteElement,
+    "control+z": () => window.notebooks_ai.dispatch({ type: "UNDO" }),
+    "control+shift+z": () => window.notebooks_ai.dispatch({ type: "REDO" }),
 }
 
 
@@ -58,24 +60,28 @@ function copyElement(forceData) {
 function pasteElement(forceData) {
     // Get the section and element ids from the clipboard
     navigator.clipboard.readText().then(text => {
-        const data = JSON.parse(text)
-        if (!data?.app || data.app !== "notebooks-ai" || data.action !== "copy-element") return
-
-        const { element } = data
-        const sectionId = forceData?.sectionId ?? window.notebooks_ai.realTimeState.hoverSection?.dataset.sectionId
-        const { dispatch } = window.notebooks_ai
-
-        // Check if the section is hovered
-        if (!sectionId) return
-
-        const newElement = parseElementDataToClassObject(element)
-        newElement.id = generateUUID()
-        const { top: sY, left: sX } = document.querySelector(`[data-section-id="${sectionId}"] > div`).getBoundingClientRect()
-        const { x: mX, y: mY } = UserInput
-        newElement.x = (mX - sX) - (newElement.width / 2)
-        newElement.y = (mY - sY) - (newElement.width / 2)
-
-        // Add the element
-        dispatch({ type: "ADD_ELEMENT", payload: { section: sectionId, newElement } })
+        try {
+            const data = JSON.parse(text)
+            if (!data?.app || data.app !== "notebooks-ai" || data.action !== "copy-element") return
+    
+            const { element } = data
+            const sectionId = forceData?.sectionId ?? window.notebooks_ai.realTimeState.hoverSection?.dataset.sectionId
+            const { dispatch } = window.notebooks_ai
+    
+            // Check if the section is hovered
+            if (!sectionId) return
+    
+            const newElement = parseElementDataToClassObject(element)
+            newElement.id = generateUUID()
+            const { top: sY, left: sX } = document.querySelector(`[data-section-id="${sectionId}"] > div`).getBoundingClientRect()
+            const { x: mX, y: mY } = UserInput
+            newElement.x = (mX - sX) - (newElement.width / 2)
+            newElement.y = (mY - sY) - (newElement.height / 2)
+    
+            // Add the element
+            dispatch({ type: "ADD_ELEMENT", payload: { section: sectionId, newElement } })           
+        } catch (err) {
+            if (window.debug) console.error(`Failed to paste element [${text}]: `, err)
+        }
     })
 }
