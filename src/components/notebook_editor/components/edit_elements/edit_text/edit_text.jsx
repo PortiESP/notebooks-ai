@@ -3,8 +3,15 @@ import s from './edit_text.module.scss'
 import UserInput from '../../../utils/user-input'
 import { useContext } from 'react'
 import { NotebookContext } from '../../../utils/notebook_context'
+import IconBold from '../../../assets/icons/bold.svg?react'
+import IconItalic from '../../../assets/icons/italic.svg?react'
+import IconUnderline from '../../../assets/icons/underline.svg?react'
+import IconAlignLeft from '../../../assets/icons/align-left.svg?react'
+import IconAlignCenter from '../../../assets/icons/align-center.svg?react'
+import IconAlignRight from '../../../assets/icons/align-right.svg?react'
 
-const INPUT_OFFSET = 5
+
+
 
 /**
  * EditText component
@@ -37,7 +44,7 @@ export default function EditText({ $target, ...props }) {
         props.setValue(parsedHTML)
         const eId = $target.getAttribute("data-eid")
         const sId = $target.getAttribute("data-sid")
-        dispatch({ type: "EDIT_ELEMENT", payload: { sectionId: sId, elementId: eId, elementData: { style: targetGeneralStyle } } })
+        dispatch({ type: "ADD_ELEMENT_STYLE", payload: { sectionId: sId, elementId: eId, style: targetGeneralStyle } })
         props.close()
     }, [props, targetGeneralStyle, $target])
 
@@ -113,28 +120,35 @@ export default function EditText({ $target, ...props }) {
     const parseTextHTML = (content) => {
         const currentHTML = content || $target.innerHTML
         // Im looking for a character that is not wrapped in a span so I can wrap it
-        const parsedHTML = currentHTML.replaceAll(/(?:<span[^>]*>.*?<\/span>)|[\s\S]/ig, cap => cap.length === 1 ? `<span>${cap}</span>` : cap)
+        let parsedHTML = currentHTML
+        // Replace the <b> with <span style="font-weight: bold">
+        parsedHTML = parsedHTML.replaceAll(/<b>(.*?)<\/b>/ig, (match, cap) => cap.split("").map(char => `<span style="font-weight: bold">${char}</span>`).join(""))
+        parsedHTML = parsedHTML.replaceAll(/<i>(.*?)<\/i>/ig, (match, cap) => cap.split("").map(char => `<span style="font-style: italic">${char}</span>`).join(""))
+        parsedHTML = parsedHTML.replaceAll(/<u>(.*?)<\/u>/ig, (match, cap) => cap.split("").map(char => `<span style="text-decoration: underline">${char}</span>`).join(""))
+        parsedHTML = parsedHTML.replaceAll(/(?:<span[^>]*>.*?<\/span>)|[\s\S]/ig, cap => cap.length === 1 ? `<span>${cap}</span>` : cap)
         $input.current.innerHTML = parsedHTML
     }
 
+    const handleKeyDown = useCallback((e) => {
+        if (e.key === "Enter") saveEdit()
+        else if (e.key === "Escape") discardEdit()
+        else if (e.ctrlKey && e.key === 'b') {
+            e.preventDefault();
+            applyStyle('fontWeight', 'bold');
+        }
+        else if (e.ctrlKey && e.key === 'i') {
+            e.preventDefault();
+            applyStyle('fontStyle', 'italic');
+        }
+        else if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault();
+            applyStyle('textDecoration', 'underline');
+        }
+    }, [saveEdit, discardEdit, applyStyle])
+
     useEffect(() => {
         // Handle keydown events
-        const handleKeyDown = (e) => {
-            if (e.key === "Enter") saveEdit()
-            else if (e.key === "Escape") discardEdit()
-            else if (e.ctrlKey && e.key === 'b') {
-                e.preventDefault();
-                applyStyle('fontWeight', 'bold');
-            }
-            else if (e.ctrlKey && e.key === 'i') {
-                e.preventDefault();
-                applyStyle('fontStyle', 'italic');
-            }
-            else if (e.ctrlKey && e.key === 'u') {
-                e.preventDefault();
-                applyStyle('textDecoration', 'underline');
-            }
-        }
+        
 
         $input.current.addEventListener("keydown", handleKeyDown)
 
@@ -151,9 +165,10 @@ export default function EditText({ $target, ...props }) {
 
         // Set the style of the input field
         setStyle({
-            top: y,
-            left: x,
-            width: width, // Add extra padding for because of the padding
+            top: y - 6,
+            left: x - 6,
+            width: compStyle.width, // Add extra padding for because of the padding
+            minHeight: compStyle.height + 15, // Add extra padding for because of the padding
             fontSize: compStyle.fontSize,
         })
 
@@ -193,13 +208,16 @@ export default function EditText({ $target, ...props }) {
     }, [handleBlur])
 
     return (
-        <div className={s.wrap} style={style} ref={$wrap}>
+        <div className={s.wrap} style={style} ref={$wrap} onContextMenu={e => e.stopPropagation()} onKeyDown={handleKeyDown}>
             {
                 props.type === "text" &&  // Only show the style menu for data-editable="text" (not for calligraphy: "text-raw")
                 <StyleEditMenu applyStyle={applyStyle}>
-                    <StyleMenuButton icon="B" command="fontWeight" value="bold" onClick={applyStyle} />
-                    <StyleMenuButton icon="I" command="fontStyle" value="italic" onClick={applyStyle} />
-                    <StyleMenuButton icon="U" command="textDecoration" value="underline" onClick={applyStyle} />
+                    <StyleMenuButton icon={<IconBold />} command="fontWeight" value="bold" onClick={applyStyle} />
+                    <StyleMenuButton icon={<IconItalic />} command="fontStyle" value="italic" onClick={applyStyle} />
+                    <StyleMenuButton icon={<IconUnderline />} command="textDecoration" value="underline" onClick={applyStyle} />
+                    <StyleMenuButton icon={<IconAlignLeft />} command="textAlign" value="start" onClick={applyGeneralStyle} />
+                    <StyleMenuButton icon={<IconAlignCenter />} command="textAlign" value="center" onClick={applyGeneralStyle} />
+                    <StyleMenuButton icon={<IconAlignRight />} command="textAlign" value="end" onClick={applyGeneralStyle} />
                     <StyleMenuColorPicker icon="Color" command="color" onClick={applyStyle} $target={$target} />
                     <StyleMenuButton icon="Font" command="fontFamily" value="scholar" onClick={applyStyle} />
                     <StyleMenuColorPicker icon="Bg" command="background" value="red" onClick={applyGeneralStyle} />

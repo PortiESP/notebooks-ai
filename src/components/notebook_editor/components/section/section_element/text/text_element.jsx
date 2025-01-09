@@ -21,14 +21,13 @@ const FALLBACK_TEXT = "Click to edit text"
 export default function ElementText(props) {
 
     const { state } = useContext(NotebookContext)
-    const [style, setStyle] = useState({})
+    const [style, setStyle] = useState(props.style || {})
 
     useEffect(() => {
         if (props.sectionId.includes("preview")) return
-        const $e = state.sections[props.sectionId].elements[props._id]
-        if (!$e) return
-        const stl =  $e.style
-        console.log("Setting style", stl)
+        const eData = state.sections[props.sectionId].elements[props._id]
+        if (!eData) return
+        const stl =  eData.style
         setStyle(stl)
     }, [state.sections[props.sectionId]?.elements[props._id]?.style])
 
@@ -38,7 +37,7 @@ export default function ElementText(props) {
 
     return (
         <div className={s.wrap} style={style}>
-            <p data-editable="text" data-editable-path={editablePath} data-eid={props._id} data-sid={props.sectionId} ref={$p}><RichText>{props._text || FALLBACK_TEXT}</RichText></p>
+            <p data-editable="text" data-editable-path={editablePath} data-eid={props._id} data-sid={props.sectionId} ref={$p}><RichText style={props.style}>{props._text || FALLBACK_TEXT}</RichText></p>
         </div>
     )
 }

@@ -8,6 +8,7 @@ import Blank from '../../section_types/blank/blank_class'
 import parseSDataToClass from '../../../../utils/parse_sData_to_class'
 import { useEffect } from 'react'
 import { deepClone } from '../../../../utils/clone'
+import IconSend from '../../../../assets/icons/send.svg?react'
 
 const DEFAULT_SECTION_DRAFT = {
     id: "preview",
@@ -81,12 +82,12 @@ export default function SectionAI(props) {
     }, [handleSend])
 
     return (
-        <div className={s.wrap} onMouseDown={handleClose}>
+        <div className={s.wrap} onMouseDown={handleClose} onContextMenu={e => e.stopPropagation()}>
             <div className={s.section_ai_inner}>
                 <div className={s.ai_input_wrap}>
                     <input type="text" placeholder="AI input" value={prompt} onChange={e => setPrompt(e.target.value)} onKeyDown={handleKeyDown}/>
                     <button onClick={handleSend}>
-                        Send
+                        <IconSend />
                         {
                             loading &&
                             <div className={s.loading_overlay}>

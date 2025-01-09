@@ -147,6 +147,29 @@ const editElement = (state, sectionId, elementId, elementData) => {
     return state
 }
 
+
+// Edits an element's data in a section
+const addElementStyle = (state, sectionId, elementId, appendStyle) => {
+    // Check if section exists
+    if (!existsSection(state, sectionId)) { console.error(`Section does not exist [${sectionId}]`); return state }
+
+    state = deepClone(state)
+    const section = state.sections[sectionId]
+
+    // If the section has no elements, add an empty elements object
+    if (!section.elements) { section.elements = {}; console.error("Elements object not found"); return state }
+
+    const element = section.elements[elementId]
+
+    // Check if element exists
+    if (!element) { console.error("Element not found"); return state }
+
+    // Update element data
+    element.style = { ...element.style, ...appendStyle }
+
+    return state
+}
+
 // Sets a value in the state object by path
 const setByPath = (state, path, value) => {
     // Prevent setting the id
@@ -242,6 +265,10 @@ export default function reducer(state, action) {
             if (payload.sectionId === "preview") return state
             // Edit element
             return editElement(state, payload.sectionId, payload.elementId, payload.elementData)
+        case "ADD_ELEMENT_STYLE":
+            takeSnapshot(state)
+            // Add element style
+            return addElementStyle(state, payload.sectionId, payload.elementId, payload.style)
         case "EDIT_FOOTER_TITLE":
             takeSnapshot(state)
             // Edit footer title

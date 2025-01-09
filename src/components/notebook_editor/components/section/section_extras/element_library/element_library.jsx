@@ -67,7 +67,7 @@ export default function ElementLibrary(props) {
     }, [])
 
     return (
-        <div className={s.section_element_library_wrap} onClick={(e) => e.target.className === s.section_element_library_wrap && props.setShowElementLibrary(false)}>
+        <div className={s.section_element_library_wrap} onClick={(e) => e.target.className === s.section_element_library_wrap && props.setShowElementLibrary(false)} onContextMenu={(e) => e.stopPropagation()}>
             <div className={s.section_element_library}>
                 <div className={s.element_library_title}>
                     <h3>Element Library</h3>

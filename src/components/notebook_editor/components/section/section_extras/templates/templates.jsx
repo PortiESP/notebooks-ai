@@ -8,7 +8,9 @@ import { useEffect } from 'react'
 import ImgTemplateThumb1 from '../../../../assets/images/templates/thumbnail_1.png'
 import ImgTemplateThumb2 from '../../../../assets/images/templates/thumbnail_2.png'
 import ImgTemplateThumb3 from '../../../../assets/images/templates/thumbnail_3.png'
-const THUMBNAILS = [ImgTemplateThumb1, ImgTemplateThumb2, ImgTemplateThumb3]
+import ImgTemplateThumb4 from '../../../../assets/images/templates/thumbnail_4.png'
+import ImgTemplateThumb5 from '../../../../assets/images/templates/thumbnail_5.png'
+const THUMBNAILS = [ImgTemplateThumb1, ImgTemplateThumb2, ImgTemplateThumb3, ImgTemplateThumb4, ImgTemplateThumb5]
 
 export default function Templates(props) {
 
@@ -29,7 +31,7 @@ export default function Templates(props) {
         return () => window.removeEventListener("keydown", handleKeyDown)
     }, [])
 
-    return <div className={s.section_templates_wrap} onClick={(e) => e.target.className === s.section_templates_wrap && props.close()}>
+    return <div className={s.section_templates_wrap} onClick={(e) => e.target.className === s.section_templates_wrap && props.close()} onContextMenu={(e) => e.stopPropagation()}>
         <div className={s.section_templates_inner}>
             <div className={s.menu_title}>
                 <h3>Templates</h3>

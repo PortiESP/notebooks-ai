@@ -29,20 +29,35 @@
     border: 1px solid #0001;
     border-radius: 5px;
     width: 100%;
+    overflow: hidden;
 
     input {
         width: 100%;
         border: none;
         outline: none;
         padding: 5px;
+        height: 30px;
     }
 
     button {
         border: none;
         background: #0001;
-        padding: 5px;
+        width: 35px;
         cursor: pointer;
         position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg{
+            width: 16px;
+            height: 16px;
+            transform: rotate(45deg);
+
+            path{
+                stroke: #0008;
+            }
+        }
 
         &:hover {
             background: #0002;
@@ -101,13 +116,14 @@
     &:before {
         content: 'Draft (accept to edit)';
         position: absolute;
-        bottom: 0;
+        bottom: 10px;
         left: 50%;
         background: #0002;
-        color: #0000003a;
+        color: #000000;
         padding: 5px 10px;
-        border-radius: 5px 5px 0 0;
+        border-radius: 5px;
         transform: translateX(-50%);
+        opacity: .3;
     }
 }
 
@@ -117,10 +133,11 @@
 
     .ai_buttons_inner {
         display: flex;
-        border-radius: 4px;
         overflow: hidden;
-
+        gap: 10px;
+        
         button {
+            border-radius: 4px;
             padding: 10px 20px;
             border: none;
             background: none;
@@ -128,18 +145,22 @@
 
             &:nth-child(1) {
                 // Accept button
-                background: #4caf50;
+                background: #4caf5088;
                 color: #fff;
+
+                &:hover {
+                    background: #4caf50;
+                }
             }
 
             &:nth-child(2) {
                 // Cancel button
-                background: #f44336;
+                background: #f4433688;
                 color: #fff;
-            }
 
-            &:hover {
-                filter: brightness(1.1);
+                &:hover {
+                    background: #f44336;
+                }
             }
 
             &:active {
