@@ -9,8 +9,9 @@ import IconUnderline from '../../../assets/icons/underline.svg?react'
 import IconAlignLeft from '../../../assets/icons/align-left.svg?react'
 import IconAlignCenter from '../../../assets/icons/align-center.svg?react'
 import IconAlignRight from '../../../assets/icons/align-right.svg?react'
-
-
+import IconColorPalette from '../../../assets/icons/palette.svg?react'
+import IconTextBackground from '../../../assets/icons/type.svg?react'
+import IconFont from '../../../assets/icons/font.svg?react'
 
 
 /**
@@ -27,7 +28,7 @@ export default function EditText({ $target, ...props }) {
     const [style, setStyle] = useState({})
     const $input = useRef(null)
     const $wrap = useRef(null)
-    const { dispatch } = useContext(NotebookContext)
+    const { state, dispatch } = useContext(NotebookContext)
     const [ targetGeneralStyle, setTargetGeneralStyle ] = useState({})
 
     const saveEdit = useCallback(() => {
@@ -53,7 +54,7 @@ export default function EditText({ $target, ...props }) {
     }, [props])
 
     const handleBlur = useCallback((e) => {
-        if ($wrap.current.contains(UserInput.hoveredElement)) return
+        if (e.target !== e.currentTarget) return
         saveEdit()
     }, [discardEdit, saveEdit])
 
@@ -161,14 +162,36 @@ export default function EditText({ $target, ...props }) {
     useEffect(() => {
         // Get the computed style of the target element
         const compStyle = window.getComputedStyle($target)
-        const { x, y, width, height } = props.eBbox
+
+        const eId = $target.getAttribute("data-eid")
+        const sId = $target.getAttribute("data-sid")
+        const $section = $target.closest("[data-element='section']")
+
+        let x=0, y=0, width=0, height=0
+        if ($section){
+            const { top, left } = $section.getBoundingClientRect()
+            if (eId && sId) {
+                const eData = state.sections[sId].elements[eId]
+                x = left + eData.x
+                y = top + eData.y
+                width = eData.width
+                height = eData.height
+            }
+        }
+        else {
+            const { left, top, width: targetWidth, height: targetHeight } = $target.getBoundingClientRect()
+            x = left
+            y = top
+            width = targetWidth
+            height = targetHeight
+        }
 
         // Set the style of the input field
         setStyle({
-            top: y - 6,
-            left: x - 6,
-            width: compStyle.width, // Add extra padding for because of the padding
-            minHeight: compStyle.height + 15, // Add extra padding for because of the padding
+            top: y,
+            left: x,
+            width: width, // Add extra padding for because of the padding
+            minHeight: height, // Add extra padding for because of the padding
             fontSize: compStyle.fontSize,
         })
 
@@ -199,36 +222,31 @@ export default function EditText({ $target, ...props }) {
         }
     }, [])
 
-    useEffect(() => {
-        document.addEventListener("click", handleBlur)
-
-        return () => {
-            document.removeEventListener("click", handleBlur)
-        }
-    }, [handleBlur])
-
     return (
-        <div className={s.wrap} style={style} ref={$wrap} onContextMenu={e => e.stopPropagation()} onKeyDown={handleKeyDown}>
-            {
-                props.type === "text" &&  // Only show the style menu for data-editable="text" (not for calligraphy: "text-raw")
-                <StyleEditMenu applyStyle={applyStyle}>
-                    <StyleMenuButton icon={<IconBold />} command="fontWeight" value="bold" onClick={applyStyle} />
-                    <StyleMenuButton icon={<IconItalic />} command="fontStyle" value="italic" onClick={applyStyle} />
-                    <StyleMenuButton icon={<IconUnderline />} command="textDecoration" value="underline" onClick={applyStyle} />
-                    <StyleMenuButton icon={<IconAlignLeft />} command="textAlign" value="start" onClick={applyGeneralStyle} />
-                    <StyleMenuButton icon={<IconAlignCenter />} command="textAlign" value="center" onClick={applyGeneralStyle} />
-                    <StyleMenuButton icon={<IconAlignRight />} command="textAlign" value="end" onClick={applyGeneralStyle} />
-                    <StyleMenuColorPicker icon="Color" command="color" onClick={applyStyle} $target={$target} />
-                    <StyleMenuButton icon="Font" command="fontFamily" value="scholar" onClick={applyStyle} />
-                    <StyleMenuColorPicker icon="Bg" command="background" value="red" onClick={applyGeneralStyle} />
-                </StyleEditMenu>
-            }
-            <div
-                contentEditable
-                ref={$input}
-                className={s.edit_field}
-                onChange={e => parseTextHTML(e.target.innerHTML)}
-            />
+        <div className={s.wrap} onContextMenu={e => e.stopPropagation()} onKeyDown={handleKeyDown} onClick={handleBlur}>
+            <div className={s.wrap_inner} ref={$wrap} style={style}>
+                {
+                    props.type === "text" &&  // Only show the style menu for data-editable="text" (not for calligraphy: "text-raw")
+                    <StyleEditMenu applyStyle={applyStyle}>
+                        <StyleMenuButton icon={<IconBold />} command="fontWeight" value="bold" onClick={applyStyle} />
+                        <StyleMenuButton icon={<IconItalic />} command="fontStyle" value="italic" onClick={applyStyle} />
+                        <StyleMenuButton icon={<IconUnderline />} command="textDecoration" value="underline" onClick={applyStyle} />
+                        <StyleMenuButton icon={<IconAlignLeft />} command="textAlign" value="start" onClick={applyGeneralStyle} />
+                        <StyleMenuButton icon={<IconAlignCenter />} command="textAlign" value="center" onClick={applyGeneralStyle} />
+                        <StyleMenuButton icon={<IconAlignRight />} command="textAlign" value="end" onClick={applyGeneralStyle} />
+                        <StyleMenuColorPicker icon={<IconColorPalette />} command="color" onClick={applyStyle} $target={$target} />
+                        <StyleMenuColorPicker icon={<IconTextBackground />} command="background" onClick={applyGeneralStyle} />
+                        <StyleMenuButton icon={<IconFont />} command="fontFamily" value="scholar" onClick={applyStyle} />
+                    </StyleEditMenu>
+                }
+                <div
+                
+                    contentEditable
+                    ref={$input}
+                    className={s.edit_field}
+                    onChange={e => parseTextHTML(e.target.innerHTML)}
+                />
+            </div>
         </div>
     )
 }
@@ -266,9 +284,9 @@ function StyleMenuColorPicker({ command, onClick, $target, icon }) {
     }, [onClick, command])
 
     return (
-        <div>
+        <div className={s.color_picker_wrap}>
             {icon}
-            <input type="color" value={value} onChange={handleChange} />
+            <input type="color" value={value} onChange={handleChange} className={s.color_picker_input}/>
         </div>
     )
 }

@@ -1,15 +1,22 @@
 .wrap{
     position: fixed;
     z-index: 10;
-    background: #0001;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0008;
+}
+
+.wrap_inner{
+    position: absolute;
+    display: flex;
 }
 
 .edit_field{
     width: 100%;
-    height: 100%;
     border: none;
     border-radius: 2px;
-    padding: 5px;
     border: 1px solid #ccc;
     background: white;
 
@@ -35,7 +42,10 @@
     }
 }
 
-.style_menu_button{
+
+
+.style_menu_button, .color_picker_wrap{
+    position: relative;
     background: none;
     border: none;
     cursor: pointer;
@@ -56,5 +66,16 @@
 
     &:hover{
         background: #f0f0f0;
+    }
+}
+
+.color_picker_wrap{
+    .color_picker_input{
+        position: absolute;
+        top:0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
     }
 }
