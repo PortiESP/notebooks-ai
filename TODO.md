@@ -22,10 +22,6 @@ DOCUMENTATION
 
 
 FALTA
-- dar estilo
-- atajos y accesibilidad
-- context menu
-- dar mas opciones de edicion
 - dar mas ejemplos a la IA
 
 FIX

@@ -2,35 +2,27 @@ export default {
     "_id": "template-5",
     "_type": "blank",
     "_height": 586.390625,
-    "_title": "Observa estas viñetas. Exribe una historia a partir de ellas. Emplea alguna de estas palabras: un día, ayer, al principio, mientras tanto, luego, finalmente",
+    "_title": "Observa estas viñetas. Escribe una historia a partir de ellas. Emplea alguna de estas palabras: un día, ayer, al principio, mientras tanto, luego, finalmente",
     "_elements": {
         "41e811b5-a0af-4252-9fe8-a821998cd6b2": {
             "_id": "41e811b5-a0af-4252-9fe8-a821998cd6b2",
             "_x": 20,
-            "_y": 70,
+            "_y": 100,
             "_width": 290,
             "_height": 200,
             "_type": "image",
+            "_style": {},
             "_src": "https://img.b2bpic.net/premium-vector/children-holding-their-toys-room-scene_1639-35193.jpg"
         },
         "ddbee19c-f05d-415f-9cda-0f9c5da1ae5a": {
             "_id": "ddbee19c-f05d-415f-9cda-0f9c5da1ae5a",
             "_x": 340,
-            "_y": 70,
+            "_y": 100,
             "_width": 290,
             "_height": 200,
             "_type": "image",
-            "_src": "https://img.b2bpic.net/free-vector/mother-her-daughter-near-fence-road_1308-25328.jpg"
-        },
-        "a0ebaf2f-5619-47b0-a868-1c6a55fd5610": {
-            "_id": "a0ebaf2f-5619-47b0-a868-1c6a55fd5610",
-            "_x": 20,
-            "_y": 280,
-            "_width": 610,
-            "_height": 20,
-            "_type": "text",
             "_style": {},
-            "_text": "<span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span>"
+            "_src": "https://img.b2bpic.net/free-vector/mother-her-daughter-near-fence-road_1308-25328.jpg"
         },
         "6267d613-9be3-46ec-a81b-b54345fb0f2d": {
             "_id": "6267d613-9be3-46ec-a81b-b54345fb0f2d",

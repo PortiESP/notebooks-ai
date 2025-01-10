@@ -49,9 +49,8 @@ const addSection = (state, section, afterId, addGap) => {
     state.sections[section.id] = section
 
     // If addGap is true, add a gap section after the new section
-    let gapId
+    let gapId = section.id + "_gap"
     if (addGap) {
-        gapId = generateUUID()  // Generate a new UUID for the gap section
         const gap = new Gap({ id: gapId })  // Create the gap section
         state.sections[gapId] = gap  // Add the gap section to the sections object
     }
@@ -92,6 +91,7 @@ const setSectionHeight = (state, id, height) => {
 
     state = cloneState(state)
     state.sections[id].height = height
+    state.forceUpdate++  // Increment the forceUpdate value to force a re-render
     return state
 }
 

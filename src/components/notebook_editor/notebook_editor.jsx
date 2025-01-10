@@ -27,6 +27,7 @@ const initialState = {
     contextMenu: null,  // The show/hide state is inferred from the value (null = hide, object = show)
     history: [], // History of actions (used for undo/redo)
     redoHistory: [], // History of actions that were undone (used for redo)
+    forceUpdate: 0,  // Increment this value to force a re-render on the useEffects that depend on it
 }
 
 let DEDUPLICATE_KEY_DOWN_TS = null
@@ -114,7 +115,7 @@ export default function NotebookEditor(props) {
         const res = arrangeSections(state.sections, state.sectionsOrder)
         // Store the result in the state global state
         dispatch({ type: "SET_SECTIONS_BY_PAGE", payload: res })
-    }, [state.sections.length, state.sectionsOrder, ...Object.values(state.sections).map(s => s.height)])
+    }, [Object.keys(state.sections).length, state.sectionsOrder, state.forceUpdate])
 
     // When the global state changes, update the local state (this will trigger a re-render with the changes)
     useEffect(() => {
