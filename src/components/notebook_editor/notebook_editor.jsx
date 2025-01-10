@@ -114,7 +114,7 @@ export default function NotebookEditor(props) {
         const res = arrangeSections(state.sections, state.sectionsOrder)
         // Store the result in the state global state
         dispatch({ type: "SET_SECTIONS_BY_PAGE", payload: res })
-    }, [state.sections, state.sectionsOrder])
+    }, [state.sections.length, state.sectionsOrder, ...Object.values(state.sections).map(s => s.height)])
 
     // When the global state changes, update the local state (this will trigger a re-render with the changes)
     useEffect(() => {

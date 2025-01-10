@@ -27,7 +27,7 @@ export default function ElementText(props) {
         if (props.sectionId.includes("preview")) return
         const eData = state.sections[props.sectionId].elements[props._id]
         if (!eData) return
-        const stl =  eData.style
+        const stl =  {...eData.style}
         if (stl.textAlign) stl.justifyContent = stl.textAlign
         setStyle(stl)
     }, [state.sections[props.sectionId]?.elements[props._id]?.style])
