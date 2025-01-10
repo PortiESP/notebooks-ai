@@ -44,7 +44,7 @@ export default function EditText({ $target, ...props }) {
         props.setValue(parsedHTML)
         const eId = $target.getAttribute("data-eid")
         const sId = $target.getAttribute("data-sid")
-        dispatch({ type: "ADD_ELEMENT_STYLE", payload: { sectionId: sId, elementId: eId, style: targetGeneralStyle } })
+        if (eId && sId) dispatch({ type: "ADD_ELEMENT_STYLE", payload: { sectionId: sId, elementId: eId, style: targetGeneralStyle } })
         props.close()
     }, [props, targetGeneralStyle, $target])
 
@@ -130,6 +130,7 @@ export default function EditText({ $target, ...props }) {
     }
 
     const handleKeyDown = useCallback((e) => {
+        e.stopPropagation()
         if (e.key === "Enter") saveEdit()
         else if (e.key === "Escape") discardEdit()
         else if (e.ctrlKey && e.key === 'b') {
@@ -222,8 +223,8 @@ export default function EditText({ $target, ...props }) {
     }, [])
 
     return (
-        <div className={s.wrap} onContextMenu={e => e.stopPropagation()} onKeyDown={handleKeyDown} onClick={handleBlur}>
-            <div className={s.wrap_inner} ref={$wrap} style={style}>
+        <div className={s.wrap} onContextMenu={e => e.stopPropagation()} onClick={handleBlur}>
+            <div className={s.wrap_inner} ref={$wrap} style={style} onKeyDown={handleKeyDown} >
                 {
                     props.type === "text" &&  // Only show the style menu for data-editable="text" (not for calligraphy: "text-raw")
                     <StyleEditMenu applyStyle={applyStyle}>
