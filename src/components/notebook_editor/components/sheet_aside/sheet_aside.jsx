@@ -10,6 +10,7 @@ import { useCallback } from 'react'
 import { useContext } from 'react'
 import { NotebookContext } from '../../utils/notebook_context'
 import { generatePDF } from '../../utils/pdf'
+import { useEffect } from 'react'
 
 export default function SheetAside() {
 
@@ -114,6 +115,10 @@ function SceneDownload() {
 
     }, [min, max, docName])
 
+    useEffect(() => {
+        setMax(Object.keys(state.sectionsByPage).length)
+    }, [state.sectionsByPage])
+
     return (
         <div className={s.menu_wrap} data-aside-menu="download">
             <div className={s.menu_title}>
@@ -141,7 +146,7 @@ function SceneDownload() {
                 </div>
                 <div className={s.download_btn_wrap}>
                     <button onClick={handleDownload}>{isLoading ?
-                        <span class={s.loader}></span>
+                        <span className={s.loader}></span>
                         : "Download"}</button>
                 </div>
             </div>
