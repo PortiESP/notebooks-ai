@@ -324,6 +324,9 @@ export default function reducer(state, action) {
         case "REDO":
             // Redo
             return redo(state)
+        case "SET_BACKGROUND":
+            // Set background
+            return { ...state, background: payload.background }
         default:
             // Invalid action type
             console.error("Invalid action type")

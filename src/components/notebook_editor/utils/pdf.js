@@ -44,4 +44,6 @@ export async function generatePDF(pages, outname = "document.pdf") {
     }
 
     pdf.save(outname); // Download the generated PDF with the filename specified
+
+    return pdf; // Return the generated PDF
 }

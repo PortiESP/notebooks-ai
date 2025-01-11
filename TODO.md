@@ -1,11 +1,5 @@
-- shortcuts
-  - eliminarelemento
-  - ...
-- context menu
-  - eliminar elemento
-  - copiar elemento
-  - pegar elemento
-  - send to the back
+TO-DOs
+- [!!!] Añadir diseño y decoraciónes
 - turn into package
 - overlay in the images to show the size and a button to reset original size
 - optimize when dragging it is slow

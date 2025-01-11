@@ -16,6 +16,7 @@ import { useHandleShortcut as handleShortcut } from "./utils/shortcuts"
 import { SHORTCUTS_KEY_DOWN, SHORTCUTS_KEY_UP } from "./utils/constants_shortcuts"
 import useGlobalState from "./hooks/use_global_state"
 import ContextMenu from "./components/context_menu/context_menu"
+import DefaultBackground from './assets/images/backgrounds/background-1.svg?react'
 
 
 // Initial State
@@ -28,6 +29,7 @@ const initialState = {
     history: [], // History of actions (used for undo/redo)
     redoHistory: [], // History of actions that were undone (used for redo)
     forceUpdate: 0,  // Increment this value to force a re-render on the useEffects that depend on it
+    background: <DefaultBackground />,
 }
 
 let DEDUPLICATE_KEY_DOWN_TS = null

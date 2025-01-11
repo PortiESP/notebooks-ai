@@ -5,6 +5,7 @@ import Blank from './components/section/section_types/blank/blank_class'
 import { generateUUID } from './utils/general'
 import RichText from './components/rich_text/rich_text'
 import { useCallback } from 'react'
+import SheetAside from './components/sheet_aside/sheet_aside'
 
 /**
  * Sheet component
@@ -17,6 +18,7 @@ import { useCallback } from 'react'
 export default function Sheet(props) {
 
     const { dispatch } = useContext(NotebookContext)
+    const { state } = useContext(NotebookContext)
 
     const handleAddSection = useCallback(() => {
         const newSection = new Blank({ id: generateUUID(), type: "blank", title: "Empty section" })
@@ -24,8 +26,13 @@ export default function Sheet(props) {
         dispatch({ type: 'ADD_SECTION', payload: { section: newSection, after: lastSectionID, addGap: "before" } })
     }, [dispatch, props.sectionsThisPage])
 
+
     return <div className={s.wrap}>
+        <SheetAside />
         <div className={s.sheet} data-element="sheet">
+            <div className={s.background}>
+                {state.background || null}
+            </div>
             <div className={s.sheet_inner_margins} data-element="sheet-inner-margins">
                 {props.children}
                 <div className={s.fake_gap} onClick={handleAddSection}>

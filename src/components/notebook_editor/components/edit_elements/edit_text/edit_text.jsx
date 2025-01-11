@@ -28,10 +28,10 @@ export default function EditText({ $target, ...props }) {
     const $input = useRef(null)
     const $wrap = useRef(null)
     const { state, dispatch } = useContext(NotebookContext)
-    const [ targetGeneralStyle, setTargetGeneralStyle ] = useState({})
+    const [targetGeneralStyle, setTargetGeneralStyle] = useState({})
 
     const saveEdit = useCallback(() => {
-        const parsedHTML = $input.current.innerHTML.replace(/<br>/ig, "")
+        const parsedHTML = $input.current.innerHTML.replace(/<br>/ig, "").replace(/<span>([\s\S])<\/span>/ig, "$1")
 
         if (props.type === "text-raw") {
             props.setValue($input.current.innerText)
@@ -66,6 +66,8 @@ export default function EditText({ $target, ...props }) {
         }
 
         const selection = document.getSelection();
+        const range = selection.getRangeAt(0);
+
         // Selected text
         const substr = selection.toString();
         // If no text was selected, return
@@ -85,8 +87,8 @@ export default function EditText({ $target, ...props }) {
             start = children[startIndex];
             end = children[endIndex];
             span = start;
-            
-        } 
+
+        }
         // If the selection was done when the text was wrapped in a span
         else {
             const range = selection.getRangeAt(0);
@@ -103,6 +105,16 @@ export default function EditText({ $target, ...props }) {
             // Move to the next sibling pointer
             span = span.nextSibling;
         } while (span && span.previousSibling !== end)
+
+
+        // Select the range again
+        range.setStart(start.firstChild || start, 0);
+        if (!end) end = $input.current.lastChild;
+        range.setEnd(end.firstChild || end, end.textContent.length);
+
+
+        selection.removeAllRanges();
+        selection.addRange(range);
     }, [$input, $target]);
 
     const applyGeneralStyle = useCallback((command, value) => {
@@ -149,7 +161,7 @@ export default function EditText({ $target, ...props }) {
 
     useEffect(() => {
         // Handle keydown events
-        
+
 
         $input.current.addEventListener("keydown", handleKeyDown)
 
@@ -167,8 +179,8 @@ export default function EditText({ $target, ...props }) {
         const sId = $target.getAttribute("data-sid")
         const $section = $target.closest("[data-element='section']")
 
-        let x=0, y=0, width=0, height=0
-        if ($section && eId){
+        let x = 0, y = 0, width = 0, height = 0
+        if ($section && eId) {
             const { top, left } = $section.getBoundingClientRect()
             if (eId && sId) {
                 const eData = state.sections[sId].elements[eId]
@@ -240,7 +252,7 @@ export default function EditText({ $target, ...props }) {
                     </StyleEditMenu>
                 }
                 <div
-                
+
                     contentEditable
                     ref={$input}
                     className={s.edit_field}
@@ -286,7 +298,7 @@ function StyleMenuColorPicker({ command, onClick, $target, icon }) {
     return (
         <div className={s.color_picker_wrap}>
             {icon}
-            <input type="color" value={value} onChange={handleChange} className={s.color_picker_input}/>
+            <input type="color" value={value} onChange={handleChange} className={s.color_picker_input} />
         </div>
     )
 }

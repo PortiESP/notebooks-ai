@@ -2,6 +2,11 @@
     width: fit-content;
     height: fit-content;
     position: relative;
+
+    &:hover [data-element="sheet-aside"] {
+        opacity: 1;
+        pointer-events: all;
+    }
 }
 
 .sheet {
@@ -14,7 +19,23 @@
     outline: 1px solid #ccc;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     position: relative;
-    // overflow: hidden;
+    overflow: hidden;
+
+    
+    .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        // background: red;
+
+        svg{
+            // width: 100%;
+            height: 100%;
+        }
+    }
 
     .sheet_inner_margins {
         width: 100%;
@@ -27,6 +48,7 @@
             outline: 1px dashed #ccc;
         }
     }
+
 
     .page_number_wrap {
         position: absolute;
