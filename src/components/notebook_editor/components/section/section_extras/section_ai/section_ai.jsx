@@ -71,6 +71,12 @@ export default function SectionAI(props) {
                 } 
                 finally {setLoading(false)}
             })
+            .catch(err => {
+                console.error("AI request failed:", err)
+                alert("Inténtalo de nuevo")
+                setLoading(false)
+            })
+
     }, [prompt, props.sData, history, textHistory])
 
     const handleClose = useCallback(e => {
