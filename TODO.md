@@ -14,5 +14,6 @@ FALTA
 - dar mas ejemplos a la IA
 
 
+
 FIX
 - Cuando se copia un elemento después de haberle dado un font family, cuando se edita el texto, se bugea
