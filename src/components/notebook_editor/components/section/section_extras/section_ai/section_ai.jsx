@@ -33,11 +33,13 @@ export default function SectionAI(props) {
     const [prompt, setPrompt] = useState("")
     const { dispatch } = useContext(NotebookContext)
     const [draftSectionData, setDraftSectionData] = useState(DEFAULT_SECTION_DRAFT)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [history, setHistory] = useState([])
     const [textHistory, setTextHistory] = useState([])
     const [timeElapsed, setTimeElapsed] = useState(0)
     const [versionNumber, setVersionNumber] = useState(1)
+    const [attempts, setAttempts] = useState(0)
+    const [errorMsg, setErrorMsg] = useState("")
 
     // Options
     const [neae, setNeae] = useState("none")
@@ -65,55 +67,72 @@ export default function SectionAI(props) {
     const handleSend = useCallback(() => {
         setLoading(true)
         setTimeElapsed(0)
+        setErrorMsg("")
+        setAttempts(0)
         
         // Update time elapsed
         const interval = setInterval(() => {
             setTimeElapsed(old => old + 1)
         }, 1000)
 
-        // Fetch to the API
-        fetch("/api/ai/section", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                q: prompt,
-                history,
-                textHistory,
-                currentSection: props.sData,
-                neae: neae !== "none" ? neae : null,
-                neaeDetails,
-                subject,
-            })
-        })
-            .then(res => res.json())
-            .then(res => {
-                console.log("AI response:", res)
-                const answerJSON = res.exerciseJson
-                const answerText = res.exerciseText
-                try {
-                    const parsedJSON = JSON.parse(answerJSON)
-                    const newSection = parseSDataToClass(parsedJSON)
-                    newSection.id = "preview"
-                    newSection.type = "blank-preview"
-                    newSection.height = 300
-                    setDraftSectionData(newSection)
-                    setHistory(old => [...old, { prompt, response: answerJSON }])
-                    setTextHistory(old => [...old, { prompt, response: answerText }])
-                    setTimeElapsed(0)
-                    setVersionNumber(old => old + 1)
-                    clearInterval(interval)
-                }
-                catch (e) {
-                    console.error("AI response is not a valid section:", response)
-                    alert("Inténtalo de nuevo")
-                }
-                finally { setLoading(false) }
-            })
-            .catch(err => {
-                console.error("AI request failed:", err)
-                alert("Inténtalo de nuevo")
+        const doFetch = (attempt) => {
+            if (attempt > 3) {
+                console.error("AI request failed too many times")
                 setLoading(false)
+                setErrorMsg("The AI request failed too many times, try again with a new prompt.")
+                return
+            }
+
+            setAttempts(attempt)
+
+            fetch("/api/ai/section", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    q: prompt,
+                    history,
+                    textHistory,
+                    currentSection: props.sData,
+                    neae: neae !== "none" ? neae : null,
+                    neaeDetails,
+                    subject,
+                    attempt
+                })
             })
+                .then(res => res.json())
+                .then(res => {
+                    console.log("AI response:", res)
+                    const answerJSON = res.exerciseJson
+                    const answerText = res.exerciseText
+                    try {
+                        const parsedJSON = JSON.parse(answerJSON)
+                        const newSection = parseSDataToClass(parsedJSON)
+                        newSection.id = "preview"
+                        newSection.type = "blank-preview"
+                        newSection.height = 300
+                        setDraftSectionData(newSection)
+                        setHistory(old => [...old, { prompt, response: answerJSON }])
+                        setTextHistory(old => [...old, { prompt, response: answerText }])
+                        setTimeElapsed(0)
+                        setVersionNumber(old => old + 1)
+                        clearInterval(interval)
+                    }
+                    catch (e) {
+                        console.error("AI response is not a valid section:", response)
+                        alert("Inténtalo de nuevo")
+                    }
+                    finally { setLoading(false) }
+                })
+                .catch(err => {
+                    console.error("AI request failed:", err)
+                    console.error("Retrying...")
+                    doFetch(attempt + 1)
+                    setLoading(false)
+                })
+        }
+
+        // Fetch to the API
+        doFetch(1)
 
     }, [prompt, props.sData, history, textHistory, neae, neaeDetails, subject])
 
@@ -145,13 +164,15 @@ export default function SectionAI(props) {
                         <button onClick={handleSend}>
                             <IconSend />
                             {
-                                loading &&
+                                loading ?
                                 <div className={s.loading_overlay}>
                                     <span className={s.loading_info}>
                                         <span>{timeElapsed}/~15s</span>
+                                        <span>{attempts}/3</span>
                                         <span>v{versionNumber}</span>
                                     </span>
                                 </div>
+                                : errorMsg ? <span className={s.error_msg}>{errorMsg}</span> : null
                             }
                         </button>
                     </div>

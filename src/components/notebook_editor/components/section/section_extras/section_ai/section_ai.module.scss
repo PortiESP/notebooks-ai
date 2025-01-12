@@ -33,7 +33,6 @@
     .ai_input_text_wrap {
         display: flex;
         width: 100%;
-        overflow: hidden;
     
         input {
             width: 100%;
@@ -90,6 +89,16 @@
                     align-items: center;    
                     gap: 5px;
                     color: $color;
+
+                    .error_msg{
+                        position: absolute;
+                        bottom: -15px;
+                        right: 10px;
+                        font-size: 10px;
+                        color: #f008;
+                        width: 400px;
+                        text-align: end;
+                    }
 
                 }
     
