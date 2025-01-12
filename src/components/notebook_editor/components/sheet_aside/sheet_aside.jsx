@@ -14,7 +14,7 @@ import { useEffect } from 'react'
 
 export default function SheetAside() {
 
-    const [scene, setScene] = useState("download")
+    const [scene, setScene] = useState("")
 
     const handleClick = useCallback((id) => {
         setScene(old => {
@@ -22,6 +22,9 @@ export default function SheetAside() {
             return id
         })
     }, [])
+
+    console.log(state.background);
+    
 
     return (
         <div className={s.wrap} data-element="sheet-aside">
@@ -48,6 +51,10 @@ export default function SheetAside() {
 
 const BACKGROUNDS = [
     {
+        img: undefined,
+        title: "Blank"
+    },
+    {
         img: <ImageBackground1 />,
         title: "Flat Nature"
     },
@@ -67,7 +74,7 @@ const BACKGROUNDS = [
 
 function SceneBackgrounds() {
 
-    const { dispatch } = useContext(NotebookContext)
+    const { state, dispatch } = useContext(NotebookContext)
 
     const handleSetBackground = useCallback((background) => {
         dispatch({ type: 'SET_BACKGROUND', payload: { background } })
@@ -82,7 +89,7 @@ function SceneBackgrounds() {
                 {
                     BACKGROUNDS.map((bg, index) => (
                         <div className={s.bg_item} key={index} onClick={() => handleSetBackground(bg.img)}>
-                            <div className={s.bg_item_img}>{bg.img}</div>
+                            <div className={s.bg_item_img} data-selected={state.background?.type.name === bg.img?.type.name || null}>{bg.img}</div>
                             <div className={s.bg_item_title}>{bg.title}</div>
                         </div>
                     ))
