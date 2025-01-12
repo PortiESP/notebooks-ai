@@ -16,6 +16,18 @@ const DEFAULT_SECTION_DRAFT = {
     height: 300,
 }
 
+const NEAR_OPTIONS = [
+    { value: "none", label: "None" },
+    { value: "nee", label: "Necesidades educativas especiales" },
+    { value: "rm", label: "Retraso madurativo" },
+    { value: "tdlc", label: "Trastorno del desarrollo del lenguaje y la comunicación" },
+    { value: "taa", label: "Trastornos de atención y aprendizaje" },
+    { value: "dgla", label: "Desconocimiento grave de la lengua de aprendizaje" },
+    { value: "svs", label: "Situaciones de vulnerabilidad socioeducativa" },
+    { value: "aci", label: "Altas capacidades intelectuales" },
+    { value: "special", label: "Condiciones especiales o de historia escolar" },
+]
+
 export default function SectionAI(props) {
 
     const [prompt, setPrompt] = useState("")
@@ -24,6 +36,13 @@ export default function SectionAI(props) {
     const [loading, setLoading] = useState(false)
     const [history, setHistory] = useState([])
     const [textHistory, setTextHistory] = useState([])
+    const [timeElapsed, setTimeElapsed] = useState(0)
+    const [versionNumber, setVersionNumber] = useState(1)
+
+    // Options
+    const [neae, setNeae] = useState("none")
+    const [neaeDetails, setNeaeDetails] = useState("")
+    const [subject, setSubject] = useState("")
 
     useEffect(() => {
         const auxSection = deepClone(props.sData)
@@ -45,10 +64,26 @@ export default function SectionAI(props) {
 
     const handleSend = useCallback(() => {
         setLoading(true)
+        setTimeElapsed(0)
+        
+        // Update time elapsed
+        const interval = setInterval(() => {
+            setTimeElapsed(old => old + 1)
+        }, 1000)
+
+        // Fetch to the API
         fetch("/api/ai/section", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ q: prompt, history, textHistory, currentSection: props.sData})
+            body: JSON.stringify({
+                q: prompt,
+                history,
+                textHistory,
+                currentSection: props.sData,
+                neae: neae !== "none" ? neae : null,
+                neaeDetails,
+                subject,
+            })
         })
             .then(res => res.json())
             .then(res => {
@@ -62,14 +97,17 @@ export default function SectionAI(props) {
                     newSection.type = "blank-preview"
                     newSection.height = 300
                     setDraftSectionData(newSection)
-                    setHistory(old => [...old, {prompt, response: answerJSON}])
-                    setTextHistory(old => [...old, {prompt, response: answerText}])
-                } 
+                    setHistory(old => [...old, { prompt, response: answerJSON }])
+                    setTextHistory(old => [...old, { prompt, response: answerText }])
+                    setTimeElapsed(0)
+                    setVersionNumber(old => old + 1)
+                    clearInterval(interval)
+                }
                 catch (e) {
                     console.error("AI response is not a valid section:", response)
                     alert("Inténtalo de nuevo")
-                } 
-                finally {setLoading(false)}
+                }
+                finally { setLoading(false) }
             })
             .catch(err => {
                 console.error("AI request failed:", err)
@@ -77,7 +115,7 @@ export default function SectionAI(props) {
                 setLoading(false)
             })
 
-    }, [prompt, props.sData, history, textHistory])
+    }, [prompt, props.sData, history, textHistory, neae, neaeDetails, subject])
 
     const handleClose = useCallback(e => {
         if (e.target.classList.contains(s.wrap)) props.close()
@@ -101,17 +139,43 @@ export default function SectionAI(props) {
     return (
         <div className={s.wrap} onMouseDown={handleClose} onContextMenu={e => e.stopPropagation()}>
             <div className={s.section_ai_inner}>
-                <div className={s.ai_input_wrap}>
-                    <input type="text" placeholder="AI input" value={prompt} onChange={e => setPrompt(e.target.value)} onKeyDown={handleKeyDown}/>
-                    <button onClick={handleSend}>
-                        <IconSend />
-                        {
-                            loading &&
-                            <div className={s.loading_overlay}>
-                                <span className={s.loader}></span>
-                            </div>
-                        }
-                    </button>
+                <search className={s.ai_input_wrap}>
+                    <div className={s.ai_input_text_wrap}>
+                        <input type="text" placeholder="AI input" value={prompt} onChange={e => setPrompt(e.target.value)} onKeyDown={handleKeyDown} />
+                        <button onClick={handleSend}>
+                            <IconSend />
+                            {
+                                loading &&
+                                <div className={s.loading_overlay}>
+                                    <span className={s.loading_info}>
+                                        <span>{timeElapsed}/~15s</span>
+                                        <span>v{versionNumber}</span>
+                                    </span>
+                                </div>
+                            }
+                        </button>
+                    </div>
+                    <div className={s.ai_input_options}>
+                        <div className={s.ai_option_neae}>
+                            <span>NEAE</span>
+                            <select name="neae" id="neae" value={neae} onChange={e => setNeae(e.target.value)}>
+                                {
+                                    NEAR_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)
+                                }
+                            </select>
+                            {
+                                neae !== "none" &&
+                                <input type="text" placeholder="Describe al alumno con el máximo detalle posible" value={neaeDetails} onChange={e => setNeaeDetails(e.target.value)} />
+                            }
+                        </div>
+                        <div className={s.ai_option_text}>
+                            <span>Subject</span>
+                            <input type="text" placeholder="Asignatura o la temática del ejercicio" />
+                        </div>
+                    </div>
+                </search>
+                <div className={s.information_wrap}>
+                    <span>You can chain questions to the AI. Just keep asking for changes to the AI until you get the desired result.</span>
                 </div>
                 <div className={s.ai_section_draft_wrap}>
                     <div className={s.preview_section} onDoubleClick={e => e.stopPropagation()}>

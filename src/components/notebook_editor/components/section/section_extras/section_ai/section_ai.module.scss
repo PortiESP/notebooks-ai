@@ -24,86 +24,151 @@
 
 }
 
-.ai_input_wrap {
-    display: flex;
-    border: 2px solid #0002;
+
+.ai_input_wrap{
+    border: 1px solid #0001;
     border-radius: 5px;
-    width: 100%;
     overflow: hidden;
-
-    input {
-        width: 100%;
-        border: none;
-        outline: none;
-        padding: 5px;
-        height: 30px;
-    }
-
-    button {
-        border: none;
-        background: #0001;
-        width: 35px;
-        cursor: pointer;
-        position: relative;
+    
+    .ai_input_text_wrap {
         display: flex;
-        justify-content: center;
-        align-items: center;
-
-        svg{
-            width: 16px;
-            height: 16px;
-            transform: rotate(45deg);
-
-            path{
-                stroke: #0008;
-            }
+        width: 100%;
+        overflow: hidden;
+    
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 5px;
+            height: 30px;
         }
-
-        &:hover {
-            background: #0002;
-        }
-
-        .loading_overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translateX(-400%);
-            height: 100%;
+    
+        button {
+            border: none;
+            background: #0001;
+            width: 35px;
+            cursor: pointer;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-
-            $color: #0002;
-
-            .loader {
-                width: 8px;
-                height: 8px;
-                position: relative;
-                animation: flash 0.5s ease-out infinite alternate;
-            }
-
-            @keyframes flash {
-                0% {
-                    background-color: #0002;
-                    box-shadow: 16px 0 #0002, -16px 0 #000;
-                }
-
-                50% {
-                    background-color: #000;
-                    box-shadow: 16px 0 #0002, -16px 0 #0002;
-                }
-
-                100% {
-                    background-color: #0002;
-                    box-shadow: 16px 0 #000, -16px 0 #0002;
+    
+            svg{
+                width: 16px;
+                height: 16px;
+                transform: rotate(45deg);
+    
+                path{
+                    stroke: #0008;
                 }
             }
+    
+            &:hover {
+                background: #0002;
+            }
+    
+            .loading_overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                transform: translateX(-100%);
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: white;
+                padding: 0 10px;
+                gap: 5px;
+                
+                $color: #0002;
+                
+                .loading_info{
+                    width: fit-content;
+                    font-size: 12px;
+                    color: #0008;
+                    padding-left: 5px;
+                    display: flex;
+                    align-items: center;    
+                    gap: 5px;
+                    color: $color;
 
+                }
+    
+            }
+        }
+    
+        &:hover input {
+            background: #0001;
         }
     }
 
-    &:hover {
-        border: 2px solid #0004;
+    .ai_input_options{
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding: 10px;
+        border-top: 1px solid #0001;
+        padding-top: 15px;
+
+        .ai_option_neae{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            span{
+                font-size: 12px;
+                color: #0008;
+                padding-left: 10px;
+            }
+
+            select{
+                padding: 5px;
+                border: 1px solid #0001;
+                border-radius: 5px;
+                outline: none;
+            }
+
+            input{
+                padding: 5px;
+                border: 1px solid #0001;
+                border-radius: 5px;
+                outline: none;
+            }
+        }
+
+        .ai_option_text{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+            min-width: 200px;
+
+            span{
+                font-size: 12px;
+                color: #0008;
+                padding-left: 10px;
+            }
+
+            input{
+                padding: 5px;
+                border: 1px solid #0001;
+                border-radius: 5px;
+                outline: none;
+            }
+        }
+    }
+}
+
+.information_wrap{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+
+    span{
+        font-size: 12px;
+        color: #0008;
+        text-align: center;
     }
 }
 
@@ -117,14 +182,14 @@
         position: absolute;
         bottom: 10px;
         left: 50%;
-        background: #000;
+        background: #0008;
         border: 1px solid #ffd000;
         color: #ffd415;
         padding: 5px 10px;
         border-radius: 5px;
         transform: translateX(-50%);
         opacity: .6;
-        z-index: 1;
+        z-index: 100;
         font-size: 12px;
     }
 
