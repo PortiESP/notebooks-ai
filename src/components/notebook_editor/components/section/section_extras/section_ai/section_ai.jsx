@@ -127,7 +127,6 @@ export default function SectionAI(props) {
                     console.error("AI request failed:", err)
                     console.error("Retrying...")
                     doFetch(attempt + 1)
-                    setLoading(false)
                 })
         }
 
