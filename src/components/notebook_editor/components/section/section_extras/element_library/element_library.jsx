@@ -15,6 +15,7 @@ import Image from '../../section_element/image/image_class'
 import BasicOperationV from '../../section_element/basic_operation_v/basic_operation_v_class'
 import FreeFormSVG from '../../section_element/free_form_svg_element/svg_class'
 import { useEffect } from 'react'
+import Calligraphy from '../../section_element/calligraphy/calligraphy_class'
 
 const SPAWN_POS_X = (210 - 20*2) * 0.25
 
@@ -32,7 +33,7 @@ export default function ElementLibrary(props) {
         }
 
         // Create new element
-        const newElementData = { id, type, x: SPAWN_POS_X, y: props.sData.height/2, width: 40, height: 40 }
+        const newElementData = { id, type, x: SPAWN_POS_X, y: props.sData.height/2, width: 80, height: 40 }
         let newElement
         // Add default data based on element type
         if (type === "text") newElement = new Text(newElementData)
@@ -52,6 +53,12 @@ export default function ElementLibrary(props) {
                 type === "square" ? <rect x="0" y="0" width="40" height="40" fill="green" /> : null
             newElement.viewBox = "0 0 40 40"
         }
+        else if (type === "calligraphy") {
+            newElement = new Calligraphy(newElementData)
+            newElement.width = 430
+            newElement.height = 80
+        }
+
 
         dispatch({ type: "ADD_ELEMENT", payload: { section: props.sData.id, newElement } })
 
@@ -90,7 +97,6 @@ export default function ElementLibrary(props) {
                         <ElementCard type="text" handleClick={handleAddElement} icon={IconText}>Text</ElementCard>
                         <ElementCard type="image" handleClick={handleAddElement} icon={IconImage}>Image</ElementCard>
                         <ElementCard type="basic_operation_v" handleClick={handleAddElement} icon={IconBasicOp}>Basic Operation</ElementCard>
-                        <ElementCard type="table" handleClick={handleAddElement} icon={IconTable}>Table</ElementCard>
                     </div>
                     <h3>Text</h3>
                     <div className={s.element_section}>

@@ -20,12 +20,6 @@ export default function ElementCalligraphy(props) {
 
     const editablePath = `sections["${props.sectionId}"].elements["${props._id}"].text`
 
-    useEffect(() => {
-        let { width, height } = $p.current.getBoundingClientRect()
-
-        dispatch({ type: "EDIT_ELEMENT", payload: { sectionId: props.sectionId, elementId: props._id, elementData: { width, height } } })
-    }, [])
-
     return (
         <div className={s.wrap}>
             <p data-editable="text-raw" data-editable-path={editablePath} className={s.text} style={style} ref={$p}>{props._text || FALLBACK_TEXT}</p>

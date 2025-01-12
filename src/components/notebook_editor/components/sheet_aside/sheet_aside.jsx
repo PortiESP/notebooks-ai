@@ -23,9 +23,6 @@ export default function SheetAside() {
         })
     }, [])
 
-    console.log(state.background);
-    
-
     return (
         <div className={s.wrap} data-element="sheet-aside">
             <div className={s.wrap_inner}>
