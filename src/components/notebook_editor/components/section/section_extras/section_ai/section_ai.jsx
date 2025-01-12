@@ -163,15 +163,18 @@ export default function SectionAI(props) {
                         <button onClick={handleSend}>
                             <IconSend />
                             {
-                                loading ?
                                 <div className={s.loading_overlay}>
                                     <span className={s.loading_info}>
                                         <span>{timeElapsed}/~15s</span>
                                         <span>{attempts}/3</span>
                                         <span>v{versionNumber}</span>
+                                        {
+                                            errorMsg &&
+                                            <span className={s.error_msg}>{errorMsg}</span>
+                                        }
                                     </span>
                                 </div>
-                                : errorMsg ? <span className={s.error_msg}>{errorMsg}</span> : null
+                                
                             }
                         </button>
                     </div>
