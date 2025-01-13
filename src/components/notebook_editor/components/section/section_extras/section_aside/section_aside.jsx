@@ -1,5 +1,5 @@
 import s from './section_aside.module.scss'
-import IconComponent from '../../../../assets/icons/component.svg?react'
+import IconComponent from '../../../../assets/icons/add-circle.svg?react'
 import IconBook from '../../../../assets/icons/book.svg?react'
 import IconTrash from '../../../../assets/icons/trash.svg?react'
 

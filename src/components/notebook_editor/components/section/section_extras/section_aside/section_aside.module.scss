@@ -43,27 +43,20 @@
             transition: all .1s ease-in-out;
 
             $color: #0004;
-            $hover-color: #0008;
+            $hover-color: #0002;
 
-            color: $color;
             font-weight: 700;
+            filter: invert(.7);
 
             svg{
                 width: 60%;
                 height: 60%;
 
-                path{
-                    stroke: $color;
-                }
             }            
 
             &:hover {
-                background: #0001;
-                color: $hover-color;
-
-                svg path {
-                    stroke: $hover-color;
-                }
+                background: $hover-color;
+                filter: invert(.4);
             }
         }
     }
