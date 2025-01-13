@@ -1,10 +1,13 @@
 import s from './sheet_aside.module.scss'
+import IconCover from '../../assets/icons/book-closed.svg?react'
 import IconLandscape from '../../assets/icons/landscape.svg?react'
 import IconPageDown from '../../assets/icons/file-down.svg?react'
 import ImageBackground1 from '../../assets/images/backgrounds/background-1.svg?react'
 import ImageBackground2 from '../../assets/images/backgrounds/background-2.svg?react'
 import ImageBackground3 from '../../assets/images/backgrounds/background-3.svg?react'
 import ImageBackground4 from '../../assets/images/backgrounds/background-4.svg?react'
+import ImageCoverMath from '../../assets/images/covers/math-cover-front.svg?react'
+import ImageCoverLiterature from '../../assets/images/covers/lengua-cover-front.svg?react'
 import { useState } from 'react'
 import { useCallback } from 'react'
 import { useContext } from 'react'
@@ -27,6 +30,7 @@ export default function SheetAside() {
         <div className={s.wrap} data-element="sheet-aside">
             <div className={s.wrap_inner}>
                 <div className={s.aside}>
+                    <div onClick={() => handleClick("cover")} className={[s.icon, scene === "cover" && s.selected].join(" ")}><IconCover /></div>
                     <div onClick={() => handleClick("backgrounds")} className={[s.icon, scene === "backgrounds" && s.selected].join(" ")}><IconLandscape /></div>
                     <div onClick={() => handleClick("download")} className={[s.icon, scene === "download" && s.selected].join(" ")}><IconPageDown /></div>
                 </div>
@@ -34,11 +38,56 @@ export default function SheetAside() {
                     scene &&
                     <div className={s.menu}>
                         {
+                            scene === "cover" && <SceneCover /> ||
                             scene === "backgrounds" && <SceneBackgrounds /> ||
                             scene === "download" && <SceneDownload /> ||
                             null
                         }
                     </div>
+                }
+            </div>
+        </div>
+    )
+}
+
+
+const COVERS = [
+    {
+        img: undefined,
+        title: "None"
+    },
+    {
+        img: <ImageCoverMath />,
+        title: "Mathematics"
+    },
+    {
+        img: <ImageCoverLiterature />,
+        title: "Literature"
+    },
+]
+
+
+function SceneCover(){
+
+    const { state, dispatch } = useContext(NotebookContext)
+
+    const handleSetCover = useCallback((cover) => {
+        dispatch({ type: 'SET_COVER', payload: { cover } })
+    }, [])
+    
+    return (
+        <div className={s.menu_wrap} data-aside-menu="cover">
+            <div className={s.menu_title}>
+                <h6>Cover</h6>
+            </div>
+            <div className={s.menu_body_grid}>
+                {
+                    COVERS.map((cover, index) => (
+                        <div className={s.menu_grid_item} key={index} onClick={() => handleSetCover(cover.img)} data-selected={state.cover?.type.name === cover.img?.type.name || null}>
+                            <div className={s.menu_item_img}>{cover.img}</div>
+                            <div className={s.menu_item_title}>{cover.title}</div>
+                        </div>
+                    ))
                 }
             </div>
         </div>
@@ -82,12 +131,12 @@ function SceneBackgrounds() {
             <div className={s.menu_title}>
                 <h6>Backgrounds</h6>
             </div>
-            <div className={s.bg_body}>
+            <div className={s.menu_body_grid}>
                 {
                     BACKGROUNDS.map((bg, index) => (
-                        <div className={s.bg_item} key={index} onClick={() => handleSetBackground(bg.img)}>
-                            <div className={s.bg_item_img} data-selected={state.background?.type.name === bg.img?.type.name || null}>{bg.img}</div>
-                            <div className={s.bg_item_title}>{bg.title}</div>
+                        <div className={s.menu_grid_item} key={index} onClick={() => handleSetBackground(bg.img)}>
+                            <div className={s.menu_item_img} data-selected={state.background?.type.name === bg.img?.type.name || null}>{bg.img}</div>
+                            <div className={s.menu_item_title}>{bg.title}</div>
                         </div>
                     ))
                 }

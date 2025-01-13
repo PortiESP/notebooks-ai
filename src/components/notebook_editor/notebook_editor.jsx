@@ -17,6 +17,7 @@ import { SHORTCUTS_KEY_DOWN, SHORTCUTS_KEY_UP } from "./utils/constants_shortcut
 import useGlobalState from "./hooks/use_global_state"
 import ContextMenu from "./components/context_menu/context_menu"
 import DefaultBackground from './assets/images/backgrounds/background-1.svg?react'
+import DefaultCover from './assets/images/covers/math-cover-front.svg?react'
 
 
 // Initial State
@@ -30,6 +31,7 @@ const initialState = {
     redoHistory: [], // History of actions that were undone (used for redo)
     forceUpdate: 0,  // Increment this value to force a re-render on the useEffects that depend on it
     background: <DefaultBackground />,
+    cover: <DefaultCover />,
 }
 
 let DEDUPLICATE_KEY_DOWN_TS = null
@@ -127,6 +129,12 @@ export default function NotebookEditor(props) {
     return (
         <NotebookProvider value={{ state, dispatch }}>
             <div className={s.wrapper}>
+                {
+                    state.cover &&
+                    <Sheet cover>
+                        {state.cover}
+                    </Sheet>
+                }
                 {
                     Object.keys(sectionsByPage).map((pageId, i) => {
                         return <Sheet key={i} pageNumber={pageId} footerTitle={state.footerTitle || "Notebook Title"} sectionsThisPage={sectionsByPage[i + 1]}>

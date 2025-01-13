@@ -21,6 +21,13 @@
     position: relative;
     overflow: hidden;
 
+    &.cover{
+        background: #f6f6f6;
+        padding: 0;
+        box-shadow: none;
+        outline: none;
+    }
+
     
     .background {
         position: absolute;

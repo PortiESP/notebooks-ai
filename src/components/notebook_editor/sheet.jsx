@@ -17,8 +17,7 @@ import SheetAside from './components/sheet_aside/sheet_aside'
  */
 export default function Sheet(props) {
 
-    const { dispatch } = useContext(NotebookContext)
-    const { state } = useContext(NotebookContext)
+    const { state, dispatch } = useContext(NotebookContext)
 
     const handleAddSection = useCallback(() => {
         const newSection = new Blank({ id: generateUUID(), type: "blank", title: "Empty section" })
@@ -29,20 +28,27 @@ export default function Sheet(props) {
 
     return <div className={s.wrap}>
         <SheetAside />
-        <div className={s.sheet} data-element="sheet">
-            <div className={s.background}>
-                {state.background || null}
-            </div>
-            <div className={s.sheet_inner_margins} data-element="sheet-inner-margins">
-                {props.children}
-                <div className={s.fake_gap} onClick={handleAddSection}>
-                    <div className={s.add_section}>
-                        <div className={s.add_section_label}>Add section</div>
-                    </div>
-                </div>
-            </div>
-            <div className={s.page_number_wrap}><span>{props.pageNumber}</span></div>
-            {props.footerTitle && <div className={s.page_footer_title_wrap}><span data-editable="text" data-editable-path="footerTitle"><RichText>{props.footerTitle}</RichText></span></div>}
+        <div className={[s.sheet, props.cover && s.cover].join(" ")} data-element="sheet">
+            {
+                props.cover
+                    ? state.cover
+                    : <>
+                        <div className={s.background}>
+                            {state.background || null}
+                        </div>
+                        <div className={s.sheet_inner_margins} data-element="sheet-inner-margins">
+                            {props.children}
+                            <div className={s.fake_gap} onClick={handleAddSection}>
+                                <div className={s.add_section}>
+                                    <div className={s.add_section_label}>Add section</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={s.page_number_wrap}><span>{props.pageNumber}</span></div>
+                        {props.footerTitle && <div className={s.page_footer_title_wrap}><span data-editable="text" data-editable-path="footerTitle"><RichText>{props.footerTitle}</RichText></span></div>}
+
+                    </>
+            }
         </div>
     </div>
 }

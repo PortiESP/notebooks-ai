@@ -84,17 +84,13 @@
         gap: 5px;
         position: relative;
     }
-}
 
-
-// Menus
-[data-aside-menu="backgrounds"] {
-    .bg_body {
+    .menu_body_grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 5px;
 
-        .bg_item {
+        .menu_grid_item {
             cursor: pointer;
             position: relative;
             display: flex;
@@ -105,7 +101,7 @@
             padding: 5px;
             border-radius: 5px;
 
-            .bg_item_img {
+            .menu_item_img {
                 position: relative;
                 height: 100px;
                 border-radius: 3px;
@@ -123,7 +119,7 @@
                 }
             }
 
-            .bg_item_title {
+            .menu_item_title {
                 font-size: 12px;
                 font-weight: 400;
                 color: #3338;
@@ -135,6 +131,10 @@
         }
     }
 }
+
+
+// Menus
+// [data-aside-menu="backgrounds"] {}
 
 
 [data-aside-menu="download"] {
