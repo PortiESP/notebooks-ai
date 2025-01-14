@@ -73,20 +73,23 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
             START_DRAG_CONDITION.sY = sectionY
         }}
         onDrag={(e, d) => {
-            setPos({ x: d.x, y: d.y })
             const { sX: sectionX, sY: sectionY } = START_DRAG_CONDITION  // Section position
             const { clientX, clientY } = e  // Mouse position
             let x = clientX - sectionX - START_DRAG_CONDITION.offsetX  // Element's new x position (relative to section)
             let y = clientY - sectionY - START_DRAG_CONDITION.offsetY  // Element's new y position (relative to section)
-
+            
             if (isShifting) {
                 x = snapToGrid(x)
                 y = snapToGrid(y)
             }
-
+    
+            setPos({ x, y })
+        }}
+        onDragStop={(e, d) => {
+            const { x, y } = d
             dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { x, y } } })
         }}
-        onResize={(e, direction, ref, delta, position) => {
+        onResizeStop={(e, direction, ref, delta, position) => {
             const { width, height } = ref.style
             const { x, y } = position
             dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { width: parseInt(width), height: parseInt(height), x, y } } })
