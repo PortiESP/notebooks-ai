@@ -57,31 +57,31 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
         }
     }, [isShifting])
 
-    const calcRelativePos = () => {
-        const $section = document.querySelector(`[data-section-id="${sectionId}"] [data-element="section"]`)
-        if (!$section) return { x: 0, y: 0 }
-        const { x: sectionX, y: sectionY } = $section.getBoundingClientRect()
-        const { x, y } = UserInput
-        const relX = x - sectionX
-        const relY = y - sectionY
-        return { x: relX, y: relY }
-    }
+    
 
     useEffect(() => {
         if (!eData.firstPlacement) return
         const disableMoving = () => {
             dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { firstPlacement: false } } })
         }
+        const $section = document.querySelector(`[data-section-id="${sectionId}"] [data-element="section"]`)
+        if (!$section) return { x: 0, y: 0 }
+        const { x: sectionX, y: sectionY } = $section.getBoundingClientRect()
+        const calcRelativePos = () => {
+            const { x, y } = UserInput
+            const relX = x - sectionX
+            const relY = y - sectionY
+            return { x: relX, y: relY }
+        }
         const updatePos = () => {
             const {x, y} = calcRelativePos()
             setPos({x: x-width/2, y: y-height/2 })
         }
 
-        const $section = document.querySelector(`[data-section-id="${sectionId}"] [data-element="section"]`)
-        $section.addEventListener("mouseover", updatePos) 
+        $section.addEventListener("mousemove", updatePos) 
         $section.addEventListener("mousedown", disableMoving)
         return () => {
-            $section.removeEventListener("mouseover", updatePos)
+            $section.removeEventListener("mousemove", updatePos)
             $section.removeEventListener("mousedown", disableMoving)
         }
     }, [eData.firstPlacement])
