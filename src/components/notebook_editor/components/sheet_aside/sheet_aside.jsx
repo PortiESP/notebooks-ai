@@ -14,6 +14,7 @@ import { useContext } from 'react'
 import { NotebookContext } from '../../utils/notebook_context'
 import { generatePDF } from '../../utils/pdf'
 import { useEffect } from 'react'
+import CONSTANTS from '../../utils/constants'
 
 export default function SheetAside() {
 
@@ -58,11 +59,21 @@ const COVERS = [
     },
     {
         img: <ImageCoverMath />,
-        title: "Mathematics"
+        title: "Mathematics",
+        sections: [
+            CONSTANTS.DEFAULT_SECTIONS["template-1"],
+            CONSTANTS.DEFAULT_SECTIONS["template-3"],
+        ],
+        order: ["template-1", "template-3"]
     },
     {
         img: <ImageCoverLiterature />,
-        title: "Literature"
+        title: "Literature",
+        sections: [
+            CONSTANTS.DEFAULT_SECTIONS["template-2"],
+            CONSTANTS.DEFAULT_SECTIONS["template-4"],
+        ],
+        order: ["template-2", "template-4"]
     },
 ]
 
@@ -72,7 +83,15 @@ function SceneCover(){
     const { state, dispatch } = useContext(NotebookContext)
 
     const handleSetCover = useCallback((cover) => {
-        dispatch({ type: 'SET_COVER', payload: { cover } })
+        dispatch({ type: 'SET_COVER', payload: { cover: cover.img } })
+        if (!cover.sections) return
+
+        const newSections = {}
+        cover.sections.forEach((section, index) => {
+            newSections[section.id] = section
+        })
+        const newOrder = cover.order
+        dispatch({ type: 'SET_SECTIONS', payload: {sections: newSections, order: newOrder} })
     }, [])
     
     return (
@@ -83,7 +102,7 @@ function SceneCover(){
             <div className={s.menu_body_grid}>
                 {
                     COVERS.map((cover, index) => (
-                        <div className={s.menu_grid_item} key={index} onClick={() => handleSetCover(cover.img)} data-selected={state.cover?.type.name === cover.img?.type.name || null}>
+                        <div className={s.menu_grid_item} key={index} onClick={() => handleSetCover(cover)} data-selected={state.cover?.type.name === cover.img?.type.name || null}>
                             <div className={s.menu_item_img}>{cover.img}</div>
                             <div className={s.menu_item_title}>{cover.title}</div>
                         </div>

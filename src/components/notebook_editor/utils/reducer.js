@@ -276,6 +276,10 @@ export default function reducer(state, action) {
             takeSnapshot(state)
             // Remove section
             return removeSection(state, payload.id)
+            case "SET_SECTIONS":
+            takeSnapshot(state)
+            // Set sections
+            return { ...state, sections: payload.sections, sectionsOrder: payload.order }
         case "SET_SECTIONS_BY_PAGE":
             // Reassign sectionsByPage
             return { ...state, sectionsByPage: payload }
