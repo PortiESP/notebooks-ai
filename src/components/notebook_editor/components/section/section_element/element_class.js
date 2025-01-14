@@ -15,6 +15,7 @@ export default class Element {
         this._type = params.type
         this._sectionId = params.sectionId
         this._style = params.style || {}
+        this._firstPlacement = params.firstPlacement || false
 
         // Check for undefined values
         if (window.debug) {
@@ -87,4 +88,10 @@ export default class Element {
         this._style = value
     }
 
+    get firstPlacement() {
+        return this._firstPlacement
+    }
+    set firstPlacement(value) {
+        this._firstPlacement = value
+    }
 }

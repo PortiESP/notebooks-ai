@@ -6,6 +6,7 @@ import { NotebookContext } from "../../../../utils/notebook_context"
 import UserInput from "../../../../utils/user-input"
 import { Rnd } from "react-rnd"
 import CONSTANTS from "../../../../utils/constants"
+import { use } from "react"
 
 const START_DRAG_CONDITION = { offsetX: 0, offsetY: 0, sX: 0, sY: 0 }
 
@@ -42,6 +43,7 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
 
         UserInput.addOnKeyDown("ShiftLeft", handleKeyDown)
         UserInput.addOnKeyUp("ShiftLeft", handleKeyUp)
+        
 
         return () => {
             UserInput.removeOnKeyDown("ShiftLeft")
@@ -54,6 +56,35 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
             setPos({ x: snapToGrid(pos.x), y: snapToGrid(pos.y) })
         }
     }, [isShifting])
+
+    const calcRelativePos = () => {
+        const $section = document.querySelector(`[data-section-id="${sectionId}"] [data-element="section"]`)
+        if (!$section) return { x: 0, y: 0 }
+        const { x: sectionX, y: sectionY } = $section.getBoundingClientRect()
+        const { x, y } = UserInput
+        const relX = x - sectionX
+        const relY = y - sectionY
+        return { x: relX, y: relY }
+    }
+
+    useEffect(() => {
+        if (!eData.firstPlacement) return
+        const disableMoving = () => {
+            dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { firstPlacement: false } } })
+        }
+        const updatePos = () => {
+            const {x, y} = calcRelativePos()
+            setPos({x: x-width/2, y: y-height/2 })
+        }
+
+        const $section = document.querySelector(`[data-section-id="${sectionId}"] [data-element="section"]`)
+        $section.addEventListener("mouseover", updatePos) 
+        $section.addEventListener("mousedown", disableMoving)
+        return () => {
+            $section.removeEventListener("mouseover", updatePos)
+            $section.removeEventListener("mousedown", disableMoving)
+        }
+    }, [eData.firstPlacement])
 
     return (<Rnd
         key={eData.id}

@@ -33,7 +33,7 @@ export default function ElementLibrary(props) {
         }
 
         // Create new element
-        const newElementData = { id, type, x: SPAWN_POS_X, y: props.sData.height/2, width: 80, height: 40 }
+        const newElementData = { id, type, x: SPAWN_POS_X, y: props.sData.height/2, width: 80, height: 40, firstPlacement: true }
         let newElement
         // Add default data based on element type
         if (type === "text") newElement = new Text(newElementData)
