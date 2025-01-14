@@ -4,6 +4,7 @@ import { setComputeObjPath } from "./computeObjPath"
 import { generateUUID } from "./general"
 import Element from "../components/section/section_element/element_class"
 import Section from "../components/section/section_types/section_class"
+import saveToCache from "./cache"
 
 
 // ======================================== UTILS FUNCTIONS ========================================
@@ -263,6 +264,9 @@ export default function reducer(state, action) {
     if (window.debug) console.log("Action:", action)
     const { payload } = action
 
+    saveToCache()
+
+    
     switch (action.type) {
         case "ADD_SECTION":
             takeSnapshot(state)

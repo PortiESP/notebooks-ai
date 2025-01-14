@@ -1,6 +1,5 @@
 import Blank from "../components/section/section_types/blank/blank_class"
 import { deepClone } from "./clone"
-import CONSTANTS from "./constants"
 import { private2public } from "./general"
 import parseElementsDataToClassObject from "./parse_eData_to_class"
 

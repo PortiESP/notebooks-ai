@@ -18,6 +18,7 @@ import useGlobalState from "./hooks/use_global_state"
 import ContextMenu from "./components/context_menu/context_menu"
 import DefaultBackground from './assets/images/backgrounds/background-1.svg?react'
 import DefaultCover from './assets/images/covers/math-cover-front.svg?react'
+import { clearCache, loadFromCache } from "./utils/cache"
 
 
 // Initial State
@@ -45,7 +46,7 @@ let DEDUPLICATE_KEY_UP_TS = null
 export default function NotebookEditor(props) {
 
     // State
-    const [state, dispatch, realTimeState] = useGlobalState(initialState)  // Global state
+    const [state, dispatch, realTimeState] = useGlobalState(loadFromCache() || initialState)  // Global state
 
     const [sectionsByPage, setSectionsByPage] = useState({})     // Array of Arrays, each array represents a page with its sections
 
@@ -59,6 +60,7 @@ export default function NotebookEditor(props) {
         window.sectionsByPage = state.sectionsByPage  // DEBUG
         window.dispatch = dispatch  // DEBUG
         window.UserInput = UserInput  // DEBUG
+        window.clearCache = clearCache  // DEBUG
     }, [state])
 
     const handleGeneratePDF = useCallback(() => {
