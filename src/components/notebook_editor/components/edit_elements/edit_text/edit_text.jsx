@@ -143,8 +143,9 @@ export default function EditText({ $target, ...props }) {
 
     const handleKeyDown = useCallback((e) => {
         e.stopPropagation()
-        if (e.key === "Enter") saveEdit()
-        else if (e.key === "Escape") discardEdit()
+
+        if (e.key === "Escape") discardEdit()
+        else if (e.key === "Enter") saveEdit()
         else if (e.ctrlKey && e.key === 'b') {
             e.preventDefault();
             applyStyle('fontWeight', 'bold');
@@ -243,11 +244,16 @@ export default function EditText({ $target, ...props }) {
                         <StyleMenuButton icon={<IconBold />} command="fontWeight" value="bold" onClick={applyStyle} />
                         <StyleMenuButton icon={<IconItalic />} command="fontStyle" value="italic" onClick={applyStyle} />
                         <StyleMenuButton icon={<IconUnderline />} command="textDecoration" value="underline" onClick={applyStyle} />
-                        <StyleMenuButton icon={<IconAlignLeft />} command="textAlign" value="start" onClick={applyGeneralStyle} />
-                        <StyleMenuButton icon={<IconAlignCenter />} command="textAlign" value="center" onClick={applyGeneralStyle} />
-                        <StyleMenuButton icon={<IconAlignRight />} command="textAlign" value="end" onClick={applyGeneralStyle} />
+                        {
+                            // Only for elements not other texts
+                            $target.dataset.eid && <>
+                                <StyleMenuButton icon={<IconAlignLeft />} command="textAlign" value="start" onClick={applyGeneralStyle} />
+                                <StyleMenuButton icon={<IconAlignCenter />} command="textAlign" value="center" onClick={applyGeneralStyle} />
+                                <StyleMenuButton icon={<IconAlignRight />} command="textAlign" value="end" onClick={applyGeneralStyle} />
+                                <StyleMenuColorPicker icon={<IconTextBackground />} command="background" onClick={applyGeneralStyle} />
+                            </>
+                        }
                         <StyleMenuColorPicker icon={<IconColorPalette />} command="color" onClick={applyStyle} $target={$target} />
-                        <StyleMenuColorPicker icon={<IconTextBackground />} command="background" onClick={applyGeneralStyle} />
                         <StyleMenuButton icon={<IconFont />} command="fontFamily" value="scholar" onClick={applyStyle} />
                     </StyleEditMenu>
                 }

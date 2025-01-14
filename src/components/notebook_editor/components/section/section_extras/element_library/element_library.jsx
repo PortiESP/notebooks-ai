@@ -51,7 +51,7 @@ export default function ElementLibrary(props) {
             newElement.content = 
                 type === "circle" ? <circle cx="20" cy="20" r="20" stroke="red" fill="none" /> :
                 type === "triangle" ? <polygon points="20,0 40,40 0,40" stroke="orange" fill="none" /> :
-                type === "square" ? <rect x="0" y="0" width="40" height="40" stroke="#8dd7ffee" fill="none" strokeWidth={2} /> : null
+                type === "square" ? <rect x="0" y="0" width="100%" height="100%" stroke="#8dd7ff" fill="none" /> : null
             newElement.viewBox = "0 0 40 40"
         }
         else if (type === "calligraphy") {
