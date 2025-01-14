@@ -66,8 +66,6 @@ export default function Templates(props) {
 
 function TemplateCard(props) {
 
-    const rawText = CONSTANTS.TEMPLATES_EXERCISE_SECTIONS[props.index].title.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ')
-
     return (
         <div className={s.template_card_wrap} onClick={() => props.handleUseTemplate(props.index)}>
             <div className={s.template_card_inner}>
