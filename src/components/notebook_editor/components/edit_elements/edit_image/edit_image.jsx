@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import s from './edit_image.module.scss'
 import { useEffect } from 'react'
+import { useCallback } from 'react'
 
 const DEFAULT_IMAGES = [
     { src: "https://plus.unsplash.com/premium_photo-1686617826184-f4188a62c3be?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Rm9uZG8lMjBkZSUyMHBhbnRhbGxhJTIwZGUlMjBlc2NyaXRvcmlvfGVufDB8fDB8fHww" },
@@ -35,8 +36,10 @@ const DEFAULT_IMAGES = [
 export default function EditImage(props) {
 
     const [results, setResults] = useState(DEFAULT_IMAGES)
+    const [resultsAI, setResultsAI] = useState([])
     const [search, setSearch] = useState("")
     const [filters, setFilters] = useState({})
+    const [aiLoading, setAILoading] = useState(false)
 
     useEffect(() => {
         if (!search) {
@@ -64,6 +67,20 @@ export default function EditImage(props) {
         props.setValue(value)
         props.close()
     }
+
+    const handleGenerate = useCallback(async () => {
+        try{
+            setAILoading(true)
+            const res = await fetch(`/api/images/generate?prompt=${search}`)
+            setAILoading(false)
+            const images = await res.json()
+            if (!images) return
+            setResultsAI(old => [...images, ...old, ])
+        } catch (error) {
+            console.error("Error generating image:", error)
+            setAILoading(false)
+        }
+    }, [search])
 
     useEffect(() => {
         // Disable scrolling
@@ -112,10 +129,14 @@ export default function EditImage(props) {
                                 <option value="pink">pink</option>
                             </select>
                         </div>
+                        <button className={s.button_ai_gen} onClick={handleGenerate}>{aiLoading ? "Loading...": "Generate with AI"}</button>
                     </div>
                     <span className={s.close} onClick={props.close}>Close</span>
                 </div>
                 <div className={s.library_body}>
+                    {
+                        resultsAI?.map((result, index) => <ImageCard key={index} data={result} setValue={handleSetValue} ai/>) || null
+                    }
                     {
                         results?.map((result, index) => <ImageCard key={index} data={result} setValue={handleSetValue} />) || <span className={s.no_results}>No results found</span>
                     }
@@ -127,7 +148,7 @@ export default function EditImage(props) {
 
 
 
-function ImageCard({ data, setValue }) {
+function ImageCard({ data, setValue, ai }) {
 
     const [imageData, setImageData] = useState({})
 
@@ -138,6 +159,9 @@ function ImageCard({ data, setValue }) {
     return (
         <div className={s.image_card} onClick={() => setValue(imageData.src)}>
             <img src={imageData.src} alt="Image" />
+            {
+                ai && <span className={s.ai_tag}>AI</span>
+            }
         </div>
     )
 }
