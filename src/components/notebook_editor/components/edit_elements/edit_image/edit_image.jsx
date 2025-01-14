@@ -74,7 +74,7 @@ export default function EditImage(props) {
             const res = await fetch(`/api/images/generate?prompt=${search}`)
             setAILoading(false)
             const images = await res.json()
-            if (!images) return
+            if (!images || images.error) return
             setResultsAI(old => [...images, ...old, ])
         } catch (error) {
             console.error("Error generating image:", error)
