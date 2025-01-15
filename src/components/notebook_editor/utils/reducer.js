@@ -56,10 +56,10 @@ const addSection = (state, section, afterId, addGap) => {
         const gap = new Gap({ id: gapId })  // Create the gap section
         state.sections[gapId] = gap  // Add the gap section to the sections object
     }
-    
+
     // Get the position where the new section should be inserted
     let position = state.sectionsOrder.indexOf(afterId) + 1 || Infinity
-    if (addGap){
+    if (addGap) {
         if (addGap === "before") state.sectionsOrder.splice(position, 0, gapId, section.id)  // Insert the gap section in the order
         else state.sectionsOrder.splice(position, 0, section.id, gapId)  // Insert the gap section in the order
     } else {
@@ -261,91 +261,97 @@ export function redo(state) {
 
 // Reducer function
 export default function reducer(state, action) {
+    try {
 
-    if (window.debug) console.log("Action:", action)
-    const { payload } = action
+        if (window.debug) console.log("Action:", action)
+        const { payload } = action
 
-    saveToCache()
+        saveToCache()
 
-    
-    switch (action.type) {
-        case "ADD_SECTION":
-            takeSnapshot(state)
-            // Add section
-            return addSection(state, payload.section, payload.after, payload.addGap)
-        case "REMOVE_SECTION":
-            takeSnapshot(state)
-            // Remove section
-            return removeSection(state, payload.id)
+
+        switch (action.type) {
+            case "ADD_SECTION":
+                takeSnapshot(state)
+                // Add section
+                return addSection(state, payload.section, payload.after, payload.addGap)
+            case "REMOVE_SECTION":
+                takeSnapshot(state)
+                // Remove section
+                return removeSection(state, payload.id)
             case "SET_SECTIONS":
-            takeSnapshot(state)
-            // Set sections
-            return { ...state, sections: payload.sections, sectionsOrder: payload.order }
-        case "SET_SECTIONS_BY_PAGE":
-            // Reassign sectionsByPage
-            return { ...state, sectionsByPage: payload }
-        case "RESIZE_SECTION":
-            // Resize section
-            return setSectionHeight(state, payload.id, payload.height)
-        case "REPLACE_SECTION":
-            takeSnapshot(state)
-            // Replace section
-            return replaceSection(state, payload.id, payload)
-        case "EDIT_SECTION":
-            // Edit section
-            return editSection(state, payload.id, payload)
-        case "ADD_ELEMENT":
-            takeSnapshot(state)
-            // Add element
-            return addElement(state, payload.section, payload.newElement)
-        case "EDIT_ELEMENT":
-            if (payload.sectionId === "preview") return state
-            // Edit element
-            return editElement(state, payload.sectionId, payload.elementId, payload.elementData)
-        case "ADD_ELEMENT_STYLE":
-            takeSnapshot(state)
-            // Add element style
-            return addElementStyle(state, payload.sectionId, payload.elementId, payload.style)
-        case "EDIT_FOOTER_TITLE":
-            takeSnapshot(state)
-            // Edit footer title
-            return editFooterTitle(state, payload)
-        case "SET_BY_PATH":
-            takeSnapshot(state)
-            // Set value by path
-            return setByPath(state, payload.path, payload.value)
-        case "SET_SECTIONS_ORDER":
-            // Set sections order
-            return setSectionsOrder(state, payload.order)
-        case "MOVE_SECTION":
-            // Move section
-            return moveSection(state, payload.id, payload.newIndex)
-        case "DELETE_ELEMENT":
-            takeSnapshot(state)
-            // Delete element
-            return deleteElement(state, payload.sectionId, payload.elementId)
-        case "SET_CONTEXT_MENU":
-            // Set context menu
-            return { ...state, contextMenu: payload }
-        case "UNDO":
-            // Undo
-            return undo(state)
-        case "REDO":
-            // Redo
-            return redo(state)
-        case "SET_BACKGROUND":
-            // Set background
-            return { ...state, background: payload.background }
-        case "SET_COVER":
-            // Set cover
-            return { ...state, cover: payload.cover }
-        case "SET_STATE":
-            // Set state
-            return payload
-        default:
-            // Invalid action type
-            console.error("Invalid action type")
-            return state
+                takeSnapshot(state)
+                // Set sections
+                return { ...state, sections: payload.sections, sectionsOrder: payload.order }
+            case "SET_SECTIONS_BY_PAGE":
+                // Reassign sectionsByPage
+                return { ...state, sectionsByPage: payload }
+            case "RESIZE_SECTION":
+                // Resize section
+                return setSectionHeight(state, payload.id, payload.height)
+            case "REPLACE_SECTION":
+                takeSnapshot(state)
+                // Replace section
+                return replaceSection(state, payload.id, payload)
+            case "EDIT_SECTION":
+                // Edit section
+                return editSection(state, payload.id, payload)
+            case "ADD_ELEMENT":
+                takeSnapshot(state)
+                // Add element
+                return addElement(state, payload.section, payload.newElement)
+            case "EDIT_ELEMENT":
+                if (payload.sectionId === "preview") return state
+                // Edit element
+                return editElement(state, payload.sectionId, payload.elementId, payload.elementData)
+            case "ADD_ELEMENT_STYLE":
+                takeSnapshot(state)
+                // Add element style
+                return addElementStyle(state, payload.sectionId, payload.elementId, payload.style)
+            case "EDIT_FOOTER_TITLE":
+                takeSnapshot(state)
+                // Edit footer title
+                return editFooterTitle(state, payload)
+            case "SET_BY_PATH":
+                takeSnapshot(state)
+                // Set value by path
+                return setByPath(state, payload.path, payload.value)
+            case "SET_SECTIONS_ORDER":
+                // Set sections order
+                return setSectionsOrder(state, payload.order)
+            case "MOVE_SECTION":
+                // Move section
+                return moveSection(state, payload.id, payload.newIndex)
+            case "DELETE_ELEMENT":
+                takeSnapshot(state)
+                // Delete element
+                return deleteElement(state, payload.sectionId, payload.elementId)
+            case "SET_CONTEXT_MENU":
+                // Set context menu
+                return { ...state, contextMenu: payload }
+            case "UNDO":
+                // Undo
+                return undo(state)
+            case "REDO":
+                // Redo
+                return redo(state)
+            case "SET_BACKGROUND":
+                // Set background
+                return { ...state, background: payload.background }
+            case "SET_COVER":
+                // Set cover
+                return { ...state, cover: payload.cover }
+            case "SET_STATE":
+                // Set state
+                return payload
+            default:
+                // Invalid action type
+                console.error("Invalid action type")
+                return state
+        }
+    } catch (e) {
+        // DEBUG: This error is not shown to the user
+        console.error(`Error in the reducer action [${action.type}]:`, e)
+        return state
     }
 }
 
