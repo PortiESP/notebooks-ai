@@ -118,9 +118,9 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
             dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { width: parseInt(width), height: parseInt(height), x, y } } })
         }}
         data-handler-for={eData.id}
-        dragGrid={[40, 40]}
+        // dragGrid={[40, 40]}
         // dragGrid={isShifting ? [CONSTANTS.GRID_SIZE, CONSTANTS.GRID_SIZE] : [1, 1]}
-        resizeGrid={isShifting ? [CONSTANTS.GRID_SIZE, CONSTANTS.GRID_SIZE] : [1, 1]}
+        // resizeGrid={isShifting ? [CONSTANTS.GRID_SIZE, CONSTANTS.GRID_SIZE] : [1, 1]}
     >
         <div className={s.wrap} data-handler data-element-id={eData.id}>
             {props.children}
