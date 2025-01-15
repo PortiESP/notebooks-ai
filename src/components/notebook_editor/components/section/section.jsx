@@ -102,12 +102,6 @@ export default function Section(props) {
         debouncedUpdateHeight(height)
     }, [height])
 
-    useEffect(() => {
-        if (sData.height === height) return
-        if (UserInput.isDragging) return
-        // Update the section height when the global state changes
-        setHeight(sData.height)
-    }, [sData.height])
 
     return (
         <div className={s.wrap} ref={$wrap} data-section-id={sData.id}>
