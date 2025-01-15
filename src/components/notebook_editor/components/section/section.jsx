@@ -11,6 +11,8 @@ import Templates from './section_extras/templates/templates.jsx'
 import SectionAside from './section_extras/section_aside/section_aside.jsx'
 import RichText from '../rich_text/rich_text.jsx'
 import SectionAI from './section_extras/section_ai/section_ai.jsx'
+import { debounce } from '../../utils/general.js'
+import { useCallback } from 'react'
 
 
 const FALLBACK_TITLE = "Untitled Section"
@@ -38,7 +40,6 @@ export default function Section(props) {
     useEffect(() => {
         setDataJSX(parseDataToJSX(props.sData))
     }, [sData])
-
 
     // INITIAL SETUP
     useEffect(() => {
@@ -89,19 +90,24 @@ export default function Section(props) {
         }
     }, [])
 
-
+    const debouncedUpdateHeight = useCallback(debounce((height) => {
+        dispatch({ type: "RESIZE_SECTION", payload: { id: sData.id, height } })
+    }, 300), [sData.id, height])
+    
     // Update the global state when the height changes (local state -> global state)
     useEffect(() => {
         if (sData.type.includes("preview")) return  // The preview sections are not real sections in the global state, they are just for preview (e.g. AI preview)
-
-        dispatch({ type: "RESIZE_SECTION", payload: { id: sData.id, height } })
+        
+        if (height === sData.height) return  // If the height (prevent circular updates)
+        debouncedUpdateHeight(height)
     }, [height])
 
-    // useEffect(() => {
-    //     if (!(sData.id ?? sData._id).includes("preview")) return
-    //     // Update the section height when the global state changes
-    //     setHeight(sData.height)
-    // }, [sData.height])
+    useEffect(() => {
+        if (sData.height === height) return
+        if (UserInput.isDragging) return
+        // Update the section height when the global state changes
+        setHeight(sData.height)
+    }, [sData.height])
 
     return (
         <div className={s.wrap} ref={$wrap} data-section-id={sData.id}>

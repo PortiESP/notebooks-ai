@@ -8,6 +8,10 @@ function App() {
       <div className="app-notebook">
         <NotebookEditor />
       </div>
+      {
+        // DEBUG
+        <span data-debug-cache onClick={() => window.clearCache()}>CLEAR CACHE</span>
+      }
     </div>
   )
 }

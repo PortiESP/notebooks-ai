@@ -32,11 +32,17 @@ const CONSTANTS = {
         "template-5": parseSDataToClass(templates[4]),
         "gap-7": new Gap({ id: "gap-7" }),
         "template-6": parseSDataToClass(templates[5]),
-
-
+        "template-100-palabras": parseSDataToClass(templates[6]),
+        "template-instrumentos": parseSDataToClass(templates[7]),
+        "template-lista-numeros": parseSDataToClass(templates[8]),
+        "template-baño": parseSDataToClass(templates[9]),
+        "template-conectores": parseSDataToClass(templates[10]),
+        "template-une-banderas": parseSDataToClass(templates[11]),
+        "template-une-capitales": parseSDataToClass(templates[12]),
+        "template-notas-pentagrama": parseSDataToClass(templates[13]),
     },
 
-    DEFAULT_SECTIONS_ORDER: ["default-1", "gap-1", "debug-1", "gap-2", "template-1", "gap-3", "template-2", "gap-4", "template-3", "gap-5", "template-4", "gap-6", "template-5", "gap-7", "template-6"],
+    DEFAULT_SECTIONS_ORDER: ["default-1", "gap-1", "debug-1", "gap-2", "template-1", "gap-3", "template-2", "gap-4", "template-3", "gap-5", "template-4", "gap-6", "template-5", "gap-7", "template-6", "template-100-palabras", "template-instrumentos", "template-lista-numeros", "template-baño", "template-conectores", "template-une-banderas", "template-une-capitales", "template-notas-pentagrama"],
     DEFAULT_GAP_HEIGHT,
     DEFAULT_SECTION_HEIGHT,
     GRID_SIZE: 10,

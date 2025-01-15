@@ -16,3 +16,21 @@
     background: #eee;
     border: 1px solid #00c3ff50;
 }
+
+
+/* DEBUG */
+[data-debug-cache]{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px;
+    background: #00c3ff50;
+    border-radius: 5px;
+
+    &:hover{
+        background: #43d3ff;
+    }
+    &:active{
+        background: #00c3ff;
+    }
+}

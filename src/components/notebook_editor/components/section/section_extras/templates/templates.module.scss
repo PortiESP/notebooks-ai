@@ -63,6 +63,7 @@
             gap: 10px;
             justify-content: center;
             align-items: flex-start;
+            overflow-y: scroll;
         }
     }
 }
@@ -91,6 +92,7 @@
 
             img {
                 height: 80px;
+                max-width: 100%;
             }
         }
 

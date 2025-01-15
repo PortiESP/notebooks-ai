@@ -11,7 +11,15 @@ import ImgTemplateThumb3 from '../../../../assets/images/templates/thumbnail_3.p
 import ImgTemplateThumb4 from '../../../../assets/images/templates/thumbnail_4.png'
 import ImgTemplateThumb5 from '../../../../assets/images/templates/thumbnail_5.png'
 import ImgTemplateThumb6 from '../../../../assets/images/templates/thumbnail_6.png'
-const THUMBNAILS = [ImgTemplateThumb1, ImgTemplateThumb2, ImgTemplateThumb3, ImgTemplateThumb4, ImgTemplateThumb5, ImgTemplateThumb6]
+import ImgTemplateThumbBaño from '../../../../assets/images/templates/thumbnail-baño.png'
+import ImgTemplateThumbConectores from '../../../../assets/images/templates/thumbnail-conectores.png'
+import ImgTemplateThumbHistoria from '../../../../assets/images/templates/thumbnail-historia.png'
+import ImgTemplateThumbInstrumentos from '../../../../assets/images/templates/thumbnail-instrumentos.png'
+import ImgTemplateThumbListaNumeros from '../../../../assets/images/templates/thumbnail-lista-numeros.png'
+import ImgTemplateThumbNotasPentagrama from '../../../../assets/images/templates/thumbnail-notas-pentagrama.png'
+import ImgTemplateThumbUneBanderas from '../../../../assets/images/templates/thumbnail-une-banderas.png'
+import ImgTemplateThumbUneCapitales from '../../../../assets/images/templates/thumbnail-une-capitales.png'
+const THUMBNAILS = [ImgTemplateThumb1, ImgTemplateThumb2, ImgTemplateThumb3, ImgTemplateThumb4, ImgTemplateThumb5, ImgTemplateThumb6, ImgTemplateThumbHistoria, ImgTemplateThumbInstrumentos, ImgTemplateThumbListaNumeros, ImgTemplateThumbBaño, ImgTemplateThumbConectores, ImgTemplateThumbUneBanderas, ImgTemplateThumbUneCapitales, ImgTemplateThumbNotasPentagrama]
 
 export default function Templates(props) {
 

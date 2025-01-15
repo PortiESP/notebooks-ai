@@ -16,7 +16,7 @@ const DEFAULT_SECTION_DRAFT = {
     height: 300,
 }
 
-const NEAR_OPTIONS = [
+const NEAE_OPTIONS = [
     { value: "none", label: "None" },
     { value: "nee", label: "Necesidades educativas especiales" },
     { value: "rm", label: "Retraso madurativo" },
@@ -27,6 +27,21 @@ const NEAR_OPTIONS = [
     { value: "aci", label: "Altas capacidades intelectuales" },
     { value: "special", label: "Condiciones especiales o de historia escolar" },
 ]
+
+const CURSO_OPTIONS = [
+    { value: "none", label: "None" },
+    { value: "1p", label: "1º Primaria" },
+    { value: "2p", label: "2º Primaria" },
+    { value: "3p", label: "3º Primaria" },
+    { value: "4p", label: "4º Primaria" },
+    { value: "5p", label: "5º Primaria" },
+    { value: "6p", label: "6º Primaria" },
+    { value: "1s", label: "1º Secundaria" },
+    { value: "2s", label: "2º Secundaria" },
+    { value: "3s", label: "3º Secundaria" },
+    { value: "4s", label: "4º Secundaria" },
+]
+    
 
 export default function SectionAI(props) {
 
@@ -45,6 +60,7 @@ export default function SectionAI(props) {
     const [neae, setNeae] = useState("none")
     const [neaeDetails, setNeaeDetails] = useState("")
     const [subject, setSubject] = useState("")
+    const [curso, setCurso] = useState("none")
 
     useEffect(() => {
         const auxSection = deepClone(props.sData)
@@ -93,10 +109,11 @@ export default function SectionAI(props) {
                     history,
                     textHistory,
                     currentSection: props.sData,
+                    attempt,
                     neae: neae !== "none" ? neae : null,
                     neaeDetails,
                     subject,
-                    attempt
+                    curso: curso !== "none" ? curso : null,
                 })
             })
                 .then(res => res.json())
@@ -133,7 +150,7 @@ export default function SectionAI(props) {
         // Fetch to the API
         doFetch(1)
 
-    }, [prompt, props.sData, history, textHistory, neae, neaeDetails, subject])
+    }, [prompt, props.sData, history, textHistory, neae, neaeDetails, subject, curso])
 
     const handleClose = useCallback(e => {
         if (e.target.classList.contains(s.wrap)) props.close()
@@ -179,11 +196,11 @@ export default function SectionAI(props) {
                         </button>
                     </div>
                     <div className={s.ai_input_options}>
-                        <div className={s.ai_option_neae}>
+                        <div className={s.ai_option_select}>
                             <span>NEAE</span>
                             <select name="neae" id="neae" value={neae} onChange={e => setNeae(e.target.value)}>
                                 {
-                                    NEAR_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)
+                                    NEAE_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)
                                 }
                             </select>
                             {
@@ -194,6 +211,14 @@ export default function SectionAI(props) {
                         <div className={s.ai_option_text}>
                             <span>Subject</span>
                             <input type="text" placeholder="Asignatura o la temática del ejercicio" />
+                        </div>
+                        <div className={s.ai_option_select}>
+                        <span>Curso</span>
+                            <select name="curso" id="curso" value={curso} onChange={e => setCurso(e.target.value)}>
+                                {
+                                    CURSO_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)
+                                }
+                            </select>
                         </div>
                     </div>
                 </search>
