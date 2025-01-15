@@ -13,7 +13,7 @@ const CONSTANTS = {
 CONSTANTS.COVERS = [
     {
         img: <ImageCoverMath />,
-        title: "Mathematics",
+        title: "Matemáticas",
         sections: {
             "template-1": parseSDataToClass(templates[0]),
             "template-2": parseSDataToClass(templates[1]),
@@ -24,7 +24,7 @@ CONSTANTS.COVERS = [
     },
     {
         img: <ImageCoverLiterature />,
-        title: "Literature",
+        title: "Lengua",
         sections: {
             "template-3": parseSDataToClass(templates[2]),
             "template-conectores": parseSDataToClass(templates[10]),

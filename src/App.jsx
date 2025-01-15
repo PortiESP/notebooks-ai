@@ -10,6 +10,7 @@ function App() {
       </div>
       {
         // DEBUG
+        window.debug &&
         <span data-debug-cache onClick={() => window.clearCache()}>CLEAR CACHE</span>
       }
     </div>

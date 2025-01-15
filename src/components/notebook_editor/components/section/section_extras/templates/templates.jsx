@@ -54,7 +54,7 @@ export default function Templates(props) {
     return <div className={s.section_templates_wrap} onClick={(e) => e.target.className === s.section_templates_wrap && props.close()} onContextMenu={(e) => e.stopPropagation()}>
         <div className={s.section_templates_inner}>
             <div className={s.menu_title}>
-                <h3>Templates</h3>
+                <h3>Plantillas</h3>
             </div>
             <div className={s.menu_body}>
                 {
@@ -65,7 +65,7 @@ export default function Templates(props) {
                 }
             </div>
             <div className={s.templates_close}>
-                <button onClick={() => props.setShowTemplates(false)}>Close</button>
+                <button onClick={() => props.setShowTemplates(false)}>Cerrar</button>
             </div>
         </div>
     </div>

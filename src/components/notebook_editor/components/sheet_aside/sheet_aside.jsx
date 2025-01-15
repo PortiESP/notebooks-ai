@@ -78,7 +78,7 @@ function SceneCover(){
     return (
         <div className={s.menu_wrap} data-aside-menu="cover">
             <div className={s.menu_title}>
-                <h6>Cover</h6>
+                <h6>Mis Cuadernillos</h6>
             </div>
             <div className={s.menu_body_grid}>
                 {
@@ -98,19 +98,19 @@ function SceneCover(){
 const BACKGROUNDS = [
     {
         img: undefined,
-        title: "Blank"
+        title: "En blanco"
     },
     {
         img: <ImageBackground1 />,
-        title: "Flat Nature"
+        title: "Naturaleza"
     },
     {
         img: <ImageBackground2 />,
-        title: "Brush Rush"
+        title: "Trazos"
     },
     {
         img: <ImageBackground3 />,
-        title: "Imagination"
+        title: "Imaginación"
     },
     {
         img: <ImageBackground4 />,
@@ -129,7 +129,7 @@ function SceneBackgrounds() {
     return (
         <div className={s.menu_wrap} data-aside-menu="backgrounds">
             <div className={s.menu_title}>
-                <h6>Backgrounds</h6>
+                <h6>Fondos de Página</h6>
             </div>
             <div className={s.menu_body_grid}>
                 {
@@ -175,13 +175,13 @@ function SceneDownload() {
     return (
         <div className={s.menu_wrap} data-aside-menu="download">
             <div className={s.menu_title}>
-                <h6>Download</h6>
+                <h6>Descargar</h6>
             </div>
             <div className={s.download_body}>
                 <div className={s.pages_wrap}></div>
                 <div className={s.form_wrap}>
                     <div className={s.doc_name}>
-                        <label>Document name</label>
+                        <label>Nombre del documento</label>
                         <input type="text" value={docName} onChange={e => setDocName(e.target.value)} />
                     </div>
                     <div className={s.min_max_wrap}>
@@ -200,7 +200,7 @@ function SceneDownload() {
                 <div className={s.download_btn_wrap}>
                     <button onClick={handleDownload}>{isLoading ?
                         <span className={s.loader}></span>
-                        : "Download"}</button>
+                        : "Descargar"}</button>
                 </div>
             </div>
         </div>

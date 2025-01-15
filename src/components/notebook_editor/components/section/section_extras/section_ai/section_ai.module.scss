@@ -78,12 +78,11 @@
                 padding: 0 10px;
                 gap: 5px;
                 
-                $color: #0002;
+                $color: #0004;
                 
                 .loading_info{
                     width: fit-content;
                     font-size: 12px;
-                    color: #0008;
                     padding-left: 5px;
                     display: flex;
                     align-items: center;    
@@ -186,7 +185,7 @@
     
     // Let know the user that the section is in draft mode
     &:before {
-        content: 'Draft (accept to edit)';
+        content: 'Borrador (acepta los cambios para poder editarlo)';
         position: absolute;
         bottom: 10px;
         left: 50%;

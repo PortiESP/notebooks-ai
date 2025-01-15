@@ -90,33 +90,33 @@ export default function ElementLibrary(props) {
         <div className={s.section_element_library_wrap} onClick={(e) => e.target.className === s.section_element_library_wrap && props.setShowElementLibrary(false)} onContextMenu={(e) => e.stopPropagation()}>
             <div className={s.section_element_library}>
                 <div className={s.element_library_title}>
-                    <h3>Element Library</h3>
+                    <h3>Biblioteca de Elementos</h3>
                 </div>
                 <div className={s.element_library_content}>
-                    <h3>Basic</h3>
+                    <h3>Básicos</h3>
                     <div className={s.element_section}>
-                        <ElementCard type="text" handleClick={handleAddElement} icon={IconText}>Text</ElementCard>
-                        <ElementCard type="image" handleClick={handleAddElement} icon={IconImage}>Image</ElementCard>
-                        <ElementCard type="basic_operation_v" handleClick={handleAddElement} icon={IconBasicOp}>Basic Operation</ElementCard>
+                        <ElementCard type="text" handleClick={handleAddElement} icon={IconText}>Texto</ElementCard>
+                        <ElementCard type="image" handleClick={handleAddElement} icon={IconImage}>Imagen</ElementCard>
+                        <ElementCard type="basic_operation_v" handleClick={handleAddElement} icon={IconBasicOp}>Operation Básica Vertical</ElementCard>
                     </div>
-                    <h3>Text</h3>
+                    <h3>Texto</h3>
                     <div className={s.element_section}>
-                        <ElementCard type="text" handleClick={handleAddElement} icon={IconText}>Text</ElementCard>
-                        <ElementCard type="calligraphy" handleClick={handleAddElement} icon={IconText}>Calligraphy</ElementCard>
+                        <ElementCard type="text" handleClick={handleAddElement} icon={IconText}>Texto</ElementCard>
+                        <ElementCard type="calligraphy" handleClick={handleAddElement} icon={IconText}>Caligrafía</ElementCard>
                     </div>
                     <h3>Math</h3>
                     <div className={s.element_section}>
-                        <ElementCard type="basic_operation_v" handleClick={handleAddElement} icon={IconBasicOp}>Basic Operation</ElementCard>
+                        <ElementCard type="basic_operation_v" handleClick={handleAddElement} icon={IconBasicOp}>Operación Básica Vertical</ElementCard>
                     </div>
-                    <h3>Shapes</h3>
+                    <h3>Formas</h3>
                     <div className={s.element_section}>
-                        <ElementCard type="circle" handleClick={handleAddElement} icon={IconCircle}>Circle</ElementCard>
-                        <ElementCard type="triangle" handleClick={handleAddElement} icon={IconTriangle}>Triangle</ElementCard>
-                        <ElementCard type="square" handleClick={handleAddElement} icon={IconSquare}>Square</ElementCard>
+                        <ElementCard type="circle" handleClick={handleAddElement} icon={IconCircle}>Circulo</ElementCard>
+                        <ElementCard type="triangle" handleClick={handleAddElement} icon={IconTriangle}>Triangulo</ElementCard>
+                        <ElementCard type="square" handleClick={handleAddElement} icon={IconSquare}>Cuadrado</ElementCard>
                     </div>
                 </div>
                 <div className={s.element_library_close}>
-                    <button onClick={() => props.setShowElementLibrary(false)}>Close</button>
+                    <button onClick={() => props.setShowElementLibrary(false)}>Cerrar</button>
                 </div>
             </div>
         </div>

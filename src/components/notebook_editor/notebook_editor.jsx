@@ -148,7 +148,7 @@ export default function NotebookEditor(props) {
                         </Sheet>
                     })
                 }
-                <button onClick={handleGeneratePDF} className={s.generatePDF}>Generate PDF</button>
+                <button onClick={handleGeneratePDF} className={s.generatePDF}>Generar PDF</button>
                 <EditManager />
                 <ContextMenu />
             </div>

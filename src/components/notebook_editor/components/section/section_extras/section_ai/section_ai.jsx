@@ -17,7 +17,7 @@ const DEFAULT_SECTION_DRAFT = {
 }
 
 const NEAE_OPTIONS = [
-    { value: "none", label: "None" },
+    { value: "none", label: "Ninguno" },
     { value: "nee", label: "Necesidades educativas especiales" },
     { value: "rm", label: "Retraso madurativo" },
     { value: "tdlc", label: "Trastorno del desarrollo del lenguaje y la comunicación" },
@@ -179,15 +179,13 @@ export default function SectionAI(props) {
             <div className={s.section_ai_inner}>
                 <search className={s.ai_input_wrap}>
                     <div className={s.ai_input_text_wrap}>
-                        <input type="text" placeholder="AI input" value={prompt} onChange={e => setPrompt(e.target.value)} onKeyDown={handleKeyDown} />
+                        <input type="text" placeholder="Pídele algo a la IA sobre el ejercicio actual" value={prompt} onChange={e => setPrompt(e.target.value)} onKeyDown={handleKeyDown} />
                         <button onClick={handleSend}>
                             <IconSend />
                             {
                                 <div className={s.loading_overlay}>
                                     <span className={s.loading_info}>
                                         <span>{timeElapsed}/~15s</span>
-                                        <span>{attempts}/3</span>
-                                        <span>v{versionNumber}</span>
                                         {
                                             errorMsg &&
                                             <span className={s.error_msg}>{errorMsg}</span>
@@ -212,7 +210,7 @@ export default function SectionAI(props) {
                             }
                         </div>
                         <div className={s.ai_option_text}>
-                            <span>Subject</span>
+                            <span>Asignatura</span>
                             <input type="text" placeholder="Asignatura o la temática del ejercicio" />
                         </div>
                         <div className={s.ai_option_select}>
@@ -226,7 +224,7 @@ export default function SectionAI(props) {
                     </div>
                 </search>
                 <div className={s.information_wrap}>
-                    <span>You can chain questions to the AI. Just keep asking for changes to the AI until you get the desired result.</span>
+                    <span>Puedes hacer sucesivas peticiones a la IA sobre el ejercicio actual hasta estar satisfecho con el resultado.</span>
                 </div>
                 <div className={s.ai_section_draft_wrap}>
                     <div className={s.preview_section} onDoubleClick={e => e.stopPropagation()}>
@@ -235,8 +233,8 @@ export default function SectionAI(props) {
                 </div>
                 <div className={s.ai_buttons}>
                     <div className={s.ai_buttons_inner}>
-                        <button onClick={handleAccept} disabled={!draftSectionData || draftSectionData.doNotAccept}>Accept</button>
-                        <button onClick={props.close}>Close</button>
+                        <button onClick={handleAccept} disabled={!draftSectionData || draftSectionData.doNotAccept}>Aceptar</button>
+                        <button onClick={props.close}>Cerrar</button>
                     </div>
                 </div>
             </div>
