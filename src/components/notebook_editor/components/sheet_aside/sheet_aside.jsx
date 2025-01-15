@@ -6,8 +6,6 @@ import ImageBackground1 from '../../assets/images/backgrounds/background-1.svg?r
 import ImageBackground2 from '../../assets/images/backgrounds/background-2.svg?react'
 import ImageBackground3 from '../../assets/images/backgrounds/background-3.svg?react'
 import ImageBackground4 from '../../assets/images/backgrounds/background-4.svg?react'
-import ImageCoverMath from '../../assets/images/covers/math-cover-front.svg?react'
-import ImageCoverLiterature from '../../assets/images/covers/lengua-cover-front.svg?react'
 import { useState } from 'react'
 import { useCallback } from 'react'
 import { useContext } from 'react'
@@ -15,6 +13,7 @@ import { NotebookContext } from '../../utils/notebook_context'
 import { generatePDF } from '../../utils/pdf'
 import { useEffect } from 'react'
 import CONSTANTS from '../../utils/constants'
+import { loadFromCache } from '../../utils/cache'
 
 export default function SheetAside() {
 
@@ -52,30 +51,7 @@ export default function SheetAside() {
 }
 
 
-const COVERS = [
-    {
-        img: undefined,
-        title: "None"
-    },
-    {
-        img: <ImageCoverMath />,
-        title: "Mathematics",
-        sections: [
-            CONSTANTS.DEFAULT_SECTIONS["template-1"],
-            CONSTANTS.DEFAULT_SECTIONS["template-3"],
-        ],
-        order: ["template-1", "template-3"]
-    },
-    {
-        img: <ImageCoverLiterature />,
-        title: "Literature",
-        sections: [
-            CONSTANTS.DEFAULT_SECTIONS["template-2"],
-            CONSTANTS.DEFAULT_SECTIONS["template-4"],
-        ],
-        order: ["template-2", "template-4"]
-    },
-]
+
 
 
 function SceneCover(){
@@ -86,12 +62,17 @@ function SceneCover(){
         dispatch({ type: 'SET_COVER', payload: { cover: cover.img } })
         if (!cover.sections) return
 
-        const newSections = {}
-        cover.sections.forEach((section, index) => {
-            newSections[section.id] = section
-        })
-        const newOrder = cover.order
-        dispatch({ type: 'SET_SECTIONS', payload: {sections: newSections, order: newOrder} })
+        const coverName = cover.img?.type.name
+        const coverCacheData = localStorage.getItem(coverName)
+        // Cached sections for the cover
+        if (coverCacheData) {
+            dispatch({ type: 'SET_STATE', payload: loadFromCache(coverName) })
+        } 
+        // Default sections for the cover
+        else {
+            dispatch({ type: 'SET_SECTIONS', payload: {sections: cover.sections, order: cover.order} })
+        }
+
     }, [])
     
     return (
@@ -101,7 +82,7 @@ function SceneCover(){
             </div>
             <div className={s.menu_body_grid}>
                 {
-                    COVERS.map((cover, index) => (
+                    CONSTANTS.COVERS.map((cover, index) => (
                         <div className={s.menu_grid_item} key={index} onClick={() => handleSetCover(cover)} data-selected={state.cover?.type.name === cover.img?.type.name || null}>
                             <div className={s.menu_item_img}>{cover.img}</div>
                             <div className={s.menu_item_title}>{cover.title}</div>

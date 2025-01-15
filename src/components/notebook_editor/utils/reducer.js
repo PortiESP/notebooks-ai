@@ -4,7 +4,8 @@ import { setComputeObjPath } from "./computeObjPath"
 import { generateUUID } from "./general"
 import Element from "../components/section/section_element/element_class"
 import Section from "../components/section/section_types/section_class"
-import saveToCache from "./cache"
+import saveToCache, { loadFromCache } from "./cache"
+import CONSTANTS from "./constants"
 
 
 // ======================================== UTILS FUNCTIONS ========================================
@@ -338,6 +339,9 @@ export default function reducer(state, action) {
         case "SET_COVER":
             // Set cover
             return { ...state, cover: payload.cover }
+        case "SET_STATE":
+            // Set state
+            return payload
         default:
             // Invalid action type
             console.error("Invalid action type")

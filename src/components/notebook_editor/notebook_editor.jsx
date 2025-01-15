@@ -23,9 +23,9 @@ import { clearCache, loadFromCache } from "./utils/cache"
 
 // Initial State
 const initialState = {
-    sections: CONSTANTS.DEFAULT_SECTIONS,  // Sections of the notebook by id
-    sectionsOrder: CONSTANTS.DEFAULT_SECTIONS_ORDER,  // Order of the sections
-    sectionsByPage: arrangeSections(CONSTANTS.DEFAULT_SECTIONS, CONSTANTS.DEFAULT_SECTIONS_ORDER),  // Sections arranged by page
+    sections: CONSTANTS.COVERS[0].sections,  // Sections of the notebook by id
+    sectionsOrder: CONSTANTS.COVERS[0].order,  // Order of the sections
+    sectionsByPage: arrangeSections(CONSTANTS.COVERS[0].sections, CONSTANTS.COVERS[0].order),  // Sections arranged by page
     footerTitle: "Notebook Title 1",
     contextMenu: null,  // The show/hide state is inferred from the value (null = hide, object = show)
     history: [], // History of actions (used for undo/redo)
