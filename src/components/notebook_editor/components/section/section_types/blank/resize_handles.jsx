@@ -33,9 +33,9 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
     const y = Math.round(eData.y * 10) / 10
 
     useEffect(() => {
-        if (isShifting) return
-        setPos({ x: eData.x, y: eData.y })
-    }, [eData.x, eData.y])
+        if (isShifting) setPos({ x: snapToGrid(pos.x), y: snapToGrid(pos.y) })
+        else setPos({ x: eData.x, y: eData.y })
+    }, [eData.x, eData.y, isShifting])
 
     useEffect(() => {
         const handleKeyDown = () => setIsShifting(true)
@@ -50,14 +50,6 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
             UserInput.removeOnKeyUp("ShiftLeft")
         }
     }, [])
-
-    useEffect(() => {
-        if (isShifting){
-            setPos({ x: snapToGrid(pos.x), y: snapToGrid(pos.y) })
-        }
-    }, [isShifting])
-
-    
 
     useEffect(() => {
         if (!eData.firstPlacement) return
@@ -109,10 +101,10 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
             let x = clientX - sectionX - START_DRAG_CONDITION.offsetX  // Element's new x position (relative to section)
             let y = clientY - sectionY - START_DRAG_CONDITION.offsetY  // Element's new y position (relative to section)
             
-            if (isShifting) {
-                x = snapToGrid(x)
-                y = snapToGrid(y)
-            }
+            // if (isShifting) {
+            //     x = snapToGrid(x)
+            //     y = snapToGrid(y)
+            // }
     
             setPos({ x, y })
         }}
@@ -126,7 +118,8 @@ export default function ResizeHandles({eData, sectionId, ...props}) {
             dispatch({ type: "EDIT_ELEMENT", payload: { elementId: eData.id, sectionId, elementData: { width: parseInt(width), height: parseInt(height), x, y } } })
         }}
         data-handler-for={eData.id}
-        dragGrid={isShifting ? [CONSTANTS.GRID_SIZE, CONSTANTS.GRID_SIZE] : [1, 1]}
+        dragGrid={[40, 40]}
+        // dragGrid={isShifting ? [CONSTANTS.GRID_SIZE, CONSTANTS.GRID_SIZE] : [1, 1]}
         resizeGrid={isShifting ? [CONSTANTS.GRID_SIZE, CONSTANTS.GRID_SIZE] : [1, 1]}
     >
         <div className={s.wrap} data-handler data-element-id={eData.id}>

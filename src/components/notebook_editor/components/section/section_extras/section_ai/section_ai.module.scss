@@ -187,7 +187,7 @@
     &:before {
         content: 'Borrador (acepta los cambios para poder editarlo)';
         position: absolute;
-        bottom: 10px;
+        bottom: 20px;
         left: 50%;
         background: #0008;
         border: 1px solid #ffd000;
@@ -200,9 +200,32 @@
         font-size: 12px;
     }
 
-    .preview_section{
-        pointer-events: none;
+    .preview_section {
+        max-height: 60vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+
+        // Pretty scrollbar
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #ddd; 
+        }
+
+
+
+
+        [data-element="section"]{
+            pointer-events: none;
+        }
     }
+    
 }
 
 .ai_buttons {
