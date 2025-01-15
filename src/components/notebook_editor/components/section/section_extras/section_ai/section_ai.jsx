@@ -30,16 +30,19 @@ const NEAE_OPTIONS = [
 
 const CURSO_OPTIONS = [
     { value: "none", label: "None" },
+    { value: "inf3", label: "Infantil (3 años)" },
+    { value: "inf4", label: "Infantil (4 años)" },
+    { value: "inf5", label: "Infantil (5 años)" },
     { value: "1p", label: "1º Primaria" },
     { value: "2p", label: "2º Primaria" },
     { value: "3p", label: "3º Primaria" },
     { value: "4p", label: "4º Primaria" },
     { value: "5p", label: "5º Primaria" },
     { value: "6p", label: "6º Primaria" },
-    { value: "1s", label: "1º Secundaria" },
-    { value: "2s", label: "2º Secundaria" },
-    { value: "3s", label: "3º Secundaria" },
-    { value: "4s", label: "4º Secundaria" },
+    { value: "1s", label: "1º ESO" },
+    { value: "2s", label: "2º ESO" },
+    { value: "3s", label: "3º ESO" },
+    { value: "4s", label: "4º ESO" },
 ]
     
 
