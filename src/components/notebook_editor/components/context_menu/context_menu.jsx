@@ -13,12 +13,13 @@ const CONTEXT_MENU_WIDTH = 200
 // !!! In the callbacks, the state is passed as an argument to avoid stale closures
 const CONTEXT_OPTIONS = {
     element: [
-        { label: "Delete element", callback: contextMenuDeleteElement },
+        { label: "Eliminar elemento", callback: contextMenuDeleteElement },
+        { label: "Editar con IA!", callback: contextMenuEditWithAI },
     ],
     section: [
-        { label: "Delete section", callback: contextMenuDeleteSection },
-        { label: "Add section below", callback: contextMenuAddSectionBelow },
-        { label: "Add gap below", callback: contextMenuAddGapBelow },
+        { label: "Eliminar sección", callback: contextMenuDeleteSection },
+        { label: "Añadir sección abajo", callback: contextMenuAddSectionBelow },
+        { label: "Añadir espacio abajo", callback: contextMenuAddGapBelow },
     ],
 }
 
@@ -26,10 +27,10 @@ const GLOBAL_OPTIONS = [
     // { label: "Undo", callback: () => console.log("Undo") },
     // { label: "Redo" },
     // { label: "Cut" },
-    { label: "Copy", callback: contextMenuCopy },
-    { label: "Paste", callback: contextMenuPaste },
+    { label: "Copiar", callback: contextMenuCopy },
+    { label: "Pegar", callback: contextMenuPaste },
     { divider: true },
-    { label: "Download Notebook", callback: () => generatePDF() },
+    { label: "Descargar cuadernillo", callback: () => generatePDF() },
 ]
 
 
@@ -172,4 +173,21 @@ function contextMenuAddGapBelow(state) {
     const newSection = new Gap({})
 
     window.notebooks_ai.dispatch({ type: "ADD_SECTION", payload: { section: newSection, after: afterSectionId } })
+}
+
+function contextMenuEditWithAI(state) {
+    const { sectionId, elementId } = state.contextMenu
+    const eData = state.sections[sectionId].elements[elementId]
+    const prompt = window.prompt("Introduce el prompt para la IA:")
+    fetch("/api/ai/element", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ q: prompt, element: eData})
+    })
+    .then(res => res.json())
+    .then(data => {
+        const element = JSON.parse(data.element)
+        window.notebooks_ai.dispatch({ type: "EDIT_ELEMENT", payload: { sectionId, elementId, elementData: element } })
+        console.log(data)
+    })
 }
