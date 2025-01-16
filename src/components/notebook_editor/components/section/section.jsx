@@ -103,6 +103,12 @@ export default function Section(props) {
     }, [height])
 
 
+    const handleDoubleClickElementLibrary = useCallback((e) => {
+        if (e.target.closest("[data-handler-for]")) return
+        setShowElementLibrary(true)
+    }, [])
+
+
     return (
         <div className={s.wrap} ref={$wrap} data-section-id={sData.id}>
             <div className={s.section_inner} style={{ height: height + "px" }} data-element="section">
@@ -114,7 +120,7 @@ export default function Section(props) {
                         <span className={s.title_decoration}>{state.sectionsOrder.filter(e => state.sections[e].type === "blank").indexOf(sData.id) + 1}</span>
                     </div>
                 }
-                <div className={s.section_content}>
+                <div className={s.section_content} onDoubleClick={handleDoubleClickElementLibrary}>
                     {dataJSX}
                 </div>
             </div>

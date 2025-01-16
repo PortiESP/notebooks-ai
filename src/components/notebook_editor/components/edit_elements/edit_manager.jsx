@@ -22,6 +22,7 @@ export default function EditManager(props) {
 
     // Handle double click event (choose the form to render)
     const handleDoubleClick = (e) => {
+        e.stopPropagation()
         // Get the element clicked (or the closest element with the attribute)
         const $target = e.target.closest("[data-editable]")
 

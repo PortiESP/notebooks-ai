@@ -6,7 +6,6 @@ import { NotebookContext } from "../../../../utils/notebook_context"
 import UserInput from "../../../../utils/user-input"
 import { Rnd } from "react-rnd"
 import CONSTANTS from "../../../../utils/constants"
-import { use } from "react"
 
 const START_DRAG_CONDITION = { offsetX: 0, offsetY: 0, sX: 0, sY: 0 }
 
