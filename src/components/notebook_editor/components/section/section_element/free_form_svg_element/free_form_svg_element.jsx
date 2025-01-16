@@ -15,7 +15,10 @@ export default function ElementFreeFormSVG(props) {
     return (
         <>
             {
-                props._content.type !== "rect" ?
+                props._content.type === "rect" ?
+                    <div className={s.rect} /> :
+                props._content.type === "line" ?
+                    <div className={s.line} /> :
                     <svg xmlns="http://www.w3.org/2000/svg"
                         className={s.svg_wrap}
                         viewBox={viewBox}
@@ -25,7 +28,6 @@ export default function ElementFreeFormSVG(props) {
                     >
                         {content}
                     </svg>
-                    : <div className={s.rect} />
             }
         </>
     )

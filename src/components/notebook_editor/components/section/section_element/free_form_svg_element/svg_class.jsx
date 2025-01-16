@@ -1,5 +1,4 @@
 import Element from "../element_class"
-import { Fragment } from "react"
 
 export default class FreeFormSVG extends Element {
     constructor(params) {

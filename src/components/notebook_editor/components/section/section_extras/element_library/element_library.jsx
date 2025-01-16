@@ -44,14 +44,17 @@ export default function ElementLibrary(props) {
             newElement.operands = ["", ""]
             newElement.result = ""
         }
-        else if (["circle", "triangle", "square"].includes(type)) {
+        else if (["circle", "triangle", "square", "line-h"].includes(type)) {
             newElement = new FreeFormSVG(newElementData)
             newElement.type = "free_form_svg"
             // Outlined shapes
             newElement.content = 
                 type === "circle" ? <circle cx="20" cy="20" r="20" stroke="red" fill="none" /> :
                 type === "triangle" ? <polygon points="20,0 40,40 0,40" stroke="orange" fill="none" /> :
-                type === "square" ? <rect x="0" y="0" width="100%" height="100%" stroke="#8dd7ff" fill="none" /> : null
+                type === "square" ? <rect x="0" y="0" width="100%" height="100%" stroke="#8dd7ff" fill="none" /> :
+                type === "line-h" ? <line x1="0" y1="20" x2="40" y2="20" stroke="black" strokeWidth="1" /> : 
+                null
+                
             newElement.viewBox = "0 0 40 40"
         }
         else if (type === "calligraphy") {
@@ -113,6 +116,7 @@ export default function ElementLibrary(props) {
                         <ElementCard type="circle" handleClick={handleAddElement} icon={IconCircle}>Circulo</ElementCard>
                         <ElementCard type="triangle" handleClick={handleAddElement} icon={IconTriangle}>Triangulo</ElementCard>
                         <ElementCard type="square" handleClick={handleAddElement} icon={IconSquare}>Cuadrado</ElementCard>
+                        <ElementCard type="line-h" handleClick={handleAddElement} icon={IconSquare}>Guía de escritura</ElementCard>
                     </div>
                 </div>
                 <div className={s.element_library_close}>
