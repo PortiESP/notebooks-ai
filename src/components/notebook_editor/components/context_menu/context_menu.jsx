@@ -13,8 +13,8 @@ const CONTEXT_MENU_WIDTH = 200
 // !!! In the callbacks, the state is passed as an argument to avoid stale closures
 const CONTEXT_OPTIONS = {
     element: [
-        { label: "Eliminar elemento", callback: contextMenuDeleteElement },
         { label: "Editar con IA!", callback: contextMenuEditWithAI },
+        { label: "Eliminar elemento", callback: contextMenuDeleteElement },
     ],
     section: [
         { label: "Eliminar sección", callback: contextMenuDeleteSection },

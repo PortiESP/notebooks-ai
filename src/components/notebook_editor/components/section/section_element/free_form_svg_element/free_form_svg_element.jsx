@@ -7,7 +7,7 @@ export default function ElementFreeFormSVG(props) {
     let content = props._content
 
     // Create jsx from js object
-    if (!content.$$typeof) {
+    if (!content?.$$typeof) {
         content = React.createElement(content.type, { key: "generated-form-data", ...content.props })
     }
 

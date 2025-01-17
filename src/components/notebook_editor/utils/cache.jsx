@@ -50,5 +50,6 @@ export function loadFromCache(coverName) {
 }
 
 export function clearCache() {
-    localStorage.removeItem('state-cache');
+    localStorage.removeItem('SvgMathCoverFront')
+    localStorage.removeItem('SvgLenguaCoverFront')
 }

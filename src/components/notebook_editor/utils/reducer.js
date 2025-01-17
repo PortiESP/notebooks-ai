@@ -237,8 +237,8 @@ const deleteElement = (state, sectionId, elementId) => {
 
 // Undo
 export function undo(state) {
-    if (history.length === 0) {
-        if (window.debug) console.error("No snapshots to undo")
+    if (state.history.length === 0) {
+        if (window.debug) console.warn("No snapshots to undo")
         return state
     }
 
@@ -250,7 +250,7 @@ export function undo(state) {
 // Redo
 export function redo(state) {
     if (state.redoHistory.length === 0) {
-        if (window.debug) console.error("No snapshots to redo")
+        if (window.debug) console.warn("No snapshots to redo")
         return state
     }
 
@@ -301,6 +301,7 @@ export default function reducer(state, action) {
                 return addElement(state, payload.section, payload.newElement)
             case "EDIT_ELEMENT":
                 if (payload.sectionId === "preview") return state
+                takeSnapshot(state)
                 // Edit element
                 return editElement(state, payload.sectionId, payload.elementId, payload.elementData)
             case "ADD_ELEMENT_STYLE":
