@@ -12,10 +12,19 @@
  * }
  */
 export default function arrangeSections(sections, order) {
+    let error = false
     sections = order.map(id => {
-        if (!sections[id]) throw new Error(`Section with id ${id} not found in the order array`)
+        if (error) return
+        if (!sections[id]) {
+            error = true
+            console.error(`Section with id ${id} not found in the order array`)
+        }
+
         return sections[id]
     })
+
+    // If there is an error, return an empty object
+    if (error) return
 
     // A4 dimensions
     const PAGE_HEIGHT = 970

@@ -1,7 +1,7 @@
 export default {
-    "_id": "template-text-gaps",
+    "_id": "template-regalo-mario",
     "_type": "blank",
-    "_height": 299,
+    "_height": 281.0022277832031,
     "_title": "¿Qué le han regalado a Mario? Observa y completa",
     "_elements": {
         "3324f29f-9e7b-4c56-983a-1dbe1930541e": {
@@ -11,6 +11,8 @@ export default {
             "_width": 150,
             "_height": 130,
             "_type": "image",
+            "_style": {},
+            "_firstPlacement": false,
             "_src": "https://img.b2bpic.net/premium-photo/pencil-sharpener-isolated-white_1218049-10673.jpg"
         },
         "50204f4d-d6ce-4078-ad0e-3cd0742c0325": {
@@ -20,6 +22,8 @@ export default {
             "_width": 120,
             "_height": 100,
             "_type": "image",
+            "_style": {},
+            "_firstPlacement": false,
             "_src": "https://img.b2bpic.net/premium-photo/red-baseball-cap-isolated-white-background-sport-hat-single-object-with-clipping-path_501761-305.jpg"
         },
         "c5075971-eec4-410c-840f-76eff49080de": {
@@ -29,6 +33,8 @@ export default {
             "_width": 150,
             "_height": 130,
             "_type": "image",
+            "_style": {},
+            "_firstPlacement": false,
             "_src": "https://img.b2bpic.net/premium-photo/watch-isolated-white-background_493325-1256.jpg"
         },
         "8ce3acdb-3bc4-4299-ba48-16a36b14f2ee": {
@@ -38,6 +44,8 @@ export default {
             "_width": 100,
             "_height": 110,
             "_type": "image",
+            "_style": {},
+            "_firstPlacement": false,
             "_src": "https://img.b2bpic.net/premium-photo/hoodies_1056055-57.jpg"
         },
         "2599b538-1bab-443e-96d0-98c4ad8ba9d5": {
@@ -47,6 +55,8 @@ export default {
             "_width": 120,
             "_height": 100,
             "_type": "image",
+            "_style": {},
+            "_firstPlacement": false,
             "_src": "https://img.b2bpic.net/premium-photo/whirligig_909293-6891.jpg"
         },
         "bcb0f8c9-6cf0-454b-80ec-f45ac094835c": {
@@ -57,6 +67,7 @@ export default {
             "_height": 115,
             "_type": "text",
             "_style": {},
+            "_firstPlacement": false,
             "_text": "<span style=\"font-family: scholar;\">A</span><span style=\"font-family: scholar;\"> </span><span style=\"font-family: scholar;\">M</span><span style=\"font-family: scholar;\">a</span><span style=\"font-family: scholar;\">r</span><span style=\"font-family: scholar;\">i</span><span style=\"font-family: scholar;\">o</span><span style=\"font-family: scholar;\"> </span><span style=\"font-family: scholar;\">l</span><span style=\"font-family: scholar;\">e</span><span style=\"font-family: scholar;\"> </span><span style=\"font-family: scholar;\">h</span><span style=\"font-family: scholar;\">a</span><span style=\"font-family: scholar;\">n</span><span style=\"font-family: scholar;\"> </span><span style=\"font-family: scholar;\">r</span><span style=\"font-family: scholar;\">e</span><span style=\"font-family: scholar;\">g</span><span style=\"font-family: scholar;\">a</span><span style=\"font-family: scholar;\">l</span><span style=\"font-family: scholar;\">a</span><span style=\"font-family: scholar;\">d</span><span style=\"font-family: scholar;\">o</span><span style=\"font-family: scholar;\"> </span><span style=\"font-family: scholar;\">u</span><span style=\"font-family: scholar;\">n ________________________                                   un _______________________,                                      un ______________________, una ____________________________, una ___________________________ y una __________________________________</span>"
         }
     }

@@ -1,5 +1,5 @@
 export default {
-    "_id": "template-2",
+    "_id": "template-price-circle",
     "_type": "blank",
     "_height": 244.421875,
     "_title": "Rodea los objetos que podrías comprar con <span style=\"font-weight: bold;\">2</span><span style=\"font-weight: bold;\">3</span><span style=\"font-weight: bold;\">€</span>",

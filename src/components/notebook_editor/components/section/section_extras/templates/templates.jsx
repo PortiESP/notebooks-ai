@@ -5,28 +5,13 @@ import { NotebookContext } from '../../../../utils/notebook_context'
 import { deepClone } from '../../../../utils/clone'
 import { private2public } from '../../../../utils/general'
 import { useEffect } from 'react'
-import ImgTemplateThumb1 from '../../../../assets/images/templates/thumbnail_1.png'
-import ImgTemplateThumb2 from '../../../../assets/images/templates/thumbnail_2.png'
-import ImgTemplateThumb3 from '../../../../assets/images/templates/thumbnail_3.png'
-import ImgTemplateThumb4 from '../../../../assets/images/templates/thumbnail_4.png'
-import ImgTemplateThumb5 from '../../../../assets/images/templates/thumbnail_5.png'
-import ImgTemplateThumb6 from '../../../../assets/images/templates/thumbnail_6.png'
-import ImgTemplateThumbBaño from '../../../../assets/images/templates/thumbnail-baño.png'
-import ImgTemplateThumbConectores from '../../../../assets/images/templates/thumbnail-conectores.png'
-import ImgTemplateThumbHistoria from '../../../../assets/images/templates/thumbnail-historia.png'
-import ImgTemplateThumbInstrumentos from '../../../../assets/images/templates/thumbnail-instrumentos.png'
-import ImgTemplateThumbListaNumeros from '../../../../assets/images/templates/thumbnail-lista-numeros.png'
-import ImgTemplateThumbNotasPentagrama from '../../../../assets/images/templates/thumbnail-notas-pentagrama.png'
-import ImgTemplateThumbUneBanderas from '../../../../assets/images/templates/thumbnail-une-banderas.png'
-import ImgTemplateThumbUneCapitales from '../../../../assets/images/templates/thumbnail-une-capitales.png'
-const THUMBNAILS = [ImgTemplateThumb1, ImgTemplateThumb2, ImgTemplateThumb3, ImgTemplateThumb4, ImgTemplateThumb5, ImgTemplateThumb6, ImgTemplateThumbHistoria, ImgTemplateThumbInstrumentos, ImgTemplateThumbListaNumeros, ImgTemplateThumbBaño, ImgTemplateThumbConectores, ImgTemplateThumbUneBanderas, ImgTemplateThumbUneCapitales, ImgTemplateThumbNotasPentagrama]
 
 export default function Templates(props) {
 
     const { dispatch } = useContext(NotebookContext)
 
-    const handleUseTemplate = (index) => {
-        const newSection = deepClone(CONSTANTS.TEMPLATES_EXERCISE_SECTIONS[index])
+    const handleUseTemplate = (id, sections) => {
+        const newSection = deepClone(sections[id])
         newSection.id = props.sData.id
         dispatch({ type: "REPLACE_SECTION", payload: newSection })
         props.close()
@@ -57,10 +42,25 @@ export default function Templates(props) {
                 <h3>Plantillas</h3>
             </div>
             <div className={s.menu_body}>
+                <h3>General</h3>
                 {
-                    CONSTANTS.TEMPLATES_EXERCISE_SECTIONS.map((section, index) => {
+                    Object.values(CONSTANTS.TEMPLATES_EXERCISE_SECTIONS_GENERAL).map((section, index) => {
                         section = private2public(section)
-                        return <TemplateCard key={index} index={index} handleUseTemplate={handleUseTemplate} icon={THUMBNAILS[index]} />
+                        return <TemplateCard key={index} index={index} handleUseTemplate={()=>handleUseTemplate(section.id, CONSTANTS.TEMPLATES_EXERCISE_SECTIONS_GENERAL)} icon={CONSTANTS.TEMPLATES_THUMBNAILS_GENERAL[section.id]} />
+                    })
+                }
+                <h3>Matemáticas</h3>
+                {
+                    Object.values(CONSTANTS.TEMPLATES_EXERCISE_SECTIONS_MATH).map((section, index) => {
+                        section = private2public(section)
+                        return <TemplateCard key={index} index={index} handleUseTemplate={()=>handleUseTemplate(section.id, CONSTANTS.TEMPLATES_EXERCISE_SECTIONS_MATH)} icon={CONSTANTS.TEMPLATES_THUMBNAILS_MATH[section.id]} />
+                    })
+                }
+                <h3>Lengua</h3>
+                {
+                    Object.values(CONSTANTS.TEMPLATES_EXERCISE_SECTIONS_LENGUA).map((section, index) => {
+                        section = private2public(section)
+                        return <TemplateCard key={index} index={index} handleUseTemplate={()=>handleUseTemplate(section.id, CONSTANTS.TEMPLATES_EXERCISE_SECTIONS_LENGUA)} icon={CONSTANTS.TEMPLATES_THUMBNAILS_LENGUA[section.id]} />
                     })
                 }
             </div>

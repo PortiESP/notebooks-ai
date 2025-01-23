@@ -1,5 +1,5 @@
 export default {
-    "_id": "template-6",
+    "_id": "template-ortografía-1",
     "_type": "blank",
     "_height": 224.875,
     "_title": "Las siguientes palabras contienen errores ortográficos. Escribe las palabras correctamente",

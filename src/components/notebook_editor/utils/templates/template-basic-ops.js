@@ -1,5 +1,5 @@
 export default {
-    "_id": "template-1",
+    "_id": "template-basic-ops",
     "_type": "blank",
     "_height": 200,
     "_title": "Rodea las restas resueltas de forma <b>incorrecta</b>",

@@ -1,5 +1,5 @@
 export default {
-    "_id": "template-5",
+    "_id": "template-history",
     "_type": "blank",
     "_height": 586.390625,
     "_title": "Observa estas viñetas. Escribe una historia a partir de ellas. Emplea alguna de estas palabras: un día, ayer, al principio, mientras tanto, luego, finalmente",
